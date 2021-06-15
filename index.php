@@ -1,5 +1,9 @@
 <?php
 
+echo 'teste';
+die();
+
+
 class appDBClass
 {
     private $con;
