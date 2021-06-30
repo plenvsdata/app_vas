@@ -1,0 +1,62 @@
+RewriteEngine On    # Turn on the rewriting engine
+RewriteRule    ^SignIn?$    appCore/login.php?checkIndexAccess=WelcomeToOrganizer$1    [NC,L]    # Handle requests for "adminPanel"
+RewriteRule    ^RecoverMyPassword?$    appCore/appRecover.php?checkIndexAccess=WelcomeToOrganizer$1    [NC,L]    # Handle requests for "adminPanel"
+RewriteRule    ^RecoverMyPassword/([A-Za-z0-9-]+)/ConfirmationCode?$        appCore/appRecoverCheckCode.php?tokenData=$1  [NC,L]
+RewriteRule    ^SignUp?$    appSignUp/appVasDataSignUp.php?checkIndexAccess=SignUpVasDataSystem$1    [NC,L]
+RewriteRule    ^Welcome?$    appCore/appMainView.php?pageData=Default$1    [NC,L]    # Handle requests for "adminPanel"
+RewriteRule    ^MyProfile?$    appCore/appMainCRM.php?pageData=$1&sec=MyProfile   [NC,L]    # Handle requests for "adminPanel"
+
+RewriteRule    ^CRM/([A-Za-z0-9-]+)/?$                      appCore/appMainCRM.php?pageData=$1    [NC,L]    # Handle requests for "adminPanel"
+RewriteRule    ^CRM/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/?$      appCore/appMainCRM.php?pageData=$1&dataValue=$2  [NC,L]
+
+RewriteRule    ^Reports/([A-Za-z0-9-]+)/?$                      appCore/appMainCRM.php?pageData=$1    [NC,L]    # Handle requests for "adminPanel"
+RewriteRule    ^Reports/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/?$      appCore/appMainCRM.php?pageData=$1&dataValue=$2  [NC,L]
+
+RewriteRule    ^Stages/([A-Za-z0-9-]+)/?$                      appCore/appMainCRM.php?pageData=$1    [NC,L]    # Handle requests for "adminPanel"
+RewriteRule    ^Stages/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/?$      appCore/appMainCRM.php?pageData=$1&dataValue=$2  [NC,L]
+
+RewriteRule    ^OpportunityCenter/([A-Za-z0-9-]+)/?$                      appCore/appMainCRM.php?pageData=$1    [NC,L]    # Handle requests for "adminPanel"
+RewriteRule    ^OpportunityCenter/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/?$      appCore/appMainCRM.php?pageData=$1&dataValue=$2  [NC,L]
+
+RewriteRule    ^BusinessCenter/([A-Za-z0-9-]+)/?$                      appCore/appMainCRM.php?pageData=$1    [NC,L]    # Handle requests for "adminPanel"
+RewriteRule    ^BusinessCenter/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/?$      appCore/appMainCRM.php?pageData=$1&dataValue=$2  [NC,L]
+
+RewriteRule    ^System/([A-Za-z0-9-]+)/?$                      appCore/appMainCRM.php?pageData=$1    [NC,L]    # Handle requests for "adminPanel"
+RewriteRule    ^System/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/?$      appCore/appMainCRM.php?pageData=$1&dataValue=$2  [NC,L]
+
+RewriteRule    ^adminPanel/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/?$    adminPanel.php?Control=$1&Action=$2    [NC,L]    # Handle requests for "adminPanel"
+RewriteRule    ^appAccessAPI/([A-Za-z0-9-]+)/?$    appCore/appAccessControlData.php?dataSec=$1   [NC,L]    # Handle requests for "blockControlData"
+
+RewriteRule    ^appDataAPI/([A-Za-z0-9-]+)/?$    appCore/blockControlData.php?dataSec=$1   [NC,L]    # Handle requests for "blockControlData"
+RewriteRule    ^appDataAPI/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/?$    appCore/blockControlData.php?method=$1&dataSec=$2  [NC,L]    # Handle requests for "blockControlData"
+
+RewriteRule    ^appBIDataAPI/([A-Za-z0-9-]+)/?$    appCore/blockBIData.php?dataSec=$1   [NC,L]    # Handle requests for "appBIDataAPI"
+RewriteRule    ^appBIDataAPI/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/?$    appCore/blockBIData.php?method=$1&dataSec=$2  [NC,L]    # Handle requests for "appBIDataAPI"
+
+RewriteRule    ^appImportDataAPI/([A-Za-z0-9-]+)/?$    appCore/blockImportData.php?dataSec=$1   [NC,L]    # Handle requests for "blockImportData"
+RewriteRule    ^appImportDataAPI/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/?$    appCore/blockImportData.php?method=$1&dataSec=$2  [NC,L]    # Handle requests for "blockImportData"
+
+RewriteRule    ^appPaymentAPI/([A-Za-z0-9-]+)/?$    appCore/blockPaymentData.php?dataSec=$1   [NC,L]    # Handle requests for "blockPaymentData"
+RewriteRule    ^appPaymentAPI/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/?$    appCore/blockPaymentData.php?method=$1&dataSec=$2  [NC,L]    # Handle requests for "blockPaymentData"
+RewriteRule    ^appSignUpAPI/([A-Za-z0-9-]+)/?$    appCore/blockPaymentData.php?dataSec=$1   [NC,L]    # Handle requests for "blockPaymentData"
+RewriteRule    ^appSignUpAPI/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/?$    appCore/blockPaymentData.php?method=$1&dataSec=$2  [NC,L]    # Handle requests for "blockPaymentData"
+RewriteRule    ^appWidgetAPI/([A-Za-z0-9-]+)/?$    appCore/blockWidgetData.php?dataSec=$1  [NC,L]    # Handle requests for "blockWidgetData"
+RewriteRule    ^appWidgetAPI/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/?$    appCore/blockWidgetData.php?method=$1&dataSec=$2  [NC,L]    # Handle requests for "blockWidgetData"
+
+RewriteRule    ^appDataProxyAPI?$  appCore/appDataProxy.php$1 [NC,L]    # Handle requests for "blockControlData"
+
+RewriteRule    ^NewUserRegistration/([A-Za-z0-9-]+)/?$      appDataConfirmation/appNewUserData.php?dataSec=newUserConfirmation&tokenData=$1  [NC,L]
+RewriteRule    ^images/([A-Za-z0-9-]+)/vasDataLogo.png?$      appDataConfirmation/appTrackData.php?dataSec=emailRead&tokenData=$1  [NC,L]
+RewriteRule    ^images/([A-Za-z0-9-]+)/vasDataLogoRegister.png?$      appDataConfirmation/appTrackData.php?dataSec=newUserRegistration&tokenData=$1  [NC,L]
+RewriteRule    ^images/([A-Za-z0-9-]+)/vasDataSignUp.png?$      appCore/blockTrackData.php?dataSec=emailSignUpRead&tokenData=$1  [NC,L]
+RewriteRule    ^images/([A-Za-z0-9-]+)/vasDataRecoverMyPassword.png?$      appCore/blockTrackData.php?dataSec=emailPasswordRecoverData=$1  [NC,L]
+
+RewriteRule    ^Maps/([A-Za-z0-9-]+)/?$                      appCore/appMainCRM.php?pageData=$1    [NC,L]    # Handle requests for "adminPanel"
+RewriteRule    ^Maps/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/?$      appCore/appMainCRM.php?pageData=$1&dataValue=$2  [NC,L]
+
+RewriteRule    ^systemToolsAPI/([A-Za-z0-9-]+)/?$    appSystemTools/appDataAPI.php?dataSec=$1 [NC,L]    # Handle requests for "System Tools"
+
+RewriteRule    ^download/([A-Za-z0-9-]+)/?$                      appCore/appDownload.php?pageData=$1    [NC,L]    # Handle requests for "adminPanel"
+RewriteRule    ^download/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/?$      appCore/appDownload.php?pageData=$1&dataValue=$2  [NC,L]
+
+RewriteRule    ^404/?$    appSystemPages/appSystemError404.php [NC,L]    # Handle requests for "System Tools"

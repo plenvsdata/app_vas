@@ -1,0 +1,5 @@
+.idea
+.DS_Store
+__/appFiles/*
+*.bak
+*.orig

@@ -1,0 +1,9 @@
+.divLogo
+{
+    width: 200px !important;
+    height: 60px;
+    background-image: url("../images/appLogo/enviroflo_logo_white.svg");
+    background-position: center;;
+    background-repeat: no-repeat;
+    background-size: 90%;
+}

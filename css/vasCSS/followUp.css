@@ -1,0 +1,63 @@
+/*******  ChatBox Opportunity Detail  ******/
+html body .bg-light-inverse {
+    text-align: left;
+    line-height: 17px;
+    padding: 8px;
+    background: #e1ffc7;
+}
+html body .bg-light-inverse-black {
+    text-align: left;
+    line-height: 17px;
+    padding: 8px;
+    background: #ccf7a6;
+}
+html body .bg-light-info-black {
+    background-color: #afdefb;
+}
+.chat-list li.reverse .box:after{
+    left: 97%!important;
+    right: auto;
+    border-right-color: transparent!important;
+    border-left-color: #e1ffc7!important;
+    border-top-color: #e1ffc7!important;
+}
+.chat-list li.reverse-black .box:after{
+    left: 97%!important;
+    right: auto;
+    border-right-color: transparent!important;
+    border-left-color: #ccf7a6!important;
+    border-top-color: #ccf7a6!important;
+}
+.chat-list li.default-black .box:after {
+    right: 97%!important;
+    left: auto;
+    border-left-color: transparent!important;
+    border-right-color: #afdefb!important;
+    border-top-color: #afdefb!important;
+}
+.chat-list li.default .box:after {
+    right: 97%!important;
+    left: auto;
+    border-left-color: transparent!important;
+    border-right-color: #cfecfe!important;
+    border-top-color: #cfecfe!important;
+}
+
+.chatbox-name{
+    font-size: 10px;
+    font-weight: bold;
+}
+.chatbox-msg{
+    float: left;
+    font-size: 12px;
+}
+.chatbox-time{
+    display: inline;
+    float: right;
+    padding:0 0 0 7px;
+    position: relative;
+    bottom: -4px;
+    font-size: 10px;
+    clear:left;
+}
+/******* END ChatBox Opportunity Detail  ******/
