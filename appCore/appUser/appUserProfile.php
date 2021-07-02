@@ -7,40 +7,15 @@
  */
 use app\userAccess\userData\appUserData;
 //use app\System\Combo\appCombo;
-/*
+
 $v_userID = $_SESSION['userID'];
 $v_formData['method'] = "ALL_INFO";
 $v_formData['userID'] = $v_userID;
-die('dentro userProfile');
+
 $v_apiData = new appUserData();
 $v_userResult = $v_apiData->appUserAllInfo($v_formData);
 $v_userInfo = $v_userResult['main']['rsData'][0];
-
-if($v_userResult['address']['rsData']){
-    $v_userAddress = $v_userResult['address']['rsData'][0];
-}else{
-    $v_userAddress = false;
-}
-$v_userSocial = $v_userResult['social']['rsData'];
-
-if( !empty($v_userInfo['user_birthday']) && $v_userInfo['user_birthday'] != '0000-00-00'){
-    $v_userBirthdate = $v_userInfo['user_birthday'];
-}else{
-    $v_userBirthdate = '';
-}
-$v_altFormat = '';
-if($_SESSION['userLocaleCountryID']==2){
-    $v_altFormat.='M. j, Y';
-}else{
-    $v_altFormat.='d/m/Y';
-}
-
-
-if($v_userAddress){
-    $v_tourAddress = 1;
-}else{
-    $v_tourAddress = 0;
-}
+$v_altFormat ='d/m/Y';
 
 
 if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_avatar.png')){
@@ -54,14 +29,6 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
     $v_avatarFolder = $GLOBALS['g_appRoot']."/appImages/defaultImages/default_avatar.png";
     $v_tourAvatar = 0;
 }
-
-//Combos
-$v_comboData = new appCombo();
-$v_comboFileType = $v_comboData->comboFileType();
-*/
-//$v_addressMap = "https://www.google.com/maps/embed/v1/place?key=AIzaSyDQn5-gHSym_Az_ssLQ7FNdFACYJhs6ZGg&q=";
-// ToDo: Implantar Todos os Modais e Ajax para os Combos
-// ToDo: Remover appDataProxy
 ?>
 <style>
     .iconColor
@@ -207,7 +174,7 @@ $v_comboFileType = $v_comboData->comboFileType();
                     <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/MyProfile">MyProfile</a></li>
                 <? }else{?>
                     <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/Welcome">Home</a></li>
-                    <li class="breadcrumb-item active">My Profile</li>
+                    <li class="breadcrumb-item active">Meu Perfil</li>
                 <?}?>
 
             </ol>
@@ -260,65 +227,6 @@ $v_comboFileType = $v_comboData->comboFileType();
                         </div>
                     </div>
                     <div><hr></div>
-                    <div class="card-body">
-                        <small class="text-muted p-t-20 db">Home Address <? if(!$v_userAddress){?><i class="fa fa-plus-circle iconColor addUserAddress" aria-hidden="true"></i><?}?></small>
-                        <div class="appUserAddress">
-                            <?php
-                            if($v_userAddress)
-                            {
-                                ?>
-                                    <div class="addressDataInfo" data-address_id="<?=$v_userAddress['address_id']?>">
-                                        <h6>
-                                            <small>
-                                                <? if($v_userAddress['address_main'] == 1){ ?>
-                                                    <!--<li class="fa fa-star ocsStar" data-toggle="tooltip" data-placement="top" title="Main Address"></li>-->
-                                                <? } ?>
-                                                <span>
-                                                    <?=$v_userAddress['full_address']?>, <?=$v_userAddress['state_code']?> <?=$v_userAddress['zip_code']?>
-                                                </span>
-                                                &nbsp;<i class="fa fa-pencil iconColor editUserAddress" aria-hidden="true" data-address_id="<?=$v_userAddress['address_id']?>" data-address_main="<?=$v_userAddress['address_main']?>" data-country_id="<?=$v_userAddress['country_id']?>" data-state_id="<?=$v_userAddress['state_id']?>" data-city_id="<?=$v_userAddress['city_id']?>" data-full_address="<?=$v_userAddress['full_address']?>" data-complement="<?=$v_userAddress['complement']?>" data-zip_code="<?=$v_userAddress['zip_code']?>"></i>
-                                            </small>
-                                        </h6>
-                                        <div class="map-box">
-                                            <iframe src="<?=$v_addressMap?><?=$v_userAddress['address_google']?>" width="100%" height="150" frameborder="0" style="border:0" allowfullscreen></iframe>
-                                        </div>
-                                        <hr>
-                                    </div>
-                                    <?php
-                            }
-                            else
-                            {
-                                ?>
-                                <h6><small>No Address Available </small></h6>
-                                <?php
-                            }
-                            ?>
-                        </div>
-
-                        <small class="text-muted p-t-20 db">Social Profile <i class="fa fa-plus-circle iconColor addUserSocial" aria-hidden="true"></i></small>
-                        <div class="appUserSocial">
-                            <?php
-                            if($v_userResult['social']["rsTotal"] > 0)
-                            {
-                                foreach ($v_userSocial as $key=>$value)
-                                {
-                                    ?>
-                                    <div style="display: table-cell; padding: 3px!important; position: relative;" class="socialDivData div_<?=strtolower($value['social_type_desc'])?>">
-                                        <a href="<?=$value['social_address']?>" target="_blank" class="btn btn-circle btn-secondary socialMediaData"><i class="fa <?=$value['social_icon']?>"></i></a>
-                                        <small class="pull-left"><i class="fa fa-trash iconColor userSocialDel" data-social_id="<?=$value['social_id']?>" data-social_type="<?=$value['social_type_desc']?>" style="position: absolute; bottom:0!important;" aria-hidden="true"></i></small>
-                                    </div>
-                                    <?php
-                                }
-                            }
-                            else
-                            {
-                                ?>
-                                <h6><small>No Social Media Available</small></h6>
-                                <?php
-                            }
-                            ?>
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -326,7 +234,7 @@ $v_comboFileType = $v_comboData->comboFileType();
                 <div class="card">
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs profile-tab" role="tablist">
-                        <li class="nav-item"> <a class="nav-link tabProfile active" data-toggle="tab" href="#profile" role="tab">Profile</a> </li>
+                        <li class="nav-item"> <a class="nav-link tabProfile active" data-toggle="tab" href="#profile" role="tab">Perfil</a> </li>
                     </ul>
                     <!-- Tab panes -->
                     <div class="tab-content">
@@ -334,7 +242,7 @@ $v_comboFileType = $v_comboData->comboFileType();
                                 <div class="card-body">
                                     <div class="row m-t-30">
                                         <div class="col-md-3 col-xs-12 b-r">
-                                            <strong class="userNameTitle">Full Name
+                                            <strong class="userNameTitle">Nome completo
                                                 <small>
                                                     <i class="fa fa-pencil iconColor editUserNameTitle" data-title_id="<?=$v_userInfo['user_id']?>" aria-hidden="true"></i>
                                                 </small>
@@ -343,7 +251,7 @@ $v_comboFileType = $v_comboData->comboFileType();
                                             <p class="text-muted userNameData"><?=$v_userInfo['user_name']?></p>
                                         </div>
                                         <div class="col-md-3 col-xs-12 b-r">
-                                            <strong class="nicknameTitle">Nickname
+                                            <strong class="nicknameTitle">Conhecido por
                                                 <small>
                                                     <i class="fa fa-pencil iconColor editNicknameTitle" data-title_id="<?=$v_userInfo['user_id']?>" aria-hidden="true"></i>
                                                 </small>
@@ -351,32 +259,6 @@ $v_comboFileType = $v_comboData->comboFileType();
                                             <br>
                                             <p class="text-muted nicknameData"><?=$v_userInfo['user_nickname']?></p>
                                         </div>
-                                        <div class="col-md-3 col-xs-12 b-r">
-                                            <strong class="genderTitle">Gender
-                                                <small>
-                                                    <i class="fa fa-pencil iconColor editGender" aria-hidden="true"></i>
-                                                </small>
-                                            </strong>
-                                            <br>
-                                            <p class="text-muted genderData" data-gender_id="<?=$v_userInfo['gender_id']?>"><?=$v_userInfo['gender_desc']?></p>
-                                        </div>
-
-                                        <!--INICIO Criando novo Birthday-->
-
-
-                                        <div class="col-md-3 col-xs-12 b-r">
-                                            <strong class="birthdayTitle">Birthday
-                                                <small>
-                                                    <i class="fa fa-pencil iconColor editBirthday" aria-hidden="true"></i>
-                                                </small>
-                                                <small>
-                                                    <i class="fa fa-trash iconColor closeBirthday" aria-hidden="true"></i>
-                                                </small>
-                                            </strong>
-                                            <br>
-                                            <input  id="regUserBirthday" type="text" placeholder="No Birthday added." readonly="readonly" value="<?=$v_userBirthdate?>" style="width: 50px!important; background-color: #0b67cd!important;">
-                                        </div>
-                                        <!--FIM Criando novo Birthday-->
                                     </div>
                                     <hr>
                                     <div class="row m-t-30">
@@ -390,16 +272,16 @@ $v_comboFileType = $v_comboData->comboFileType();
                                             <p class="text-muted userTitleData"><?=$v_userInfo['user_login']?></p>
                                         </div>
                                         <div class="col-md-4 col-xs-12 b-r">
-                                            <strong class="phoneTitle">Mobile
+                                            <strong class="phoneTitle">Telefone
                                                 <small>
-                                                    <i class="fa fa-pencil iconColor editPhoneTitle" data-mobile_country_id="<?=$v_userInfo['mobile_country_id']?>" data-title_id="<?=$v_userInfo['user_phone']?>" aria-hidden="true"></i>
+                                                    <i class="fa fa-pencil iconColor editPhoneTitle" data-mobile_country_id="" data-title_id="<?=$v_userInfo['user_phone']?>" aria-hidden="true"></i>
                                                 </small>
                                             </strong>
                                             <br>
-                                            <span class="text-muted phoneCode"><?=$v_userInfo['country_phone_code']?> </span><span class="text-muted phoneData"><?=$v_userInfo['user_phone']?></span>
+                                            <span class="text-muted phoneCode"> </span><span class="text-muted phoneData"><?=$v_userInfo['user_phone']?></span>
                                         </div>
                                         <div class="col-md-3 col-xs-12 b-r">
-                                            <strong class="nameTitle">Password
+                                            <strong class="nameTitle">Senha
                                                 <small>
                                                     <i class="fa fa-pencil iconColor editPassword" aria-hidden="true"></i>
                                                 </small>
@@ -444,19 +326,14 @@ $v_comboFileType = $v_comboData->comboFileType();
 <script type="text/javascript">
     $.docData = {
         countryListPhone : null,
-        countryList : null,
         phoneCheck: false,
         zipCheck: false,
         phoneMask: null,
-        divMaps: "<?=$v_addressMap?>",
         stateLoad: true,
-        cityLoad: true,
         maxFiles:1,
         firsAccess:<?=$_SESSION['firstAccess']?>,
         tour:null,
-        tourAddress:'<?=$v_tourAddress?>',
-        tourAvatar: '<?=$v_tourAvatar?>',
-        currentBirthday: "<?=$v_userBirthdate?>"
+        tourAvatar: '<?=$v_tourAvatar?>'
     };
 
     var v_phoneClean,v_countryID,v_countryPhoneCode,v_zipcodeClean,v_countryCode;
@@ -511,172 +388,6 @@ $v_comboFileType = $v_comboData->comboFileType();
             $.docData.zipCheck = false;
         }
     };
-
-    function getCountryList(){
-        let v_countryListPhone = "";
-        let v_countryList = "";
-        $.ajax( {
-            url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appComboSystemCountry",
-            method: "POST",
-            data:{
-                method : "POST",
-                type : "json",
-                randData: Math.floor((Math.random() * 999999) + 1)
-            },
-            dataType: "JSON",
-            success:function(d)
-            {
-                let v_countrySelected = '';
-                $.each(d.rsData,function (i,v)
-                {
-                    if(parseInt(v.country_id) === parseInt($.globalData.userLocaleCountryID)) {
-                        v_countrySelected = 'selected';
-                    } else {
-                        v_countrySelected = '';
-                    }
-
-                    v_countryListPhone += '<option value="'+v.country_id+'" data-country_code="'+v.country_code+'" data-phone_mask="'+v.phone_mask+'" data-area_code="('+v.country_phone_code+')" '+v_countrySelected+'>('+v.country_phone_code+') '+v.country_desc+'</option>';
-                    v_countryList += '<option value="'+v.country_id+'" data-country_code="'+v.country_code+'" data-zipcode_mask="'+v.zipcode_mask+'" data-area_code="'+v.country_phone_code+'" data-locale="'+v.locale+'" '+v_countrySelected+'>'+v.country_desc+'</option>';
-                });
-            },
-            complete:function() {
-                $.docData.countryListPhone = v_countryListPhone;
-                $.docData.countryList = v_countryList;
-            }
-        });
-    }
-
-    function getStateList(countryID,stateID){
-        var v_stateList = "";
-        var v_stateSelect;
-        if(typeof stateID === 'undefined')
-        {
-            v_stateSelect = null;
-        }
-        else
-        {
-            v_stateSelect = stateID;
-        }
-
-        if($.docData.stateLoad === true) {
-            $.docData.stateLoad = false;
-            $.ajax({
-                url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appComboSystemState",
-                method: "POST",
-                data: {
-                    method: "POST",
-                    type: "json",
-                    countryID: countryID,
-                    randData: Math.floor((Math.random() * 999999) + 1)
-                },
-                dataType: "JSON",
-                success: function (d) {
-                    $.each(d.rsData, function (i, v) {
-                        v_stateList += '<option value="' + v.state_id + '" data-state_code="' + v.state_code + '">' + v.state_desc + '</option>';
-                    });
-                },
-                complete: function () {
-                    $.docData.stateLoad = true;
-                    $('.popover').find('#stateID').empty().html(v_stateList);
-                    if(v_stateSelect === null)
-                    {
-                        $('.popover').find('#stateID').prop('disabled', false).selectpicker({'title': 'Select State'}).selectpicker('render').selectpicker('refresh');
-                    }
-                    else
-                    {
-                        $('.popover').find('#stateID').prop('disabled', false);
-                        $('.userAddressState').selectpicker('render').val(stateID).selectpicker('refresh');
-                        $('.popover').find('.userAddressPlaceholderState').remove();
-                    }
-                }
-            });
-        }
-    }
-
-    function getCityList(stateID,cityID){
-        var v_cityList = "";
-        var v_citySelect;
-        if(typeof cityID === 'undefined')
-        {
-            v_citySelect = null;
-        }
-        else
-        {
-            v_citySelect = cityID;
-        }
-
-        if(stateID === "") { return false; }
-
-        if($.docData.cityLoad === true) {
-            $.docData.cityLoad = false;
-            $.ajax({
-                url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appComboSystemCity",
-                method: "POST",
-                data: {
-                    method: "POST",
-                    type: "json",
-                    stateID: stateID,
-                    randData: Math.floor((Math.random() * 999999) + 1)
-                },
-                dataType: "JSON",
-                success: function (d) {
-                    $.each(d.rsData, function (i, v) {
-                        v_cityList += '<option value="' + v.city_id + '">' + v.city_desc + '</option>';
-                    });
-                },
-                complete: function () {
-                    $.docData.cityLoad = true;
-                    $('.popover').find('#cityID').empty().html(v_cityList);
-                    if(v_citySelect === null)
-                    {
-                        $('.popover').find('#cityID').prop('disabled', false).selectpicker({'title': 'Select City'}).selectpicker('render').selectpicker('refresh');
-                    }
-                    else
-                    {
-                        $('.popover').find('#cityID').prop('disabled', false);
-                        $('.userAddressCity').selectpicker('render').val(cityID).selectpicker('refresh');
-                        $('.popover').find('.userAddressPlaceholderCity').remove();
-                    }
-
-
-                }
-            });
-        }
-    }
-
-    function stepTour(){
-        if($.docData.firsAccess==1){
-            var tourState  = hopscotch.getState();
-            if($.docData.tourAddress==0 || $.docData.tourAvatar ==0 ){
-                setTimeout(function () {
-                    if(tourState!=null){
-                        hopscotch.endTour();
-                    }
-                    if($.docData.tourAvatar==0){
-                        hopscotch.startTour($.docData.tour, 0);
-                        $('.profileAvatarEdit').addClass('plenvs-icon-pulse-glow');
-                        $('.profileAvatarEdit').addClass('plenvs-icon-circle');
-                    }else if($.docData.tourAddress==0){
-                        hopscotch.startTour($.docData.tour, 1);
-                        $('.profileAvatarEdit').removeClass('plenvs-icon-pulse-glow');
-                        $('.profileAvatarEdit').removeClass('plenvs-icon-circle');
-                        $('.addUserAddress ').addClass('plenvs-icon-pulse-glow');
-                        $('.addUserAddress ').addClass('plenvs-icon-circle');
-                    }
-                },500);
-            }else{
-                $('.addUserAddress').removeClass('plenvs-icon-pulse-glow');
-                $('.addUserAddress').removeClass('plenvs-icon-circle');
-
-                setTimeout(function () {
-                    if(tourState!=null){
-                        hopscotch.endTour();
-                    }
-                },500);
-            }
-
-        }
-    }
 
     function Revealer() {
         var OVERLAY_ZINDEX = 999;
@@ -743,121 +454,8 @@ $v_comboFileType = $v_comboData->comboFileType();
         };
     }
 
-    function getCountryList(){
-        let v_countryListPhone = "";
-        let v_countryList = "";
-
-        $.ajax( {
-            url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appComboSystemCountry",
-            method: "POST",
-            data:{
-                method : "POST",
-                type : "json",
-                randData: Math.floor((Math.random() * 999999) + 1)
-            },
-            dataType: "JSON",
-            success:function(d)
-            {
-                let v_countrySelected = '';
-                $.each(d.rsData,function (i,v)
-                {
-                    if(v.country_id === $.globalData.userLocaleCountryID) {
-                        v_countrySelected = 'selected';
-                    } else {
-                        v_countrySelected = '';
-                    }
-                    v_countryListPhone += '<option value="'+v.country_id+'" data-country_code="'+v.country_code+'" data-phone_mask="'+v.phone_mask+'" data-area_code="'+v.country_phone_code+'" '+v_countrySelected+'>('+v.country_phone_code+') '+v.country_desc+'</option>';
-                    v_countryList += '<option value="'+v.country_id+'" data-country_code="'+v.country_code+'" data-locale="'+v.locale+'" data-zipcode_mask="'+v.zipcode_mask+'" data-area_code="'+v.country_phone_code+'" data-locale="'+v.locale+'" '+v_countrySelected+'>'+v.country_desc+'</option>';
-                });
-            },
-            complete:function() {
-                $.docData.countryListPhone = v_countryListPhone;
-                $.docData.countryList = v_countryList;
-            }
-        });
-    }
-
     $(document).ready(function ()
     {
-
-    <? if($_SESSION['firstAccess']==1){?>
-
-        var revealer = new Revealer();
-        hopscotch.listen('show', function() {
-            revealer.reveal(hopscotch.getCurrTarget());
-        });
-        hopscotch.listen('close', function() {
-            revealer.hide();
-        });
-        hopscotch.listen('end', function() {
-            revealer.hide();
-        });
-        // Define the tour!
-        $.docData.tour = {
-            id: "hello-hopscotch",
-            showCloseButton:false,
-            steps: [
-                {
-                    title: "Add your Avatar",
-                    content: "Click here to select your photo or avatar.",
-                    target: document.querySelector(".profileAvatarEdit"),
-                    placement: "right",
-                    showNextButton:false,
-                    showCTAButton: true,
-                    ctaLabel: "Maybe later!",
-                    yOffset: -23
-                },
-                {
-                    title: "Define your Home Address",
-                    content: "Add your Address and let the Plenvs Data optimize your daily visits.",
-                    target: document.querySelector(".addUserAddress"),
-                    placement: "right",
-                    showPrevButton:false,
-                    showNextButton:false,
-                    yOffset: -25
-                }
-            ],
-            showPrevButton: true,
-            onEnd: function()
-            {
-            }
-        };
-
-        // Start the tour!
-        stepTour();
-
-        $(document).on('click','.hopscotch-cta',function () {
-            $.docData.tourAvatar = 1;
-            $('.profileAvatarEdit').removeClass('plenvs-icon-pulse-glow');
-            $('.profileAvatarEdit').removeClass('plenvs-icon-circle');
-            hopscotch.nextStep();
-        });
-
-    <?}?>
-
-        getCountryList();
-
-        $(document).on('change','#countryID',function() {
-            $('.popover').find('#stateID').prop('disabled',true).selectpicker({ 'title':'Loading States...' }).selectpicker('refresh');
-            $('.popover').find('#cityID').empty().prop('disabled',true).selectpicker({ 'title':'Select City' }).selectpicker('refresh');
-            $('.userZipCode').val("");
-            $('.userFullAddress').val("");
-            $('.userAddressComplement').val("");
-            var v_countryID = $('.popover').find('#countryID').selectpicker('val');
-            var v_zipMask = $('.popover').find('#countryID option:selected').attr('data-zipcode_mask');
-            $('.userZipCode').mask(v_zipMask,v_zipmaskOptions);
-            getStateList(v_countryID);
-        });
-
-        $(document).on('change','.userAddressState',function() {
-            var v_stateID = $('.popover').find('#stateID').selectpicker('val');
-            getCityList(v_stateID);
-        });
-
-        $(document).on('change','.userAddressCity',function() {
-            $('.userAddressCity option[value="0"]').remove();
-        });
-
         toastr.options = {
             "closeButton": false,
             "debug": false,
@@ -1109,712 +707,6 @@ $v_comboFileType = $v_comboData->comboFileType();
             }
         });
 
-        $(document).on('click', '.editGender', function () {
-
-            $('.popover').popover('hide');
-            $('.popover').remove();
-
-            var v_userID = $('#userID').val();
-            var v_genderID = $('.genderData').attr("data-gender_id");
-            var v_content = "";
-            var v_data;
-            var v_popover = $(this);
-
-            $.ajax({
-                url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appComboSystemGender",
-                method: "POST",
-                data:{
-                    method : "POST",
-                    type : "json"
-                },
-                dataType: "JSON",
-                success:function(d){
-                    v_data = d;
-                    v_content  = '<div class="input-group">';
-                    v_content += '<input type="hidden" class="genderID" name="genderID" id="genderID" value="'+v_genderID+'">';
-                    v_content += '<select class="form-control custom-select comboGenderData" style="width: 250px!important;" name="comboGenderData" id="comboGenderData">';
-
-                    $.each(v_data.rsData,function (i,v)
-                    {
-                        v_content += '<option value="'+v.gender_id+'">'+v.gender_desc+'</option>';
-                    });
-
-                    v_content += '</select>';
-                    v_content += '<div class="input-group-btn">';
-                    v_content += '<button type="button" class="btn btn-success saveGender" style="height: 38px!important; width: 47px!important;">';
-                    v_content += '<span class="fa fa-lg fa-check"></span>';
-                    v_content += '</button>';
-                    v_content += '</div>';
-                    v_content += '</div>';
-
-                    $("#popoverData").html(v_content);
-                    $(v_popover).popover({
-                        html: true,
-                        title: '<div style="width:100%!important;">Edit Gender<i class="fa fa-times fa-pull-right iconColor popoverClose" aria-hidden="true"></i></div>',
-                        container: 'body',
-                        sanitize: false,
-                        placement: 'top',
-                        content: $("#popoverData").html(),
-                        delay: 100
-                    });
-                    $.docData.periodPopover = true;
-                    $(v_popover).popover('show');
-                },
-                complete:function()
-                {
-                    $(v_popover).on("shown.bs.popover",function (){
-                        $('.comboGenderData').val(v_genderID);
-                    });
-
-
-                }
-            });
-        });
-
-        $(document).on('click','.saveGender',function (){
-            var v_userID = $('#userID').val();
-            var v_genderID = $('.popover').find('.comboGenderData').val();
-            $(".genderData").attr('data-gender_id',v_genderID);
-            var v_popover = $('.popover');
-            var v_genderTitleText = $.trim(v_popover.find('#comboGenderData option:selected').text());
-
-            $.ajax({
-                url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserInfo",
-                type: "POST",
-                dataType: "json",
-                data: {
-                    method: "PUT",
-                    userID: v_userID,
-                    userData: v_genderID,
-                    dataControl : 'updUserGender'
-                },
-                success: function (d) {
-                    if (d.status === true)
-                    {
-                        toastr["success"]("Gender " + v_genderTitleText + " updated.", "Success");
-                        $('.genderData').text(v_genderTitleText);
-                        $('.popover').popover('hide');
-                    }
-                    else {
-                        toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                        $('.popover').popover('hide');
-                    }
-                },
-                error: function () {
-                    toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                    $('.popover').popover('hide');
-                }
-            });
-
-        });
-
-        $('.addUserAddress').on("click",function(){
-            var v_popover = $(this);
-            $("#popoverData").empty();
-            hopscotch.endTour();
-            var v_content  = '<div class="input-group">';
-            //v_content += '<button type="button" class="btn btn-default userMainAddress" style="height:38px!important;width:47px!important;" data-toggle="tooltip" data-placement="top" title="Set as Main Address">';
-            //v_content += '<span class="fa fa-lg fa-star-o starAddress" style="color:#ffe821" data-main_address="0"></span>';
-            //v_content += '</button>';
-            v_content += '<select class="form-control custom-select userAddressCountry customBootstrapSelect" style="display:none!important; " name="countryID" id="countryID" data-live-search="true" data-live-search-normalize="true" data-container="body" data-style="btn-ocsCountry">';
-            v_content += $.docData.countryList;
-            v_content += '</select>';
-            v_content += '<button type="button" class="btn btn-success saveNewAddress" style="height:38px!important; width: 47px!important; border-radius: 0 5px 5px 0!important;">';
-            v_content += '<span class="fa fa-lg fa-check"></span>';
-            v_content += '</button>';
-            v_content += '</div>';
-
-            v_content += '<div class="input-group" style="margin-top:10px!important;width:100%!important;">';
-            v_content += '<div class="col-md-6" style="padding-left: 0!important; padding-right:5px!important; height: 38px;!important;">';
-            v_content += '<select class="form-control custom-select userAddressState" style="display:none!important;width:100%!important;" name="stateID" id="stateID" data-live-search="true" data-live-search-normalize="true" data-container="body" data-style="btn-ocsStateCity" data-title="Select a State" disabled></select>';
-            v_content += '</div>';
-            v_content += '<div class="col-md-6" style="padding-right: 0!important; padding-left:5px!important;">';
-            v_content += '<select class="form-control custom-select userAddressCity" style="display:none!important;width:100%!important;" name="cityID" id="cityID" data-live-search="true" data-live-search-normalize="true" data-container="body" data-style="btn-ocsStateCity" data-title="Select a State first" disabled></select>';
-            v_content += '</div>';
-            v_content += '</div>';
-
-            v_content += '<div class="input-group" style="margin-top:10px!important;width:100%!important;">';
-            v_content += '<div class="col-md-12" style="padding-left: 0!important; padding-right:0!important;">';
-            v_content += '<input class="form-control userFullAddress" id="fullAddress" name="fullAddress" style="width:100%!important;" placeholder="Full Address" value="">';
-            v_content += '</div>';
-            v_content += '</div>';
-
-            v_content += '<div class="input-group" style="margin-top:10px!important;width:100%!important;">';
-            v_content += '<div class="col-md-8" style="padding-left: 0!important; padding-right:5px!important;">';
-            v_content += '<input class="form-control userAddressComplement" id="addressComplement" name="addressComplement" style="width:100%!important;" placeholder="Complement" value="">';
-            v_content += '</div>';
-            v_content += '<div class="col-md-4" style="padding-left: 5px!important; padding-right:0!important;">';
-            v_content += '<input class="form-control userZipCode" id="zipCode" name="zipCode" style="width:100%!important;" placeholder="Zip Code" value="">';
-            v_content += '</div>';
-            v_content += '</div>';
-
-            $("#popoverData").html(v_content);
-            $(v_popover).popover({
-                html: true,
-                title: '<div style="width:500px!important;">Add New Address<i class="fa fa-times fa-pull-right iconColor popoverClose" aria-hidden="true"></i></div>',
-                container: 'body',
-                sanitize: false,
-                placement: 'top',
-                content: $("#popoverData").html(),
-                delay: 100
-            });
-            $(v_popover).popover('show');
-
-            $(v_popover).on("shown.bs.popover",function (){
-                $('.userMainAddress').tooltip();
-                var v_countryID_default =  $('#countryID [data-locale="<?=$g_user_locale?>"]').val();
-                $('.popover').find('#countryID').val(v_countryID_default);
-                var v_countryID = $.trim($('.popover').find('#countryID').val());
-                var v_zipMask = $('.popover').find('#countryID option:selected').attr('data-zipcode_mask');
-                $('.userZipCode').mask(v_zipMask,v_zipmaskOptions);
-                getStateList(v_countryID);
-                $('.userAddressCountry').selectpicker();
-                $('.userAddressState').selectpicker();
-                $('.userAddressCity').selectpicker();
-            });
-            $(this).on("hidden.bs.popover",function () {
-                stepTour();
-            });
-        });
-
-        $(document).on("click",'.editUserAddress',function(){
-
-            var v_userID = $('#userID').val();
-            var v_addressID = $(this).attr('data-address_id');
-            var v_addressMain = $(this).attr('data-address_main');
-            var v_countryID = $(this).attr('data-country_id');
-            var v_stateID = $(this).attr('data-state_id');
-            var v_cityID = $(this).attr('data-city_id');
-            var v_fullAddress = $(this).attr('data-full_address');
-            console.log(v_countryID+' - '+v_cityID);
-            var v_complement = $(this).attr('data-complement');
-            var v_zipCode = $(this).attr('data-zip_code');
-            var v_popover = $(this);
-            var v_content;
-            $("#popoverData").empty();
-            $('.popover').popover('hide');
-            $('.popover').remove();
-
-            $.when($.docData.countryList).then(function() {
-                v_content  = '<div class="input-group">';
-                v_content += '<select class="form-control custom-select userAddressCountry customBootstrapSelect" style="display:none!important; " name="countryID" id="countryID" data-live-search="true" data-live-search-normalize="true" data-container="body" data-style="btn-ocsCountry">';
-                v_content += $.docData.countryList;
-                v_content += '</select>';
-                v_content += '<button type="button" class="btn btn-success updateAddress" style="height:38px!important; width: 47px!important; border-radius: 0 5px 5px 0!important;">';
-                v_content += '<span class="fa fa-lg fa-check"></span>';
-                v_content += '</button>';
-                v_content += '</div>';
-
-                v_content += '<div class="input-group" style="margin-top:10px!important;width:100%!important;">';
-                v_content += '<div class="col-md-6" style="padding-left: 0!important; padding-right:5px!important; height: 38px;!important;">';
-                v_content += '<select class="form-control custom-select userAddressPlaceholderState" style="display:none!important;width:100%!important;" name="placeholderID" id="placeholderID" data-style="btn-ocsStateCity" data-title="Loading..." disabled></select>';
-                v_content += '<select class="form-control custom-select userAddressState" style="display:none!important;width:100%!important;" name="stateID" id="stateID" data-live-search="true" data-live-search-normalize="true" data-container="body" data-style="btn-ocsStateCity" data-title="Select a State" disabled>';
-                v_content += getStateList(v_countryID,v_stateID);
-                v_content += '</select>';
-                v_content += '</div>';
-                v_content += '<div class="col-md-6" style="padding-right: 0!important; padding-left:5px!important;">';
-                v_content += '<div style="height: 38px!important;">'
-                v_content += '<select class="form-control custom-select userAddressPlaceholderCity" style="display:none!important;width:100%!important;" name="placeholderID" id="placeholderID" data-style="btn-ocsStateCity" data-title="Loading..." disabled></select>';
-                v_content += '<select class="form-control custom-select userAddressCity" style="display:none!important;width:100%!important;" name="cityID" id="cityID" data-live-search="true" data-live-search-normalize="true" data-container="body" data-style="btn-ocsStateCity" data-title="Select a State first" disabled>';
-                v_content += getCityList(v_stateID,v_cityID);
-                v_content += '</select>';
-                v_content += '</div>';
-                v_content += '</div>';
-                v_content += '</div>';
-
-                v_content += '<div class="input-group" style="margin-top:10px!important;width:100%!important;">';
-                v_content += '<div class="col-md-12" style="padding-left: 0!important; padding-right:0!important;">';
-                v_content += '<input class="form-control userFullAddress" id="fullAddress" name="fullAddress" style="width:100%!important;" placeholder="Full Address" value="'+v_fullAddress+'">';
-                v_content += '</div>';
-                v_content += '</div>';
-
-                v_content += '<div class="input-group" style="margin-top:10px!important;width:100%!important;">';
-                v_content += '<div class="col-md-8" style="padding-left: 0!important; padding-right:5px!important;">';
-                v_content += '<input class="form-control userAddressComplement" id="addressComplement" name="addressComplement" style="width:100%!important;" placeholder="Complement" value="'+v_complement+'">';
-                v_content += '</div>';
-                v_content += '<div class="col-md-4" style="padding-left: 5px!important; padding-right:0!important;">';
-                v_content += '<input class="form-control userZipCode" id="zipCode" name="zipCode" style="width:100%!important;" placeholder="Zip Code" value="'+v_zipCode+'">';
-                v_content += '<input type="hidden" id="addressID" name="addressID" value="'+v_addressID+'">';
-                v_content += '<input type="hidden" id="userID" name="userID" value="'+v_userID+'">';
-                v_content += '</div>';
-                v_content += '</div>';
-
-                $("#popoverData").html(v_content);
-                $(v_popover).popover({
-                    html: true,
-                    title: '<div style="width:500px!important;">Edit Address<i class="fa fa-times fa-pull-right iconColor popoverClose" aria-hidden="true"></i></div>',
-                    container: 'body',
-                    sanitize: false,
-                    placement: 'top',
-                    content: $("#popoverData").html(),
-                    delay: 200
-                });
-                $(v_popover).on("shown.bs.popover",function (){
-                    $('.popover').find('.userAddressPlaceholderState').selectpicker('refresh');
-                    $('.popover').find('.userAddressPlaceholderCity').selectpicker('refresh');
-                    $('.userMainAddress').tooltip();
-                    $('.popover').find('#countryID').val(v_countryID).selectpicker('refresh');
-                    var v_zipMask = $('.popover').find('#countryID option:selected').attr('data-zipcode_mask');
-                    $('.userZipCode').mask(v_zipMask,v_zipmaskOptions);
-                });
-                $(v_popover).popover('show');
-            });
-
-
-        });
-
-        $(document).on('click','.saveNewAddress',function () {
-            let v_userID = $('#userID').val();
-            let v_userMainAddress = 1;
-            let v_userCountryID = $('.popover').find('#countryID').val();
-            let v_userCountryDesc = $.trim($('.popover').find('#countryID option:selected').text());
-            let v_userCountryCode = $.trim($('.popover').find('#countryID option:selected').attr("data-country_code"));
-            let v_userStateID = $('.popover').find('#stateID').selectpicker('val');
-            let v_userStateDesc = $.trim($('.popover').find('#stateID option:selected').text());
-            let v_userStateCode = $.trim($('.popover').find('#stateID option:selected').attr("data-state_code"));
-            let v_userCityID = $('.popover').find('#cityID').selectpicker('val');
-            let v_userCityDesc = $.trim($('.popover').find('#cityID option:selected').text());
-            let v_userFullAddress = $('.popover').find('#fullAddress').val();
-            let v_userAddressComplement = $('.popover').find('#addressComplement').val();
-            let v_userZipCode = $('.popover').find('#zipCode').val();
-            let v_mapAddress = v_userFullAddress.replace(/\ /g,'+')+','+v_userCityDesc.replace(/\ /g,'+')+'+'+v_userStateCode.replace(/\ /g,'+')+','+v_userCountryDesc.replace(/\ /g,'+');
-            let v_addressInfo;
-
-            if(v_userStateID === "")
-            {
-                toastr["warning"]("Select State and City", "Attention!");
-            }
-            else if(v_userCityID === "")
-            {
-                toastr["warning"]("Select City", "Attention!");
-            }
-            else if(v_userFullAddress.length < 5)
-            {
-                toastr["warning"]("Add a valid Address", "Attention!");
-            }
-            else if(!$.docData.zipCheck)
-            {
-                toastr["warning"]("Add a valid Zip Code", "Attention!");
-            }
-            else
-            {
-                $.ajax({
-                    url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserAddress",
-                    type: "POST",
-                    dataType: "json",
-                    data:
-                        {
-                            method: "POST",
-                            userID: v_userID,
-                            mainAddress: v_userMainAddress,
-                            countryID: v_userCountryID,
-                            countryDesc: v_userCountryDesc,
-                            countryCode: v_userCountryCode,
-                            stateID: v_userStateID,
-                            stateDesc: v_userStateDesc,
-                            stateCode: v_userStateCode,
-                            cityID: v_userCityID,
-                            cityDesc: v_userStateDesc,
-                            fullAddress: v_userFullAddress,
-                            complement: v_userAddressComplement,
-                            zipCode: v_userZipCode
-                        },
-                    success: function (d) {
-                        if(d.status == true)
-                        {
-                            $(".appUserAddress").empty();
-                            v_addressInfo  = "<div class='addressDataInfo' data-address_id='"+d.addressID+"'>";
-                            v_addressInfo += "<h6><small>";
-                            v_addressInfo += "<span>"+v_userFullAddress+", "+v_userStateCode+" "+v_userZipCode+"</span>";
-                            v_addressInfo += "&nbsp;<i class='fa fa-pencil iconColor editUserAddress' aria-hidden='true' data-address_id='"+d.addressID+"'  data-address_main='"+v_userMainAddress+"' data-country_id='"+v_userCountryID+"' data-state_id='"+v_userStateID+"' data-city_id='"+v_userCityID+"' data-full_address='"+v_userFullAddress+"' data-complement='"+v_userAddressComplement+"' data-zip_code='"+v_userZipCode+"'></i>&nbsp;";
-                            v_addressInfo += "</small></h6>";
-                            v_addressInfo += "<div class='map-box'>";
-                            v_addressInfo += "<iframe src='"+$.docData.divMaps+v_mapAddress+"' width='100%' height='150' frameborder='0' style='border:0' allowfullscreen></iframe>";
-                            v_addressInfo += "</div>";
-                            v_addressInfo += "<hr>";
-                            v_addressInfo += "</div>";
-
-                            $(".appUserAddress").append(v_addressInfo);
-                            toastr["success"]("New Address added.", "Success");
-                            $('.popover').popover('hide');
-                        <? if($_SESSION['firstAccess']==1){?>
-                                $.ajax({
-                                url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserSessionFirstAccess",
-                                type: "POST",
-                                dataType: "json",
-                                data:
-                                    {
-                                        method: "POST"
-                                    },
-                                success: function (d) {
-                                    if (d === true) {
-
-                                        toastr["success"]("Full registration complete. Wait for page redirection.", "Success");
-                                        setTimeout(function(){
-                                            window.location.assign("<?=$GLOBALS['g_appRoot']?>/Welcome");
-                                        }, 3000);
-
-                                    }
-                                    else {
-                                        toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                                    }
-                                },
-                                error: function () {
-                                    toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                                }
-                            });
-                         <?}?>
-
-                        }
-                        else
-                        {
-                            toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                            $('.popover').popover('hide');
-                        }
-                    },
-                    error: function (d) {
-                        toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                        $('.popover').popover('hide');
-                    },
-                    complete: function (){
-
-                    }
-                });
-            }
-
-        });
-
-        $(document).on('click','.updateAddress',function () {
-            $('.popover').find('#zipCode').keyup();
-            let v_userID = $('#userID').val();
-            let v_addressID = $('#addressID').val();
-            let v_userMainAddress = 1;//$('.popover').find('.starAddress').attr("data-main_address");
-            let v_userCountryID = $('.popover').find('#countryID').val();
-            let v_userCountryDesc = $.trim($('.popover').find('#countryID option:selected').text());
-            let v_userCountryCode = $.trim($('.popover').find('#countryID option:selected').attr("data-country_code"));
-            let v_userStateID = $('.popover').find('#stateID').selectpicker('val');
-            let v_userStateDesc = $.trim($('.popover').find('#stateID option:selected').text());
-            let v_userStateCode = $.trim($('.popover').find('#stateID option:selected').attr("data-state_code"));
-            let v_userCityID = $('.popover').find('#cityID').selectpicker('val');
-            let v_userCityDesc = $.trim($('.popover').find('#cityID option:selected').text());
-            let v_userFullAddress = $('.popover').find('#fullAddress').val();
-            let v_userAddressComplement = $('.popover').find('#addressComplement').val();
-            let v_userZipCode = $('.popover').find('#zipCode').val();
-            let v_mapAddress = v_userFullAddress.replace(/\ /g,'+')+','+v_userCityDesc.replace(/\ /g,'+')+'+'+v_userStateCode.replace(/\ /g,'+')+','+v_userCountryDesc.replace(/\ /g,'+');
-            let v_countryCode = $('.popover').find('.userAddressCountry option:selected').attr('data-area_code');
-            let v_zipcodeClean = String($('.popover').find('#zipCode').cleanVal());
-            let v_addressInfo;
-            $.docData.zipCheck = validateZipData(v_zipcodeClean,v_countryCode);
-
-            if(v_userStateID === "")
-            {
-                toastr["warning"]("Select State and City", "Attention!");
-            }
-            else if(v_userCityID === "")
-            {
-                toastr["warning"]("Select City", "Attention!");
-            }
-            else if(v_userFullAddress.length < 5)
-            {
-                toastr["warning"]("Add a valid Address", "Attention!");
-            }
-            else if(!$.docData.zipCheck)
-            {
-                toastr["warning"]("Add a valid Zip Code", "Attention!");
-            }
-            else
-            {
-                $.ajax({
-                    url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserAddress",
-                    type: "POST",
-                    dataType: "json",
-                    data:
-                        {
-                            method: "PUT",
-                            userID: v_userID,
-                            addressID: v_addressID,
-                            mainAddress: v_userMainAddress,
-                            countryID: v_userCountryID,
-                            countryDesc: v_userCountryDesc,
-                            countryCode: v_userCountryCode,
-                            stateID: v_userStateID,
-                            stateDesc: v_userStateDesc,
-                            stateCode: v_userStateCode,
-                            cityID: v_userCityID,
-                            cityDesc: v_userStateDesc,
-                            fullAddress: v_userFullAddress,
-                            complement: v_userAddressComplement,
-                            zipCode: v_userZipCode
-                        },
-                    success: function (d) {
-
-                        if(Boolean(d.updateStatus) === true)
-                        {
-
-                            $("div.addressDataInfo[data-address_id='"+v_addressID+ "']").remove();
-
-                            v_addressInfo  = "<div class='addressDataInfo' data-address_id='"+v_addressID+"'>";
-                            v_addressInfo += "<h6><small>";
-/*
-                            if(parseInt(v_userMainAddress) === 1)
-                            {
-                                v_addressInfo += "<li class='fa fa-star ocsStar' data-toggle='tooltip' data-placement='top' title='Main Address'></li>";
-                            }
-*/
-                            v_addressInfo += "<span>"+v_userFullAddress+", "+v_userStateCode+" "+v_userZipCode+"</span>";
-                            v_addressInfo += "&nbsp;<i class='fa fa-pencil iconColor editUserAddress' aria-hidden='true' data-address_id='"+v_addressID+"'  data-address_main='"+v_userMainAddress+"' data-country_id='"+v_userCountryID+"' data-state_id='"+v_userStateID+"' data-city_id='"+v_userCityID+"' data-full_address='"+v_userFullAddress+"' data-complement='"+v_userAddressComplement+"' data-zip_code='"+v_userZipCode+"'></i>&nbsp;";
-                            //v_addressInfo += "<i class='fa fa-trash iconColor delUserAddress' aria-hidden='true' data-address_id='"+v_addressID+"'></i>&nbsp;";
-                            v_addressInfo += "</small></h6>";
-                            v_addressInfo += "<div class='map-box'>";
-                            v_addressInfo += "<iframe src='"+$.docData.divMaps+v_mapAddress+"' width='100%' height='150' frameborder='0' style='border:0' allowfullscreen></iframe>";
-                            v_addressInfo += "</div>";
-                            v_addressInfo += "<hr>";
-                            v_addressInfo += "</div>";
-
-                            var v_addressQuantity = $("[class='addressDataInfo']").length;
-
-                            if(v_addressQuantity < 1)
-                            {
-                                $(".appUserAddress").empty();
-                                //$('.appUserAddress').append('<h6><small>No Address Available</small></h6>');
-                            }
-
-                            if(parseInt(v_userMainAddress) === 1)
-                            {
-                                if(v_addressQuantity > 1)
-                                {
-                                    $(".appUserAddress").prepend(v_addressInfo);
-                                }
-                                else
-                                {
-                                    $(".appUserAddress").append(v_addressInfo);
-                                }
-
-                            }
-                            else
-                            {
-                                if(v_addressQuantity > 1)
-                                {
-                                    $(".appUserAddress div:last-child").after(v_addressInfo);
-                                }
-                                else
-                                {
-                                    $(".appUserAddress").append(v_addressInfo);
-                                }
-                            }
-
-                            toastr["success"]("New Address added.", "Success");
-                            $('.popover').popover('hide');
-                        }
-                        else {
-                            toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                            $('.popover').popover('hide');
-                        }
-                    },
-                    error: function () {
-                        toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                        $('.popover').popover('hide');
-                    }
-                });
-            }
-
-        });
-
-        $('.addUserSocial').on("click",function(){
-
-            var v_userID = $('#userID').val();
-            var v_popover = $(this);
-            var v_content = "";
-            var v_count = 0;
-
-            $("#popoverData").empty();
-            $('.popover').popover('hide');
-            $('.popover').remove();
-
-            $.ajax( {
-                url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appComboSystemSocial",
-                method: "POST",
-                data:{
-                    method : "POST",
-                    type : "json",
-                    userID: v_userID,
-                    randData: Math.floor((Math.random() * 999999) + 1)
-                },
-                dataType: "JSON",
-                success:function(d){
-                    v_content  = '<div class="input-group">';
-                    v_content += '<select class="form-control custom-select userSocialType" style="width:250px!important;" name="socialTypeID" id="socialTypeID">';
-
-
-                    $.each(d.rsData,function (i,v)
-                    {
-                        v_socialCheck = $("."+v.social_icon).length;
-
-                        if(v_socialCheck < 1)
-                        {
-                            v_count++;
-                            v_content += '<option value="'+v.social_id+'" data-social_icon="'+v.social_icon+'">'+v.social_desc+'</option>';
-                        }
-                    });
-
-                    v_content += '</select>';
-                    v_content += '</div>';
-
-                    v_content += '<div class="input-group" style="margin-top: 10px!important; width: 100%!important;">';
-                    v_content += '<input class="form-control userSocialAddress" id="userSocialAddress" name="userSocialAddress" style="width: 250px!important;" placeholder="New Social Media" value="">';
-                    v_content += '<div class="input-group-btn">';
-                    v_content += '<button type="button" class="btn btn-success saveSocialMedia" style="height: 38px!important; width: 47px!important;">';
-                    v_content += '<span class="fa fa-lg fa-check"></span>';
-                    v_content += '</button>';
-                    v_content += '</div>';
-                    v_content += '</div>';
-
-                    $("#popoverData").html(v_content);
-                    $(v_popover).popover({
-                        html: true,
-                        title: '<div style="width:350px!important;">Add New Social Media<i class="fa fa-times fa-pull-right iconColor popoverClose" aria-hidden="true"></i></div>',
-                        container: 'body',
-                        sanitize: false,
-                        placement: 'top',
-                        content: $("#popoverData").html(),
-                        delay: 100
-                    });
-
-                    if(v_count === 0)
-                    {
-                        toastr["warning"]("All types of Social Media already added.", "Attention!");
-                        return false;
-                    }
-                    $(v_popover).popover('show');
-                },
-                complete:function()
-                {
-                    $(v_popover).on("shown.bs.popover",function (){
-
-                    });
-                }
-            });
-        });
-
-        $(document).on('click','.saveSocialMedia',function () {
-            var v_userID = $('#userID').val();
-            var v_userSocialTypeID = $('.popover').find('.userSocialType').val();
-            var v_userSocialAddress = $.trim($('.popover').find('#userSocialAddress').val());
-            var v_userSocialType = $.trim($('.popover').find('#socialTypeID option:selected').text());
-            var v_socialClass = v_userSocialType.toLowerCase();
-            var v_userSocialIcon = $.trim($('.popover').find('#socialTypeID option:selected').attr('data-social_icon'));
-            var v_socialInfo;
-
-            if(!validator.isURL(v_userSocialAddress))
-            {
-                toastr["warning"]("Add a valid social media url", "Attention!");
-            }
-            else
-            {
-                $.ajax({
-                    url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserSocial",
-                    type: "POST",
-                    dataType: "json",
-                    data:
-                        {
-                            method: "POST",
-                            userID: v_userID,
-                            socialTypeID: v_userSocialTypeID,
-                            socialAddress: v_userSocialAddress
-                        },
-                    success: function (d) {
-                        if(Boolean(d.status) === true)
-                        {
-                            v_socialInfo  = '<div style="display:table-cell;padding:3px!important;position:relative;" class="socialDivData div_'+v_socialClass+'">';
-                            v_socialInfo += '<a href="'+v_userSocialAddress+'" target="_blank" class="btn btn-circle btn-secondary socialMediaData">';
-                            v_socialInfo += '<i class="fa '+v_userSocialIcon+'"></i></a>';
-                            v_socialInfo += '<small class="pull-left"><i class="fa fa-trash iconColor userSocialDel pull-left" data-social_id="'+d.socialID+'" data-social_type="'+v_userSocialType+'" style="position: absolute; bottom:0!important;" aria-hidden="true"></i></small>';
-                            v_socialInfo += '</div>';
-
-                            if($(".socialDivData").length < 1)
-                            {
-                                $('.appUserSocial').empty();
-                            }
-
-
-                            $(".appUserSocial").append(v_socialInfo);
-                            toastr["success"]("New Social Media added.", "Success");
-                            $('.popover').popover('hide');
-                        }
-                        else {
-                            toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                            $('.popover').popover('hide');
-                        }
-                    },
-                    error: function () {
-                        toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                        $('.popover').popover('hide');
-                    }
-                });
-            }
-
-        });
-
-        $(document).on('click','.userSocialDel',function () {
-            var v_userID = $('#userID').val();
-            var v_socialID = $(this).attr('data-social_id');
-            var v_socialDesc = $(this).attr('data-social_type');
-            var v_socialClass = v_socialDesc.toLowerCase();
-
-            bootbox.confirm({
-                message: "Are you sure you want to remove <br/><h3 class='text-center'>"+v_socialDesc+"</h3>",
-                buttons: {
-                    confirm: {
-                        label: 'Yes',
-                        className: 'btn btn-success btn-sm'
-                    },
-                    cancel: {
-                        label: 'No',
-                        className: 'btn btn-danger btn-sm'
-                    }
-                },
-                callback: function (result) {
-                    if(result===true)
-                    {
-                        $.ajax({
-                            url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserSocial",
-                            type: "POST",
-                            dataType: "json",
-                            data:
-                                {
-                                    method: "DELETE",
-                                    userID: v_userID,
-                                    socialID: v_socialID
-                                },
-                            success: function(d)
-                            {
-                                if(d.deleteStatus === true)
-                                {
-                                    $(".div_"+v_socialClass).remove();
-
-                                    if($(".socialDivData").length < 1)
-                                    {
-                                        $('.appUserSocial').append('<h6><small>No Social Media Available</small></h6>');
-                                    }
-
-                                    toastr["success"](v_socialDesc+" removed.", "Success");
-                                }
-                                else
-                                {
-                                    toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                                }
-                            },
-                            error:function ()
-                            {
-                                toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                            }
-                        });
-                    }
-                }
-            });
-
-        });
-
         $(document).on('keypress',"#curPwd",function(e)
         {
             var v_key = e.keyCode;
@@ -1822,6 +714,7 @@ $v_comboFileType = $v_comboData->comboFileType();
                 e.preventDefault();
             }
         });
+
         $(document).on('keypress',"#newPwd",function(e)
         {
             var v_key = e.keyCode;
@@ -2031,102 +924,6 @@ $v_comboFileType = $v_comboData->comboFileType();
         $('#appAddUserPhoto').on('hidden.bs.modal', function (e) {
             userPhotoDropzone.destroy();
             userPhotoDropzone = null;
-            stepTour();
-        });
-
-
-        const flatCalendar = $("#regUserBirthday").flatpickr({
-            altInput: true,
-            //altFormat: "DD-MM-YYYY",
-            altFormat: "<?=$v_altFormat?>",
-            dateFormat: "Y-m-d",
-            maxDate: "today",
-            allowInput: false,
-            disableMobile: true,
-            onClose: function(selectedDates, dateStr, instance){
-
-                let v_userID = $('#userID').val();
-                if($.docData.currentBirthday != dateStr){
-                    $.ajax({
-                        url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserInfo",
-                        type: "POST",
-                        dataType: "json",
-                        data:
-                            {
-                                method: "PUT",
-                                userID: v_userID,
-                                userData: dateStr,
-                                dataControl : 'updUserBirthday'
-                            },
-                        success: function (d) {
-                            if (d.status === true) {
-                                toastr["success"]("Birthday updated.", "Success");
-                                $.docData.currentBirthday = dateStr;
-                            }
-                            else {
-                                toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                            }
-                        },
-                        error: function () {
-                            toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                        }
-                    });
-                }
-            }
-        });
-
-        $(document).on('click','.editBirthday', function (){
-            flatCalendar.toggle();
-        });
-
-        $(document).on('click','.closeBirthday', function (){
-
-            bootbox.confirm({
-                message: "Remove birthday info?",
-                buttons: {
-                    confirm: {
-                        label: 'Yes',
-                        className: 'btn btn-success btn-sm'
-                    },
-                    cancel: {
-                        label: 'No',
-                        className: 'btn btn-danger btn-sm'
-                    }
-                },
-                callback: function (result) {
-                    if(result===true)
-                    {
-                        flatCalendar.clear();
-                        $.docData.currentBirthday = '';
-
-                        let v_userID = $('#userID').val();
-                        $.ajax({
-                            url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserInfo",
-                            type: "POST",
-                            dataType: "json",
-                            data:
-                                {
-                                    method: "PUT",
-                                    userID: v_userID,
-                                    userData: '',
-                                    dataControl : 'updUserBirthday'
-                                },
-                            success: function (d) {
-                                if (d.status === true) {
-                                    toastr["success"]("Birthday updated.", "Success");
-                                }
-                                else {
-                                    toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                                }
-                            },
-                            error: function () {
-                                toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                            }
-                        });
-                    }
-                }
-            });
-
         });
     });
 

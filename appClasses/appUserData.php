@@ -251,83 +251,12 @@ class appUserData extends appUserControl
             }
             else
             {
-                $query = "SELECT user_id,user_info_id, clnt, user_login, user_pwd, user_name, access_profile_id, access_profile_desc, user_nickname, user_birthday, gender_id, gender_desc, gender_avatar, mobile_country_id, country_phone_code, user_phone, user_avatar, user_locale_country_id,country_id, state_id, city_id, user_sess_id,user_status,created_at,created_by FROM %appDBprefix%_view_user_list WHERE user_id = ".$v_userID." AND clnt = '".$_SESSION['userClnt']."' ";
+                $query = "SELECT user_id,user_name,user_nickname,user_phone,user_login,user_pwd,temp_pwd,user_sess_id,user_status,status_desc,status_class,owner,user_info_id,access_profile_id,access_profile_desc,user_avatar,user_data_status,access_profile_data_user_only,access_profile_homepage,access_profile_status,first_access,welcome_screen,transaction_id,billing_status,created_by,created_at,ok FROM %appDBprefix%_view_user WHERE user_id = ".$v_userID."  ";
                 $v_return['main'] = $this->dbCon->dbSelect($query);
-
-                $query = "SELECT address_id,contact_id,customer_id,user_id,clnt,address_main,country_id,country_desc,country_code,country_capital,state_id,state_desc,state_code,city_id,city_desc,city_code,full_address,complement,zip_code,address_notes,address_google,lat,lng,created_at,created_by,address_status FROM %appDBprefix%_view_address_list WHERE user_id = $v_userID AND clnt = '".$_SESSION['userClnt']."'";
-                $v_return['address'] = $this->dbCon->dbSelect($query);
-
-                $query = "SELECT social_id,social_type_id,social_type_desc,social_icon,social_address,social_type_url,social_status FROM %appDBprefix%_view_social_list WHERE user_id = $v_userID AND clnt = '".$_SESSION['userClnt']."'";
-                $v_return['social'] = $this->dbCon->dbSelect($query);
-
             }
             return $v_return;
         }
     }
-
-    /* -- DEPRECATED --
-    public function appUserHasAccessProfile($data = NULL)
-    {
-        $v_reqMethod = $data['method'];
-
-       if($v_reqMethod === "POST")
-        {
-            $v_userID = !empty($data['userID']) ? trim($data['userID']) : NULL;
-            $v_accessProfileID = !empty($data['accessProfileID']) ? trim($data['accessProfileID']) : NULL;
-
-            if(is_null($v_userID) || strlen($v_userID) < 1 || is_null($v_accessProfileID))
-            {
-                $v_return['apiData']['status'] = false;
-                echo json_encode($v_return);
-            }
-            else
-            {
-                $query = "INSERT INTO %appDBprefix%_user_has_access_profile (clnt,user_id,access_profile_id) VALUES ('".$_SESSION['userClnt']."' , ".$v_userID.", '".$v_accessProfileID."' )";
-                $v_return['apiData'] = $this->dbCon->dbInsert($query);
-                $v_return['apiData']['status'] = true;
-                echo json_encode($v_return);
-            }
-        }
-       elseif ($v_reqMethod === "GET")
-        {
-            $v_userID = !empty($data['userID']) ? $data['userID'] : NULL;
-            if(is_null($v_userID) || empty($v_userID) )
-            {
-                $v_return['apiData']['status'] = false;
-                echo json_encode($v_return);
-            }
-            else
-            {
-                $query = "SELECT clnt,user_id,access_profile_id,access_profile_desc FROM %appDBprefix%_view_user_has_access_profile_list WHERE clnt = '".$_SESSION['userClnt']."' AND user_id = ".$v_userID." ORDER BY access_profile_desc";
-                $v_return['apiData'] = $this->dbCon->dbSelect($query);
-                $v_return['apiData']['status'] = true;
-                echo json_encode($v_return);
-            }
-        }
-       elseif ($v_reqMethod === "DELETE")
-        {
-            $v_userID = !empty($data['userID']) ? $data['userID'] : NULL;
-            $v_accessProfileID = !empty($data['accessProfileID']) ? $data['accessProfileID'] : NULL;
-            if(is_null($v_userID) || empty($v_userID) || is_null($v_accessProfileID) || empty($v_accessProfileID))
-            {
-                $v_return['apiData']['status'] = false;
-                echo json_encode($v_return);
-            }
-            else
-            {
-                $query = "DELETE FROM %appDBprefix%_user_has_access_profile WHERE user_id = ".$v_userID." AND access_profile_id = ".$v_accessProfileID."  AND clnt = '".$_SESSION['userClnt']."' ";
-                $v_return['apiData'] = $this->dbCon->dbDelete($query);
-                $v_return['apiData']['status'] = true;
-                echo json_encode($v_return);
-            }
-        }
-       else
-       {
-            header("HTTP/1.0 204 No Content");
-        }
-
-    }
-    */
 
     public function appNewUserInvitation($data = NULL)
     {
