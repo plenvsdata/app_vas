@@ -226,7 +226,6 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
                             <h6 class="card-subtitle"><?=$v_userInfo['access_profile_desc']?></h6>
                         </div>
                     </div>
-                    <div><hr></div>
                 </div>
             </div>
 
@@ -304,18 +303,18 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
 <div class="form-content" style="display:none;">
     <form class="form" role="form">
         <div class="form-group has-feedback curPwdDiv" id="curPwdDiv">
-            <label for="curPwd">Current Password</label>
-            <input type="password" class="form-control" id="curPwd" name="curPwd" placeholder="Current Password">
+            <label for="curPwd">Senha Atual</label>
+            <input type="password" class="form-control" id="curPwd" name="curPwd" placeholder="Senha Atual">
         </div>
         <div class="form-group has-feedback newPwdDiv" id="newPwdDiv">
-            <label for="newPwd">New Password <span class="newPwdLabel text-danger hidden"><small>(min 2 characters)</small></span></label><br>
-            <input type="password" class="form-control" id="newPwd" name="newPwd" placeholder="New Password" aria-describedby="newPwdStatus">
+            <label for="newPwd">Senha Nova<span class="newPwdLabel text-danger hidden"></span></label><br>
+            <input type="password" class="form-control" id="newPwd" name="newPwd" placeholder="Senha Nova" aria-describedby="newPwdStatus">
             <span class="glyphicon glyphicon-ok form-control-feedback"  style="margin-left: -180px!important;"></span>
             <span id="newPwdStatus" class="sr-only">(success)</span>
         </div>
         <div class="form-group has-feedback rePwdDiv" id="rePwdDiv">
-            <label for="rePwd">Confirm Password</label>
-            <input type="password" class="form-control" id="rePwd" name="rePwd" placeholder="Confirm Password" aria-describedby="rePwdStatus"><br>
+            <label for="rePwd">Confirme Senha</label>
+            <input type="password" class="form-control" id="rePwd" name="rePwd" placeholder="Confirme Senha" aria-describedby="rePwdStatus"><br>
             <span class="glyphicon glyphicon-ok form-control-feedback"  style="margin-left: -180px!important;"></span>
             <span id="rePwdStatus" class="sr-only">(success)</span>
         </div>
@@ -483,14 +482,14 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
         });
 
         $('.editUserNameTitle').popover({
-            title: '<div style="width:100%!important;">Edit Full Name<i class="fa fa-times fa-pull-right iconColor popoverClose" aria-hidden="true"></i></div>',
+            title: '<div style="width:100%!important;">Nome Completo<i class="fa fa-times fa-pull-right iconColor popoverClose" aria-hidden="true"></i></div>',
             content : function()
             {
                 $('.popover').popover('hide');
                 $('.popover').remove();
-                var v_userID = $('#userID').val();
-                var v_userName = $(".userNameData").text();
-                var v_return = '<div class="input-group">'+
+                let v_userID = $('#userID').val();
+                let v_userName = $(".userNameData").text();
+                let v_return = '<div class="input-group">'+
                     '<input class="form-control newUserName" data-user_id="'+v_userID+'" style="width: 250px!important;" placeholder="New Full Name" value="'+v_userName+'">'+
                     '<div class="input-group-btn">'+
                     '<button type="button" class="btn btn-success saveUserName" style="height: 38px!important;">'+
@@ -550,7 +549,7 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
         });
 
         $('.editNicknameTitle').popover({
-            title: '<div style="width:100%!important;">Edit Nickname <i class="fa fa-times fa-pull-right iconColor popoverClose" aria-hidden="true"></i></div>',
+            title: '<div style="width:100%!important;">Editar Conhecido por<i class="fa fa-times fa-pull-right iconColor popoverClose" aria-hidden="true"></i></div>',
             content : function()
             {
                 $('.popover').popover('hide');
@@ -558,7 +557,7 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
                 var v_userID = $('#userID').val();
                 var v_nickname = $(".nicknameData").text();
                 var v_return = '<div class="input-group">'+
-                    '<input class="form-control newNickname" data-user_id="'+v_userID+'" style="width: 250px!important;" placeholder="New Nickname" value="'+v_nickname+'">'+
+                    '<input class="form-control newNickname" data-user_id="'+v_userID+'" style="width: 250px!important;" placeholder="Novo Conhecido por" value="'+v_nickname+'">'+
                     '<div class="input-group-btn">'+
                     '<button type="button" class="btn btn-success saveNickname" style="height: 38px!important;">'+
                     '<span class="fa fa-lg fa-check"></span>'+
@@ -581,7 +580,7 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
 
             if(v_nickname.length < 3)
             {
-                toastr["warning"](v_title+" too small. Fix it and try again.", "Attention!");
+                toastr["warning"](v_title+" muito curto. Ajuste e tente novamente.", "Atenção!");
             }
             else
             {
@@ -616,20 +615,15 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
         });
 
         $('.editPhoneTitle').popover({
-            title: '<div>Edit Mobile <i class="fa fa-times fa-pull-right iconColor popoverClose" aria-hidden="true"></i></div>',
+            title: '<div>Editar Telefone<i class="fa fa-times fa-pull-right iconColor popoverClose" aria-hidden="true"></i></div>',
             content : function()
             {
                 $('.popover').popover('hide');
                 $('.popover').remove();
-                var v_userID = $('#userID').val();
-                var v_phone = $(".phoneData").text();
-                var v_return = '<div class="input-group">';
-                    v_return += '<select class="form-control custom-select userMobileCountry customBootstrapSelect" name="countryID" id="countryID" data-live-search="true" data-live-search-normalize="true" data-container="body">';
-                    v_return += $.docData.countryListPhone;
-                    v_return += '</select>';
-                    v_return += '</div>';
-                    v_return += '<div class="input-group">';
-                    v_return += '<input class="form-control newPhone" data-user_id="'+v_userID+'" placeholder="New Mobile" value="'+v_phone+'">'+
+                let v_userID = $('#userID').val();
+                let v_phone = $(".phoneData").text();
+                let v_return  = '<div class="input-group">';
+                    v_return += '<input class="form-control newPhone" data-user_id="'+v_userID+'" placeholder="Novo Telefone" value="'+v_phone+'">'+
                     '<div class="input-group-btn">'+
                     '<button type="button" class="btn btn-success savePhone" style="height: 38px!important;">'+
                     '<span class="fa fa-lg fa-check"></span>'+
@@ -647,29 +641,17 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
         });
 
         $('.editPhoneTitle').on("shown.bs.popover",function (){
-            let v_countryID_default = $(this).attr('data-mobile_country_id');
-            $('.popover').find('#countryID').val(v_countryID_default);
-            $('.userMobileCountry').selectpicker();
-            let v_phoneMask = $('.popover').find('#countryID option:selected').attr('data-phone_mask');
-            $(".newPhone").mask(v_phoneMask);
-        });
-
-        $(document).on('change','#countryID',function() {
-            $(".newPhone").val("");
-            let v_phoneMask = $('.popover').find('#countryID option:selected').attr('data-phone_mask');
-            $(".newPhone").mask(v_phoneMask);
+            $(".newPhone").mask('(00) 00000-0000');
         });
 
         $(document).on('click','.savePhone',function () {
             let v_userID = $('#userID').val();
             let v_phone = $.trim($('.newPhone').val());
             let v_title = $('.phoneTitle').text();
-            let v_countryID = $("#countryID").val();
-            let v_countryCode = $('.popover').find('#countryID option:selected').attr('data-area_code');
 
             if(v_phone.length < 3)
             {
-                toastr["warning"](v_title+" too small. Fix it and try again.", "Attention!");
+                toastr["warning"](v_title+" muito curto. Corrija e tente novamente.", "Atenção!");
             }
             else
             {
@@ -682,25 +664,22 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
                             method: "PUT",
                             userID: v_userID,
                             userData: v_phone,
-                            mobileCountryID:  v_countryID,
                             dataControl : 'updUserPhone',
                         },
                     success: function (d) {
                         if (d.status === true) {
                             $('.popover').popover('hide');
-                            toastr["success"](v_title+" " + v_phone + " updated.", "Success");
+                            toastr["success"](v_title+" " + v_phone + " atualizado.", "Sucesso");
                             $('.phoneData').text(v_phone);
-                            $('.phoneCode').text(v_countryCode+' ');
-                            $('.editPhoneTitle').attr('data-mobile_country_id',v_countryID);
                             $('.editPhoneTitle').attr('data-title_id',v_phone);
                         }
                         else {
-                            toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
+                            toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
                             $('.popover').popover('hide');
                         }
                     },
                     error: function () {
-                        toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
+                        toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
                         $('.popover').popover('hide');
                     }
                 });
@@ -736,11 +715,11 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
             var v_userName = $('.userNameData').text();
             var v_userLogin = $('#userLogin').val();
             var modal = bootbox.dialog({
-                title: "Change Password",
+                title: "Editar Senha",
                 message: $(".form-content").html(),
                 buttons: [
                     {
-                        label: "Save",
+                        label: "Salvar",
                         className: "btn btn-sm btn-success pull-left",
                         callback: function()
                         {
@@ -759,18 +738,18 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
                             if(!v_curPwd.match(lowerCaseLetters) || !v_curPwd.match(upperCaseLetters) || !v_curPwd.match(numbers) || !v_curPwd.match(specialChars) || v_curPwd.length<8) {
                                 v_erroCurPwd = true;
                                 $(".curPwdDiv").addClass('has-danger');
-                                toastr["warning"]("Current Password must contain at least one number and one uppercase and one lowercase letter and one special char, and at least 8 or more characters.", "Attention!");
+                                toastr["warning"]("A senha atual deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número, um char. especial e 8 ou mais caracteres.", "Atenção!");
                             }else{
                                 $(".curPwdDiv").removeClass('has-danger');
                             }
 
                             if(v_newPwd != v_rePwd)
                             {
-                                toastr["warning"]("New Password and Confirm Password must be the same.", "Attention!");
+                                toastr["warning"]("A Nova Senha and Confirme a Senha devem ser iguais.", "Atenção!");
                                 $(".newPwdDiv").addClass('has-danger');
                                 v_erroNewPwd = true;
                             }else if(!v_newPwd.match(lowerCaseLetters) || !v_newPwd.match(upperCaseLetters) || !v_newPwd.match(numbers) || !v_newPwd.match(specialChars) || v_newPwd.length<8){
-                                toastr["warning"]("New Password must contain at least one number and one uppercase and one lowercase letter and one special char, and at least 8 or more characters.", "Attention!");
+                                toastr["warning"]("A senha atual deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número, um char. especial e 8 ou mais caracteres.", "Atenção!");
                                 $(".newPwdDiv").addClass('has-danger');
                                 v_erroNewPwd = true;
                             }else{
@@ -797,22 +776,18 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
                                 {
                                     if(d.updateStatus===true)
                                     {
-                                        toastr["success"]("Password updated.", "Success!");
+                                        toastr["success"]("Senha atualizada.", "Sucesso!");
                                         modal.modal("hide");
                                     }else{
                                         if(d.msg == 'erro_pwd')
                                         {
                                             $(".curPwdDiv").addClass('has-danger');
-                                            toastr["warning"]("Wrong Current Password.", "Attention!");
+                                            toastr["warning"]("Senha atual incorreta.", "Atenção!");
                                         }else if(d.msg == 'erro_format')
                                         {
-                                            toastr["warning"]("New Password must contain at least one number and one uppercase and one lowercase letter and one special char, and at least 8 or more characters.", "Attention!");
+                                            toastr["warning"]("A Nova Senha atual deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número, um char. especial e 8 ou mais caracteres.", "Atenção!");
                                             $(".newPwdDiv").addClass('has-danger');
                                         }
-
-                                        //modal.find("#curPwd").val('');
-                                        //modal.find("#newPwd").val('');
-                                        //modal.find("#rePwd").val('');
                                     }
                                 },
                                 complete:function() {
@@ -823,7 +798,7 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
                         }
                     },
                     {
-                        label: "Close",
+                        label: "Fechar",
                         className: "btn btn-sm btn-danger pull-left",
                         callback: function() {
                             $(".curPwdDiv").removeClass('has-danger');
@@ -889,7 +864,7 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
 
                             if(v_result.status === true)
                             {
-                                var pathAvatar = '<?=$GLOBALS['g_appRoot']."/__appFiles/".$_SESSION['userClnt']."/_userAvatar/"?>'+v_result.file;
+                                var pathAvatar = '<?=$GLOBALS['g_appRoot']."/__appFiles/_userAvatar/"?>'+v_result.file;
                                 $("#avatarImg").css('background-image',"url("+pathAvatar+")");
                                 $("#userAvatar").val(v_result.file);
                                 $('#appAddUserPhoto').modal('hide');

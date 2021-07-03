@@ -186,11 +186,7 @@ class appUserData extends appUserControl
             }else
             {
                 $query = "UPDATE %appDBprefix%_user_info SET ".$v_userField." = '".addslashes($v_userData)."' ";
-                if($v_mobileCountryID){
-                    $query.= " ,mobile_country_id = ".$v_mobileCountryID;
-                }
-                $query.= " WHERE clnt = '".$_SESSION['userClnt']."' AND user_id = ".$v_userID;
-
+                $query.= " WHERE user_id = ".$v_userID;
                 $v_return = $this->dbCon->dbUpdate($query);
                 $v_return['status'] = true;
                 return $v_return;
