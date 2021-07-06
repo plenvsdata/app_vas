@@ -59,10 +59,10 @@ $v_apiData = new appUserControl();
                         ?>
                         <li><a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
                                         class="fa fa-lg fa-sliders"></i><span
-                                        class="hide-menu">System Settings</span></a>
+                                        class="hide-menu">Configurações</span></a>
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="<?=$GLOBALS['g_appRoot']?>/System/Products">Products</a></li>
-                                <li><a href="<?=$GLOBALS['g_appRoot']?>/System/Users">Users</a></li>
+                                <li><a href="<?=$GLOBALS['g_appRoot']?>/System/Users">Usuários</a></li>
                                 <li><a href="<?=$GLOBALS['g_appRoot']?>/System/LovManagement">LoV Management</a></li>
                                 <li><a class="has-arrow" href="#" aria-expanded="false">External Data</a>
                                     <ul aria-expanded="false" class="collapse">

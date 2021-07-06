@@ -166,8 +166,6 @@
         };
         console.log("all loaded!");
 
-        let v_userLoc = $.globalData.getUserLocation();
-
         if(window.location.pathname != '/SignIn' && window.location.pathname != '/SignUp'){
             setInterval($.globalData.checkActivity,300000);
         }

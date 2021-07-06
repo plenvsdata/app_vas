@@ -185,7 +185,7 @@ $v_addressMap = "https://www.google.com/maps/embed/v1/place?key=AIzaSyDQn5-gHSym
     }
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<link rel="stylesheet" type="text/css" href="<?=$GLOBALS['g_appRoot']?>/js/Plugins/flatpickr/css/ocs_plenvs_flatpickr_theme.css">
+<link rel="stylesheet" type="text/css" href="<?=$GLOBALS['g_appRoot']?>/js/Plugins/flatpickr/css/ocs_vas_flatpickr_theme.css">
 <div>
     <form action="appFormData">
         <input type="hidden" id="userID" value="<?=$v_userID?>">
@@ -232,8 +232,8 @@ $v_addressMap = "https://www.google.com/maps/embed/v1/place?key=AIzaSyDQn5-gHSym
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button id="userPhotoCancel" type="button" class="btn btn-sm btn-danger waves-effect" data-dismiss="modal">Cancel</button>
-                                                        <button id="userPhotoSave" type="button" class="btn btn-sm btn-success waves-effect waves-light">Add File</button>
+                                                        <button id="userPhotoCancel" type="button" class="btn btn-sm btn-danger waves-effect" data-dismiss="modal">Cancelar</button>
+                                                        <button id="userPhotoSave" type="button" class="btn btn-sm btn-success waves-effect waves-light">Adicionar Arquivo</button>
                                                     </div>
                                                 </form>
                                             </div>

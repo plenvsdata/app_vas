@@ -61,7 +61,7 @@ $g_mapboxUrl = 'https://api.mapbox.com/geocoding/v5/mapbox.places/{{checkAddress
 $g_mapboxForwardUrl = 'https://api.mapbox.com/geocoding/v5/mapbox.places/{{checkAddress}}.json?access_token={{mapboxToken}}';
 
 // Default Messages
-$g_dropZoneDefaultMessage = "Drop file here to upload";
+$g_dropZoneDefaultMessage = "Solte os arquivos aqui para enviar";
 
 // Template Folder
 $g_appTemplatePath = $GLOBALS['g_appRoot'].'/appSystemTemplate/';
@@ -72,7 +72,7 @@ $g_useSMTP = true; //true: real email; false: Use MailHog http://plenvs.test:802
 $g_emailHostSettings = array('host' => 'mail.goabh.com', 'username' => 'plenvs@goabh.com', 'password' => 'E4f4n_k6','secure' => 'TLS', 'smtpAuth' => true, 'port' => 587);
 $g_emailFrom = array('address' => 'plenvs@goabh.com', 'name' => 'Plenvs Data System');
 $g_emailReplyTo = array('address' => 'plenvs@goabh.com', 'name' => 'Plenvs Data System');
-$g_emailSubject = 'Welcome to the Plenvs Data System!';
+$g_emailSubject = 'Bem vindo ao V A Systems!';
 $g_alternateTextBody = '';
 
 // IPStack

@@ -162,11 +162,11 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
 <link rel="stylesheet" type="text/css" href="<?=$GLOBALS['g_appRoot']?>/js/Plugins/hopscotch-master/css/hopscotch.css">
 <script type="text/javascript" src="<?=$GLOBALS['g_appRoot']?>/js/Plugins/hopscotch-master/js/hopscotch.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<link rel="stylesheet" type="text/css" href="<?=$GLOBALS['g_appRoot']?>/js/Plugins/flatpickr/css/ocs_plenvs_flatpickr_theme.css">
+<link rel="stylesheet" type="text/css" href="<?=$GLOBALS['g_appRoot']?>/js/Plugins/flatpickr/css/ocs_vas_flatpickr_theme.css">
 <div>
     <div class="row page-titles basicContent">
         <div class="col-md-5 align-self-center">
-            <h3 class="text-themecolor userDetailTitle"><? if($_SESSION['firstAccess']==1){echo 'Welcome '; }?><?=$v_userInfo['user_name']?></h3>
+            <h3 class="text-themecolor userDetailTitle"><? if($_SESSION['firstAccess']==1){echo 'Bem vindo(a) '; }?><?=$v_userInfo['user_name']?></h3>
         </div>
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
@@ -191,7 +191,7 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h4 class="modal-title">Add New Photo</h4>
+                                            <h4 class="modal-title">Adicionar Foto</h4>
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                                         </div>
                                         <div class="modal-body">
@@ -209,8 +209,8 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button id="userPhotoCancel" type="button" class="btn btn-sm btn-danger waves-effect" data-dismiss="modal">Cancel</button>
-                                                        <button id="userPhotoSave" type="button" class="btn btn-sm btn-success waves-effect waves-light">Add File</button>
+                                                        <button id="userPhotoCancel" type="button" class="btn btn-sm btn-danger waves-effect" data-dismiss="modal">Cancelar</button>
+                                                        <button id="userPhotoSave" type="button" class="btn btn-sm btn-success waves-effect waves-light">Adicionar arquivo</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -490,7 +490,7 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
                 let v_userID = $('#userID').val();
                 let v_userName = $(".userNameData").text();
                 let v_return = '<div class="input-group">'+
-                    '<input class="form-control newUserName" data-user_id="'+v_userID+'" style="width: 250px!important;" placeholder="New Full Name" value="'+v_userName+'">'+
+                    '<input class="form-control newUserName" data-user_id="'+v_userID+'" style="width: 250px!important;" placeholder="Novo Nome Completo" value="'+v_userName+'">'+
                     '<div class="input-group-btn">'+
                     '<button type="button" class="btn btn-success saveUserName" style="height: 38px!important;">'+
                     '<span class="fa fa-lg fa-check"></span>'+
@@ -513,7 +513,7 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
 
             if(v_userName.length < 3)
             {
-                toastr["warning"](v_title+" too small. Fix it and try again.", "Attention!");
+                toastr["warning"](v_title+" muito curto. Ajuste e tente novamente.", "Atenção!");
             }
             else
             {
@@ -530,18 +530,20 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
                         },
                     success: function (d) {
                         if (d.status === true) {
-                            toastr["success"](v_title+" " + v_userName + " updated.", "Success");
+                            toastr["success"](v_title+" " + v_userName + " atualizado.", "Sucesso");
                             $('.userNameData').text(v_userName);
                             $('.txtName').text(v_userName);
+                            $(".userDetailTitle").html(v_userName);
                             $('.popover').popover('hide');
+
                         }
                         else {
-                            toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
+                            toastr["error"]("Ocorreu um erro. Tente novamente.", "Erro!");
                             $('.popover').popover('hide');
                         }
                     },
                     error: function () {
-                        toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
+                        toastr["error"]("Ocorreu um erro. Tente novamente.", "Erro!");
                         $('.popover').popover('hide');
                     }
                 });
@@ -597,17 +599,17 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
                         },
                     success: function (d) {
                         if (d.status === true) {
-                            toastr["success"](v_title+" " + v_nickname + " updated.", "Success");
+                            toastr["success"](v_title+" " + v_nickname + " atualizado.", "Sucesso");
                             $('.nicknameData').text(v_nickname);
                             $('.popover').popover('hide');
                         }
                         else {
-                            toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
+                            toastr["error"]("Ocorreu um erro. Tente novamente.", "Erro!");
                             $('.popover').popover('hide');
                         }
                     },
                     error: function () {
-                        toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
+                        toastr["error"]("Ocorreu um erro. Tente novamente.", "Erro!");
                         $('.popover').popover('hide');
                     }
                 });
@@ -837,14 +839,14 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
                             {
                                 if(file.size > (1024 * 1024 * 10))//10MB
                                 {
-                                    toastr["warning"]("File is too big!<br>Max 10mb.", "Ooops!");
+                                    toastr["warning"]("File is too big!<br>Max 10mb.", "Atenção!");
                                 }else if(this.files.length > $.docData.maxFiles)
                                 {
-                                    toastr["warning"]("Only one photo allowed.", "Ooops!");
+                                    toastr["warning"]("Só é permitido enviar uma foto.", "Atenção!");
                                 }
                                 else
                                 {
-                                    toastr["warning"]("File type not allowed.", "Ooops!");
+                                    toastr["warning"]("Tipo de arquivo não permitido.", "Atenção!");
                                 }
                                 this.removeFile(file);
                             }
@@ -869,11 +871,11 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
                                 $("#userAvatar").val(v_result.file);
                                 $('#appAddUserPhoto').modal('hide');
                                 $.docData.tourAvatar = 1;
-                                toastr["success"]("Avatar updated.", "Success");
+                                toastr["success"]("Avatar atualizado.", "Sucesso");
                             }
                             else
                             {
-                                toastr["warning"]("Upload not possible. Please try again.", "Ooops!");
+                                toastr["warning"]("Erro no envio do arquivo. Tente novamente.", "Atenção!");
                             }
                         });
 
@@ -882,7 +884,7 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
                             if (userPhotoDropzone.files.length>0) {
                                 userPhotoDropzone.processQueue();
                             } else {
-                                toastr["warning"]("Photo Required", "Ooops!");
+                                toastr["warning"]("Foto obrigatória!", "Atenção!");
                             }
                         });
                     }
