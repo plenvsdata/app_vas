@@ -158,14 +158,14 @@ elseif ($v_dataSec == "loginCheck") {
 
                 if ($_SESSION['firstAccess'] == 0) {
                     if($v_userData['access_profile_homepage']){
-                        header('Location: ' . $GLOBALS['g_appRoot'] . '/MyProfile');
+                        header('Location: ' . $GLOBALS['g_appRoot'] . '/MeuPerfil');
                         //header('Location: ' . $GLOBALS['g_appRoot'] .'/'. $v_userData['access_profile_homepage']);
                     }else{
                         header('Location: ' . $GLOBALS['g_appRoot'] . '/Welcome');
                     }
 
                 } else {
-                    header('Location: ' . $GLOBALS['g_appRoot'] . '/MyProfile');
+                    header('Location: ' . $GLOBALS['g_appRoot'] . '/MeuPerfil');
                 }
             } else {
                 $rememberMe = $dbHome->userRememberMe($v_rem, $v_lgn);

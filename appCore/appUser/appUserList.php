@@ -7,28 +7,12 @@
  */
 use app\System\Lists\appDataList;
 use app\System\Combo\appCombo;
-use app\System\Lov\appGetValue;
-//use app\SystemPaypal\payPalExpress;
+//use app\System\Lov\appGetValue;
+
 $v_comboData = new appCombo();
-$v_comboGender = json_decode($v_comboData->comboSystemGender(),true);
+
 $v_comboTitle = $v_comboData->comboSystemTitle();
 $v_comboPosition = json_decode($v_comboData->comboPosition(),true);
-
-//$v_payPalData = new payPalExpress();
-//$v_payPal = $v_payPalData->createPlan();
-
-
-//Get Plan price
-$v_fieldData['table'] = "view_client_instance";
-$v_fieldData['field'] = "plan_price";
-$v_fieldData['fieldID'] = $_SESSION['userClnt'];
-$v_fieldData['fieldName'] = "clnt";
-//$v_planPriceData = new appGetValue();
-//$v_planPriceDataInfo = $v_planPriceData->appGetValueData($v_fieldData);
-//$v_plan_price = $v_planPriceDataInfo['0']['plan_price'];
-
-$v_locale = $_SESSION['userLocale'];
-$v_localeJS = str_replace('_','-',$_SESSION['userLocale']);
 
 $v_sectionIDCheck = true;
 $_dataSectionCheck = 'true';

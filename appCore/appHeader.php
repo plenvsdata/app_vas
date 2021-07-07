@@ -7,7 +7,7 @@
  */
 
 if(isset($_SESSION['userAvatar']) && $_SESSION['userAvatar'] != 'default_avatar.png') {
-    $v_avatarInfo = $GLOBALS['g_appRoot'].'/__appFiles/'.$_SESSION['userClnt'].'/_userAvatar/'.$_SESSION['userAvatar'];
+    $v_avatarInfo = $GLOBALS['g_appRoot'].'/__appFiles/'.$_SESSION['userID'].'/_userAvatar/'.$_SESSION['userAvatar'];
 }
 else {
     $v_avatarInfo = $GLOBALS['g_appRoot'].'/appImages/defaultImages/default_avatar.png';
@@ -95,12 +95,12 @@ else {
                                 <div class="u-text">
                                     <h4><?=$_SESSION['userName']?></h4>
                                     <p class="text-muted"><?=$_SESSION['userLogin']?></p>
-                                    <a href="<?=$GLOBALS['g_appRoot']?>/MyProfile" class="btn btn-rounded btn-danger btn-sm">View Profile</a></div>
+                                    <!---<a href="<?=$GLOBALS['g_appRoot']?>/MeuPerfil" class="btn btn-rounded btn-danger btn-sm"> Meu Perfil</a></div>-->
 
                             </div>
                         </li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="<?=$GLOBALS['g_appRoot']?>/MyProfile"><i class="ti-user"></i> My Profile</a></li>
+                        <li><a href="<?=$GLOBALS['g_appRoot']?>/MeuPerfil"><i class="ti-user"></i> Meu Perfil</a></li>
                         <li role="separator" class="divider"></li>
                         <!--
 
@@ -110,7 +110,7 @@ else {
                         <li><a href="#"><i class="ti-settings"></i> Account Setting</a></li>
                         <li role="separator" class="divider"></li>
                         -->
-                        <li><a href="<?=$GLOBALS['g_appRoot']?>/appAccessAPI/appQuit"><i class="fa fa-power-off"></i> Logout</a></li>
+                        <li><a href="<?=$GLOBALS['g_appRoot']?>/appAccessAPI/appQuit"><i class="fa fa-power-off"></i> Sair</a></li>
                     </ul>
                 </div>
             </li>

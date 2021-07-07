@@ -19,8 +19,8 @@ $v_altFormat ='d/m/Y';
 
 
 if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_avatar.png')){
-    $v_avatarFolder = $GLOBALS['g_appRoot']."/__appFiles/".$_SESSION['userClnt']."/_userAvatar/".$v_userInfo['user_avatar'];
-    if(!file_exists(__DIR__."/../../__appFiles/".$_SESSION['userClnt']."/_userAvatar/".$v_userInfo['user_avatar']))
+    $v_avatarFolder = $GLOBALS['g_appRoot']."/__appFiles/".$_SESSION['userID']."/_userAvatar/".$v_userInfo['user_avatar'];
+    if(!file_exists(__DIR__."/../../__appFiles/".$_SESSION['userID']."/_userAvatar/".$v_userInfo['user_avatar']))
     {
         $v_avatarFolder = $GLOBALS['g_appRoot']."/appImages/defaultImages/default_avatar.png";
     }
@@ -47,26 +47,6 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
     .hidden
     {
         display: none!important;
-    }
-    .marketBtn
-    {
-        margin: 2px!important;
-    }
-    .btn-organizer
-    {
-        border: 1px solid #D9D9D9!important;
-        height: 38px!important;
-        background-color: #ffffff;
-    }
-    .ocsStar
-    {
-        color: #FFE821;
-    }
-    .ocsPhoneStar,.starAddress
-    {
-        color: #FFE821;
-        background-color: !important;
-        border: none !important;
     }
 
     .dropdown-menu .selected {
@@ -171,7 +151,7 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <? if($_SESSION['firstAccess']==1){?>
-                    <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/MyProfile">MyProfile</a></li>
+                    <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/MeuPerfil">Meu Perfil</a></li>
                 <? }else{?>
                     <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/Welcome">Home</a></li>
                     <li class="breadcrumb-item active">Meu Perfil</li>
@@ -482,7 +462,7 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
         });
 
         $('.editUserNameTitle').popover({
-            title: '<div style="width:100%!important;">Nome Completo<i class="fa fa-times fa-pull-right iconColor popoverClose" aria-hidden="true"></i></div>',
+            title: '<div style="width:100%!important;">Editar Nome Completo<i class="fa fa-times fa-pull-right iconColor popoverClose" aria-hidden="true"></i></div>',
             content : function()
             {
                 $('.popover').popover('hide');
@@ -713,10 +693,10 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
 
         $(document).on('click','.editPassword',function () {
             $('.popover').popover('hide');
-            var v_userID = $('#userID').val();
-            var v_userName = $('.userNameData').text();
-            var v_userLogin = $('#userLogin').val();
-            var modal = bootbox.dialog({
+            let v_userID = $('#userID').val();
+            let v_userName = $('.userNameData').text();
+            let v_userLogin = $('#userLogin').val();
+            let modal = bootbox.dialog({
                 title: "Editar Senha",
                 message: $(".form-content").html(),
                 buttons: [
@@ -725,18 +705,17 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
                         className: "btn btn-sm btn-success pull-left",
                         callback: function()
                         {
-
-                            var form = modal.find(".form");
-                            var v_curPwd = modal.find("#curPwd").val();
-                            var v_newPwd = modal.find("#newPwd").val();
-                            var v_rePwd = modal.find("#rePwd").val();
-                            var v_erroCurPwd = false;
-                            var v_erroNewPwd = false;
+                            let form = modal.find(".form");
+                            let v_curPwd = modal.find("#curPwd").val();
+                            let v_newPwd = modal.find("#newPwd").val();
+                            let v_rePwd = modal.find("#rePwd").val();
+                            let v_erroCurPwd = false;
+                            let v_erroNewPwd = false;
                             // Validate lowercase letters
-                            var lowerCaseLetters = /[a-z]/g;
-                            var upperCaseLetters = /[A-Z]/g;
-                            var numbers = /[0-9]/g;
-                            var specialChars = /[!@#$%&*?]/g;
+                            let lowerCaseLetters = /[a-z]/g;
+                            let upperCaseLetters = /[A-Z]/g;
+                            let numbers = /[0-9]/g;
+                            let specialChars = /[!@#$%&*?]/g;
                             if(!v_curPwd.match(lowerCaseLetters) || !v_curPwd.match(upperCaseLetters) || !v_curPwd.match(numbers) || !v_curPwd.match(specialChars) || v_curPwd.length<8) {
                                 v_erroCurPwd = true;
                                 $(".curPwdDiv").addClass('has-danger');
@@ -762,7 +741,7 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
                             {
                                 return false;
                             }
-                           // alert('enviar ajax');return false;
+                            //alert('enviar ajax');return false;
                             $.ajax( {
                                 url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserChangePassword",
                                 method: "POST",
@@ -820,6 +799,8 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
             modal.modal("show");
         });
 
+        let userPhotoDropzone;
+
         function dropzonePhotoCreate(){
             return new Dropzone("#userPhotoDropzone",
                 {
@@ -839,7 +820,7 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
                             {
                                 if(file.size > (1024 * 1024 * 10))//10MB
                                 {
-                                    toastr["warning"]("File is too big!<br>Max 10mb.", "Atenção!");
+                                    toastr["warning"]("Arquivo muito grande!<br>Max 10mb.", "Atenção!");
                                 }else if(this.files.length > $.docData.maxFiles)
                                 {
                                     toastr["warning"]("Só é permitido enviar uma foto.", "Atenção!");
@@ -866,8 +847,10 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
 
                             if(v_result.status === true)
                             {
-                                var pathAvatar = '<?=$GLOBALS['g_appRoot']."/__appFiles/_userAvatar/"?>'+v_result.file;
+                                let pathAvatar = '<?=$GLOBALS['g_appRoot']."/__appFiles/".$v_userID."/_userAvatar/"?>'+v_result.file;
                                 $("#avatarImg").css('background-image',"url("+pathAvatar+")");
+                                $("#profilePic").css('background-image',"url("+pathAvatar+")");
+                                $("#profilePic2").css('background-image',"url("+pathAvatar+")");
                                 $("#userAvatar").val(v_result.file);
                                 $('#appAddUserPhoto').modal('hide');
                                 $.docData.tourAvatar = 1;
@@ -890,8 +873,6 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
                     }
                 });
         }
-
-        var userPhotoDropzone;
 
         $('#appAddUserPhoto').on('show.bs.modal', function (e) {
             userPhotoDropzone = dropzonePhotoCreate();

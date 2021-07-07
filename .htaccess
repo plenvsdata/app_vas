@@ -4,7 +4,7 @@ RewriteRule    ^RecoverMyPassword?$    appCore/appRecover.php?checkIndexAccess=W
 RewriteRule    ^RecoverMyPassword/([A-Za-z0-9-]+)/ConfirmationCode?$        appCore/appRecoverCheckCode.php?tokenData=$1  [NC,L]
 RewriteRule    ^SignUp?$    appSignUp/appVasDataSignUp.php?checkIndexAccess=SignUpVasDataSystem$1    [NC,L]
 RewriteRule    ^Welcome?$    appCore/appMainView.php?pageData=Default$1    [NC,L]    # Handle requests for "adminPanel"
-RewriteRule    ^MyProfile?$    appCore/appMainCRM.php?pageData=$1&sec=MyProfile   [NC,L]    # Handle requests for "adminPanel"
+RewriteRule    ^MeuPerfil?$    appCore/appMainCRM.php?pageData=$1&sec=MeuPerfil   [NC,L]    # Handle requests for "adminPanel"
 
 RewriteRule    ^CRM/([A-Za-z0-9-]+)/?$                      appCore/appMainCRM.php?pageData=$1    [NC,L]    # Handle requests for "adminPanel"
 RewriteRule    ^CRM/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/?$      appCore/appMainCRM.php?pageData=$1&dataValue=$2  [NC,L]

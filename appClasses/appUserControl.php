@@ -198,7 +198,7 @@ class appUserControl
 
         if($v_valida_cur_pwd && $v_valida_new_pwd)
         {
-            $query = "SELECT user_pwd FROM %appDBprefix%_user_access WHERE user_id = ".$data['userID']." AND clnt = '".$_SESSION['userClnt']."' ";
+            $query = "SELECT user_pwd FROM %appDBprefix%_user_access WHERE user_id = ".$data['userID']."  ";
             $v_resultUserPwd = $this->dbCon->dbSelect($query);
             $v_userPwd = $v_resultUserPwd['rsData'][0]['user_pwd'];
             $v_curPwd = hash('sha256',$data['curPwd']);
@@ -206,7 +206,7 @@ class appUserControl
 
             if($v_userPwd == $v_curPwd)
             {
-                $query = "UPDATE %appDBprefix%_user_access SET  user_pwd = '".$v_newPwd."',temp_pwd = '0' WHERE user_id='".$data['userID']."' AND clnt = '".$_SESSION['userClnt']."'  ";
+                $query = "UPDATE %appDBprefix%_user_access SET  user_pwd = '".$v_newPwd."',temp_pwd = '0' WHERE user_id='".$data['userID']."'  ";
                 $v_return =  $this->dbCon->dbUpdate($query);
             }else{
                 $v_return['msg'] = 'erro_pwd';
