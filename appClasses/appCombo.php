@@ -33,6 +33,21 @@ class appCombo
         }
     }
 
+    public function comboCustomer($type=NULL)
+    {
+        $query = "SELECT customer_id,customer_nome_fantasia,customer_razao_social FROM %appDBprefix%_customer_data WHERE 1=1 ORDER BY customer_name ASC";
+        $v_return = $this->dbCon->dbSelect($query);
+
+        if(is_null($type))
+        {
+            return json_encode($v_return);
+        }
+        else
+        {
+            return $v_return;
+        }
+    }
+
 
     /*
         public function comboManufacturer($type = NULL,$alwaysDisplay = 0)

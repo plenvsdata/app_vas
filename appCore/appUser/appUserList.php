@@ -11,8 +11,8 @@ use app\System\Combo\appCombo;
 
 $v_comboData = new appCombo();
 
-$v_comboTitle = $v_comboData->comboSystemTitle();
-$v_comboPosition = json_decode($v_comboData->comboPosition(),true);
+//$v_comboTitle = $v_comboData->comboSystemTitle();
+//$v_comboPosition = json_decode($v_comboData->comboPosition(),true);
 
 $v_sectionIDCheck = true;
 $_dataSectionCheck = 'true';
@@ -93,7 +93,7 @@ if(isset($_SESSION['sectionIDCheck'])){
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <div style="position:absolute;"><button type="button" class="btn btn-sm waves-effect waves-light btn-success" data-toggle="modal" data-target="#buyUserModal">New Users</button><div id="paypal"></div></div>
+                    <div style="position:absolute;"><button type="button" class="btn btn-sm waves-effect waves-light btn-success" data-toggle="modal" data-target="#userModal">Adicionar Usuário</button><div id="paypal"></div></div>
                     <div class="table-responsive">
                         <table id="appDatatable" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                             <thead>
@@ -120,28 +120,51 @@ if(isset($_SESSION['sectionIDCheck'])){
 <!-- ============================================================== -->
 <!-- Start Modal Buy Users  -->
 <!-- ============================================================== -->
-<div class="modal fade" id="buyUserModal" tabindex="-1" role="dialog" aria-labelledby="buyUserModalLabel">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-centered-60" >
+<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-centered-80" >
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">New Users<span style="font-size: x-small;">(Max. 2 users per operator)</span></h4>
+                <h4 class="modal-title">Adicionar Usuário</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body">
-                <!--<input type="hidden" id="modalProductID" name="modalProductID" value="">-->
-
                 <div class="row">
-                    <div  class="col-md-4"></div>
-                    <div class="col-md-4 col-md-offset-4">
-                        <div class="form-group has-feedback divBuyUserQtd">
-                            <label for="quotedUnits" class="control-label">Units: <span id="buyUserQtdHelp" class="help-block text-danger"><small>(min 1 user)</small></span></label>
-                            <input type="text" class="form-control newItemAdd vertical-spin form-control" maxlength="5" id="buyUserQtd" name="buyUserQtd" data-bts-button-down-class="btn btn-secondary btn-outline" data-bts-button-up-class="btn btn-secondary btn-outline" aria-describedby="buyUserQtdHelp" value="1">
+                    <div class="col-md-6">
+                        <div class="form-group has-feedback divContactName">
+                            <label for="contactName" class="control-label">Nome completo:</label>
+                            <input type="text" class="form-control contactName" id="contactName" name="contactName" aria-describedby="contactNameHelp">
+                            <span id="contactNameHelp" class="help-block">Min 3 characters</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group has-feedback divUserNickname">
+                            <label for="userNickname" class="control-label">Conhecido por:</label>
+                            <input type="text" class="form-control userNickname" id="userNickname" name="userNickname" aria-describedby="userNicknameHelp">
+                            <span id="userNicknameHelp" class="help-block">Min 3 caracteres</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group has-feedback divUserEmail">
+                            <label for="userEmail" class="control-label">Email:</label>
+                            <input type="text" class="form-control userEmail" id="userEmail" name="userEmail" aria-describedby="userEmailHelp">
+                            <span id="userEmailHelp" class="help-block">Min 3 caracteres</span>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group has-feedback divUserPhone">
+                            <label for="userPhone" class="control-label">Telefone:</label>
+                            <input type="text" class="form-control userPhone" id="userPhone" name="userPhone" aria-describedby="userPhoneHelp">
+                            <span id="userPhoneHelp" class="help-block">Min 3 characters</span>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-danger waves-effect" data-dismiss="modal" id="btnCancelBuy">Cancel</button>
-                    <button type="button" class="btn btn-sm btn-success waves-effect waves-light" id="btnSaveBuy">Confirm</button>
+                    <button type="button" class="btn btn-sm btn-danger waves-effect" data-dismiss="modal" id="btnCancelBuy">Cancelar</button>
+                    <button type="button" class="btn btn-sm btn-success waves-effect waves-light" id="btnSaveBuy">Salvar</button>
                 </div>
             </div>
         </div>
@@ -151,103 +174,11 @@ if(isset($_SESSION['sectionIDCheck'])){
 <!-- End Modal Buy Users  -->
 <!-- ============================================================== -->
 <script src="../../assets/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js" type="text/javascript"></script>
-<!-- Load the required checkout.js script
-<script src="https://www.paypalobjects.com/api/checkout.js" data-version-4></script>
 
-<!-- Load the required Braintree components. -->
-<!--<script src="https://js.braintreegateway.com/web/3.33.0/js/client.min.js"></script>
-<script src="https://js.braintreegateway.com/web/3.33.0/js/paypal-checkout.min.js"></script>
-
-
-<script>
-    paypal.Button.render({
-        braintree: braintree,
-        // Other configuration
-    }, '#paypal');
-</script>
--->
 <script type="text/javascript">
 
-    function addUserData(userID,profileID,userName,userEmail)
-    {
-        var v_chk = false;
-        var v_userName = userName.trim();
-
-        if(v_userName.length < 2) {
-            $('#userAccessNameData').removeClass('has-success').addClass('has-danger');
-            $('.userAccessNameFeedback').removeClass('hidden');
-            $('#userAccessName').val(v_userName);
-            v_chk = true;
-        }
-        else {
-            $('#userAccessNameData').removeClass('has-danger').addClass('has-success');
-            $('.userAccessNameFeedback').addClass('hidden');
-            $('#userAccessName').val(v_userName);
-            v_chk = true;
-        }
-
-        if(!validator.isEmail(userEmail)) {
-            $('#userAccessEmailData').removeClass('has-success').addClass('has-danger');
-            $('.userAccessEmailFeedback').removeClass('hidden');
-            v_chk = false;
-        }
-        else {
-            $('#userAccessEmailData').removeClass('has-danger').addClass('has-success');
-            $('.userAccessEmailFeedback').addClass('hidden');
-            v_chk = true;
-        }
-
-        if(!v_chk) {
-            toastr["warning"]("Correct all informations and try again.", "Attention!");
-            return v_chk;
-        }
-        else {
-            //alert(userID);
-            $.when(
-                $.ajax({
-                    url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserInvitation",
-                    type: "POST",
-                    dataType: "json",
-                    data:
-                        {
-                            appFormData:
-                                {
-                                    type:"json",
-                                    userID:userID,
-                                    userProfile:profileID,
-                                    userName:userName,
-                                    userEmail:userEmail,
-                                    method:"POST"
-                                }
-                        }
-                    })
-            ).then(function(data,textStatus,jqXHR) {
-                if(textStatus === 'success') {
-                    if(data.inviteSent === false) {
-                        if(data.duplicateData === true) {
-                            toastr["warning"]("This e-mail is already in use by an existing user. Verify and try again.", "Attention!");
-                        } else {
-                            toastr["warning"]("This email can't be used. Change it and try again.", "Attention!");
-                        }
-                        return false;
-                    }
-                    else {
-                        toastr["success"]("Plenvs Data System invitation sent successfully.", "Success!");
-                        $.docData.dtTable.ajax.reload();
-                        bootbox.hideAll();
-                        return true;
-                    }
-                }
-                else {
-                    toastr["warning"]("User can't be added. Try again.", "Attention!");
-                    return false;
-                }
-            });
-        }
-    }
-
     $(document).ready(function() {
-        //window.location = "<?=$GLOBALS['g_appRoot']?>/teste.php";
+
         $.docData = {
             dtTable : null,
             profileList : '',
@@ -259,67 +190,6 @@ if(isset($_SESSION['sectionIDCheck'])){
         }
 
         $('.phone_us').mask('(000) 000-0000');
-        $('#buyUserQtd').mask('00000');
-
-        $(".selectCustomerID").change(function()
-        {
-            var v_customer_id = $(this).val();
-
-            $.ajax({
-                url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appComboDepartment",
-                type: "POST",
-                dataType: "json",
-                data:
-                    {
-                        appFormData:{
-                            customerID: v_customer_id
-                        }
-                    },
-                success: function(d)
-                {
-                    var options = '';
-                    var v_selected;
-                    $.each(d.rsData, function (key, val) {
-                        if(val.department_id === 1)
-                        {
-                            v_selected = ' selected';
-                        }else{
-                            v_selected='';
-                        }
-                        options += '<option value="' + val.department_id + '" '+v_selected+'>' + val.department_desc + '</option>';
-                    });
-                    $("#departmentID").html(options).selectpicker('refresh');
-                }
-            });
-
-            $.ajax({
-                url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appComboPosition",
-                type: "POST",
-                dataType: "json",
-                data:
-                    {
-                        appFormData:{
-                            customerID: v_customer_id
-                        }
-                    },
-                success: function(d)
-                {
-                    var options = '';
-                    var v_selected;
-                    $.each(d.rsData, function (key, val) {
-                        if(val.position_id==1)
-                        {
-                            v_selected = ' selected';
-                        }else{
-                            v_selected='';
-                        }
-                        options += '<option value="' + val.position_id + '" '+v_selected+'>' + val.position_desc + '</option>';
-                    });
-                    $("#positionID").html(options).selectpicker('refresh');
-                }
-            });
-
-        });
 
         $(".appUserStatus").on("click",function()
         {
@@ -376,13 +246,12 @@ if(isset($_SESSION['sectionIDCheck'])){
                 "dom": '<"dtFloatRight"f><"dtInfoBeta">rt<"dtCenter"i<"dtFloatLeft"B><"dtFloatLeft"><"dtFloatRight"p>>',
                 "ajax":
                     {
-                        "url": "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appListSettingsUser",
+                        "url": "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appListUser",
                         "xhrFields": { withCredentials: true },
                         "dataSrc": "appUserList",
                         "dataType": "json",
                         "headers":
                             {
-                                "userClnt":"<?=$_SESSION['userClnt']?>",
                                 "appDatatable":true
                             },
                         "data": function(d){ }
@@ -474,10 +343,6 @@ if(isset($_SESSION['sectionIDCheck'])){
                     ]
             }
         );
-        $("input[name='buyUserQtd']").TouchSpin({
-            min: 1,
-            max: 2
-        });
 
         $.docData.dtTable.on("click",".appUserStatus",function() {
             var v_userStatus = $(this).attr("data-user_status")
@@ -662,170 +527,7 @@ if(isset($_SESSION['sectionIDCheck'])){
             });
 
         }
-        $(document).on('click','#switchPlusDepartment',function () {
-            $(this).addClass('hidden');
-            $('#switchListDepartment').removeClass('hidden');
-            $('#switchSaveDepartment').removeClass('hidden');
-            $('#departmentNew').removeClass('hidden');
-            $('#departmentID').selectpicker('hide');
-            $('#departmentAction').val('2');
-        });
-        $(document).on('click','#switchListDepartment',function () {
-            $(this).addClass('hidden');
-            $('#switchPlusDepartment').removeClass('hidden');
-            $('#switchSaveDepartment').addClass('hidden');
-            $('#departmentNew').addClass('hidden');
-            $('#departmentID').selectpicker('show');
-            $('#departmentAction').val('1');
-        });
-        $(document).on('click','#switchPlusPosition',function () {
-            $(this).addClass('hidden');
-            $('#switchListPosition').removeClass('hidden');
-            $('#switchSavePosition').removeClass('hidden');
-            $('#positionNew').removeClass('hidden');
-            $('#positionID').selectpicker('hide');
-            $('#positionAction').val('2');
-        });
-        $(document).on('click','#switchListPosition',function () {
-            $(this).addClass('hidden');
-            $('#switchPlusPosition').removeClass('hidden');
-            $('#switchSavePosition').addClass('hidden');
-            $('#positionNew').addClass('hidden');
-            $('#positionID').selectpicker('show');
-            $('#positionAction').val('1');
-        });
-        $(document).on('click','#switchSaveDepartment',function () {
 
-            var v_department_desc = $('#departmentNew').val();
-            v_department_desc = v_department_desc.trim();
-            var v_customerID = $('#customerID').val();
-
-            if(v_department_desc.length < 3)
-            {
-                toastr["warning"]("New Department too small. Fix it and try again.", "Attention!");
-            }else
-            {
-                $.ajax({
-                    url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appLovDepartment",
-                    type: "POST",
-                    dataType: "json",
-                    data:
-                        {
-                            type:"json",
-                            departmentDesc:v_department_desc,
-                            customerID:v_customerID,
-                            method:"POST"
-                        },
-                    success: function(d)
-                    {
-                        if(d.status  == true)
-                        {
-
-                            $v_option = '<option value="'+d.rsInsertID+'" selected>'+v_department_desc+'</option>';
-                            $('#departmentID option:selected').removeAttr('selected');
-                            $("#departmentID").append($v_option).selectpicker('refresh');
-                            $('#switchPlusDepartment').removeClass('hidden');
-                            $('#switchListDepartment').addClass('hidden');
-                            $('#switchSaveDepartment').addClass('hidden');
-                            $('#departmentNew').addClass('hidden');
-                            $('#departmentNew').val('');
-                            $('#departmentID').selectpicker('show');
-                            $('#departmentAction').val('1');
-                        }
-
-                    }
-                });
-
-            }
-        });
-
-        $(document).on('click','#switchSavePosition',function () {
-
-            var v_position_desc = $('#positionNew').val();
-            v_position_desc = v_position_desc.trim();
-            var v_customerID = $('#customerID').val();
-
-            if(v_position_desc.length < 3)
-            {
-                toastr["warning"]("New Position too small. Fix it and try again.", "Attention!");
-            }else
-            {
-                $.ajax({
-                    url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appLovPosition",
-                    type: "POST",
-                    dataType: "json",
-                    data:
-                        {
-                            type:"json",
-                            positionDesc:v_position_desc,
-                            customerID:v_customerID,
-                            method:"POST"
-                        },
-                    success: function(d)
-                    {
-                        if(d.status  == true)
-                        {
-
-                            $v_option = '<option value="'+d.rsInsertID+'" selected>'+v_position_desc+'</option>';
-                            $('#positionID option:selected').removeAttr('selected');
-                            $("#positionID").append($v_option).selectpicker('refresh');
-                            $('#switchPlusPosition').removeClass('hidden');
-                            $('#switchListPosition').addClass('hidden');
-                            $('#switchSavePosition').addClass('hidden');
-                            $('#positionNew').addClass('hidden');
-                            $('#positionNew').val('');
-                            $('#positionID').selectpicker('show');
-                            $('#positionAction').val('1');
-                        }
-
-                    }
-                });
-
-            }
-        });
-        $(document).on('click','#btnSaveBuy',function () {
-            var v_buyUserQtd = $('#buyUserQtd').val();
-            var v_erro = 0;
-
-            if(v_buyUserQtd.length > 0 && v_buyUserQtd>0)
-            {
-                $(".divBuyUserQtd").removeClass( "has-danger" );
-                $("#buyUserQtdHelp" ).hide();
-            }else
-            {
-                $(".divBuyUserQtd").addClass( "has-danger" );
-                $("#buyUserQtdHelp" ).show();
-                v_erro = 1;
-            }
-
-            if(v_erro==1){return false;}
-
-            $.ajax({
-                url: "<?=$GLOBALS['g_appRoot']?>/appPaymentAPI/appPayment",
-                type: "POST",
-                dataType: "json",
-                data:
-                    {
-                        type:"json",
-                        method:"POST",
-                        buyUserQtd: v_buyUserQtd
-                    },
-                success: function(d)
-                {
-                    if(d.apiData.status===true)
-                    {
-                        $('#buyUserModal').modal('hide');
-                        toastr["success"]("New Users added. Click Invite to send Invitations.", "Success!");
-                        $.docData.dtTable.ajax.reload();
-                    }
-                },
-                complete: function(d)
-                {
-
-                }
-            });
-
-        });
         $(document).on('click','.appUserInvite',function () {
           var v_userID = $(this).attr("data-user_id");
             bootbox.dialog(
@@ -876,17 +578,7 @@ if(isset($_SESSION['sectionIDCheck'])){
                     }
                 });
         });
-        $(document).on('shown.bs.modal', '#buyUserModal', function (event) {
-            $('#buyUserQtd').val('1');
-        });
-        $(document).on('change','#buyUserQtd',function (){
-            /*
-            $v_qtdUser = $(this).val();
-            $v_planPrice = $("#plan_price").val();
-            $v_total = $v_qtdUser * $v_planPrice;
-            $('#purchaseTotal').html($v_total.toLocaleString($.globalData.localeJS, { style:'currency', currency:'USD' }));
-            */
-        });
+
         $(document).on('click','.appUserConfig',function(){
             var v_userID = $(this).attr("data-user_id");
 
@@ -957,9 +649,6 @@ if(isset($_SESSION['sectionIDCheck'])){
                 }
             });
         });
-
-
-
     });
 </script>
 

@@ -20,6 +20,7 @@ require_once "PHPMailer/src/SMTP.php";
 require_once "appGetValue.php";
 require_once "appPhoto.php";
 require_once "appCombo.php";
+require_once "appDataList.php";
 /*
 require_once "appDBErrorCodes.php";
 
@@ -28,7 +29,6 @@ require_once "appCountry.php";
 require_once "appLov.php";
 require_once "appCustomer.php";
 require_once "appProduct.php";
-require_once "appDataList.php";
 require_once "appFile.php";
 require_once "appRelationalData.php";
 require_once "appSpec.php";
