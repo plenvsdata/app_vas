@@ -10,10 +10,7 @@ use app\System\Combo\appCombo;
 //use app\System\Lov\appGetValue;
 
 $v_comboData = new appCombo();
-
-//$v_comboTitle = $v_comboData->comboSystemTitle();
-//$v_comboPosition = json_decode($v_comboData->comboPosition(),true);
-
+$v_comboProfile = $v_comboData->comboSystemAccessProfile('array');
 $v_sectionIDCheck = true;
 $_dataSectionCheck = 'true';
 if(isset($_SESSION['sectionIDCheck'])){
@@ -121,7 +118,7 @@ if(isset($_SESSION['sectionIDCheck'])){
 <!-- Start Modal Buy Users  -->
 <!-- ============================================================== -->
 <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-centered-80" >
+    <div class="modal-dialog modal-dialog-centered modal-dialog-centered-90" >
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Adicionar Usuário</h4>
@@ -129,28 +126,27 @@ if(isset($_SESSION['sectionIDCheck'])){
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group has-feedback divContactName">
-                            <label for="contactName" class="control-label">Nome completo:</label>
-                            <input type="text" class="form-control contactName" id="contactName" name="contactName" aria-describedby="contactNameHelp">
-                            <span id="contactNameHelp" class="help-block">Min 3 characters</span>
+                    <div class="col-md-5">
+                        <div class="form-group has-feedback divUserName">
+                            <label for="userName" class="control-label">Nome completo:</label>
+                            <input type="text" class="form-control userName" id="userName" name="userName" aria-describedby="userNameHelp">
+                            <span id="userNameHelp" class="help-block text-danger">Min 3 characters</span>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group has-feedback divUserNickname">
                             <label for="userNickname" class="control-label">Conhecido por:</label>
                             <input type="text" class="form-control userNickname" id="userNickname" name="userNickname" aria-describedby="userNicknameHelp">
-                            <span id="userNicknameHelp" class="help-block">Min 3 caracteres</span>
+                            <span id="userNicknameHelp" class="help-block text-danger">Min 3 caracteres</span>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="form-group has-feedback divUserEmail">
                             <label for="userEmail" class="control-label">Email:</label>
-                            <input type="text" class="form-control userEmail" id="userEmail" name="userEmail" aria-describedby="userEmailHelp">
-                            <span id="userEmailHelp" class="help-block">Min 3 caracteres</span>
+                            <input type="text" class="form-control userEmail" required id="userEmail" name="userEmail" aria-describedby="userEmailHelp">
+                            <span id="userEmailHelp" class="help-block text-danger">Min 3 caracteres</span>
                         </div>
                     </div>
-
 
                 </div>
                 <div class="row">
@@ -158,13 +154,23 @@ if(isset($_SESSION['sectionIDCheck'])){
                         <div class="form-group has-feedback divUserPhone">
                             <label for="userPhone" class="control-label">Telefone:</label>
                             <input type="text" class="form-control userPhone" id="userPhone" name="userPhone" aria-describedby="userPhoneHelp">
-                            <span id="userPhoneHelp" class="help-block">Min 3 characters</span>
+                            <span id="userPhoneHelp" class="help-block text-danger">Min 3 characters</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Perfil de Acesso</label>
+                            <select id=profileID" name="profileID" class="form-control custom-select selectpicker">
+                            <?php foreach ($v_comboProfile['rsData'] as $key=>$value){ ?>
+                                <option value="<?=$value['access_profile_id']?>"><?=$value['access_profile_desc']?></option>
+                            <?php } ?>
+                            </select>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-danger waves-effect" data-dismiss="modal" id="btnCancelBuy">Cancelar</button>
-                    <button type="button" class="btn btn-sm btn-success waves-effect waves-light" id="btnSaveBuy">Salvar</button>
+                    <button type="button" class="btn btn-sm btn-danger waves-effect" data-dismiss="modal" id="btnCancel">Cancelar</button>
+                    <button type="button" class="btn btn-sm btn-success waves-effect waves-light" id="btnSave">Salvar</button>
                 </div>
             </div>
         </div>
@@ -189,7 +195,7 @@ if(isset($_SESSION['sectionIDCheck'])){
             toastr["warning"]("This user doesn't exist.", "Attention!");
         }
 
-        $('.phone_us').mask('(000) 000-0000');
+        $("#userPhone").mask('(00) 00000-0000');
 
         $(".appUserStatus").on("click",function()
         {
@@ -528,57 +534,6 @@ if(isset($_SESSION['sectionIDCheck'])){
 
         }
 
-        $(document).on('click','.appUserInvite',function () {
-          var v_userID = $(this).attr("data-user_id");
-            bootbox.dialog(
-                {
-                    message: 'Resend Invitation',
-                    buttons: {
-                        confirm: {
-                            label: 'Confirm',
-                            className: 'btn-success',
-                            callback: function () {
-                                $.ajax({
-                                    url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserInvitation",
-                                    type: "POST",
-                                    dataType: "json",
-                                    data:
-                                        {
-                                            appFormData:
-                                                {
-                                                    type:"json",
-                                                    userID:v_userID,
-                                                    method:"PUT"
-                                                }
-                                        },
-                                    success: function(d)
-                                    {
-                                        if(d.inviteSent === true)
-                                        {
-                                            toastr["success"]("Invitation sent.", "Success");
-                                            $.docData.dtTable.ajax.reload();
-                                        }
-                                        else
-                                        {
-                                            toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                                        }
-                                    },
-                                    error:function ()
-                                    {
-                                        toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                                    }
-                                });
-                            }
-                        },
-                        cancel: {
-                            label: 'Cancel',
-                            className: 'btn-danger',
-                            callback: function () { return true; }
-                        }
-                    }
-                });
-        });
-
         $(document).on('click','.appUserConfig',function(){
             var v_userID = $(this).attr("data-user_id");
 
@@ -649,6 +604,35 @@ if(isset($_SESSION['sectionIDCheck'])){
                 }
             });
         });
+
+        $(document).on('click','#btnSave',function(){
+            let v_userName = $("#userName").val();
+            let v_userNickname = $("#userNickname").val();
+            let v_userEmail = $("#userEmail").val();
+            let v_userPhone = $("#userPhone").val();
+            let v_erro = '';
+
+            if(v_userName.length<5){
+                v_erro+='-Nome completo deve ter min. 5 caracteres.<br>';
+            }
+            if(v_userNickname.length<3){
+                v_erro+='-Conhecido por deve ter min. 3 caracteres.<br>';
+            }
+            if(v_userPhone.length<14){
+                v_erro+='-Telefone deve ter min. 14 caracteres.<br>';
+            }
+
+
+            if(v_erro != ''){
+                toastr["warning"](v_erro, "Atenção!");
+            }else{
+                console.log('cadastrar Usuário ajax');
+            }
+
+
+
+        });
+
     });
 </script>
 

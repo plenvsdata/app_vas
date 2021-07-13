@@ -48,6 +48,21 @@ class appCombo
         }
     }
 
+    public function comboSystemAccessProfile($type=NULL)
+    {
+        $query = "SELECT access_profile_id, access_profile_desc, access_profile_status FROM %appDBprefix%_lov_system_access_profile ORDER BY access_profile_desc ASC";
+        $v_return = $this->dbCon->dbSelect($query);
+
+        if(is_null($type))
+        {
+            return json_encode($v_return);
+        }
+        else
+        {
+            return $v_return;
+        }
+    }
+
 
     /*
         public function comboManufacturer($type = NULL,$alwaysDisplay = 0)
@@ -175,12 +190,6 @@ class appCombo
 
         {
             $query = "SELECT alert_type_id, alert_type_desc, alert_type_status FROM %appDBprefix%_view_combo_system_alert_type ORDER BY alert_type_desc ASC";
-            $v_return['apiData'] = $this->dbCon->dbSelect($query);
-            echo json_encode($v_return);
-        }
-        public function comboSystemAccessProfile():VOID
-        {
-            $query = "SELECT access_profile_id, access_profile_desc, access_profile_status FROM %appDBprefix%_view_combo_system_access_profile ORDER BY access_profile_desc ASC";
             $v_return['apiData'] = $this->dbCon->dbSelect($query);
             echo json_encode($v_return);
         }
