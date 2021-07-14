@@ -11,6 +11,8 @@ use app\System\Combo\appCombo;
 
 $v_comboData = new appCombo();
 $v_comboProfile = $v_comboData->comboSystemAccessProfile('array');
+$v_comboCustomer = $v_comboData->comboCustomer('array');
+
 $v_sectionIDCheck = true;
 $_dataSectionCheck = 'true';
 if(isset($_SESSION['sectionIDCheck'])){
@@ -167,7 +169,18 @@ if(isset($_SESSION['sectionIDCheck'])){
                             </select>
                         </div>
                     </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Cliente:</label>
+                            <select id=customerID" name="customerID" class="form-control custom-select selectpicker">
+                                <?php foreach ($v_comboCustomer['rsData'] as $key=>$value){ ?>
+                                    <option value="<?=$value['customer_id']?>"><?=$value['customer_nome_fantasia']?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
                 </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-sm btn-danger waves-effect" data-dismiss="modal" id="btnCancel">Cancelar</button>
                     <button type="button" class="btn btn-sm btn-success waves-effect waves-light" id="btnSave">Salvar</button>
@@ -621,8 +634,6 @@ if(isset($_SESSION['sectionIDCheck'])){
             if(v_userPhone.length<14){
                 v_erro+='-Telefone deve ter min. 14 caracteres.<br>';
             }
-
-
             if(v_erro != ''){
                 toastr["warning"](v_erro, "Atenção!");
             }else{
@@ -631,6 +642,11 @@ if(isset($_SESSION['sectionIDCheck'])){
 
 
 
+        });
+
+        $(document).on('change','#profileID',function(){
+            let v_profileID = $(this).selectpicker('val');
+            console.log('v_profileID='+v_profileID);
         });
 
     });
