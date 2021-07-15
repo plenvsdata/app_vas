@@ -71,7 +71,7 @@ elseif ($v_dataSec == "appUser")
 }
 elseif ($v_dataSec == "appUserAccess")
 {
-    $v_appData = !empty($_REQUEST['appFormData']) ? $_REQUEST['appFormData'] : NULL;
+    $v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;
     $v_userAccess =  new appUserData();
     $v_UserAccessData = $v_userAccess->appUserAccess($v_appData);
 }
@@ -119,14 +119,6 @@ elseif ($v_dataSec == "appUserInfo")
     $v_userInfoData = $v_userInfo->appUserInfo($v_appData);
     echo json_encode($v_userInfoData);
 }
-/*DEPRECATED
-elseif ($v_dataSec == "appUserHasAccessProfile")
-{
-    $v_appData = !empty($_REQUEST['appFormData']) ? $_REQUEST['appFormData'] : NULL;
-    $v_user =  new appUserData();
-    $v_userData = $v_user->appUserHasAccessProfile($v_appData);
-}
-*/
 elseif ($v_dataSec == "appUserAddress")
 {
     $v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;

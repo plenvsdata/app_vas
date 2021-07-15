@@ -18,13 +18,21 @@ class appUserData extends appUserControl
 {
     public function appUserAccess($data = NULL)
     {
+
         $v_reqMethod = $data['method'];
 
         if($v_reqMethod === "POST")
         {
 
-            $v_buyUserQtd = !empty($data['buyUserQtd']) ? trim($data['buyUserQtd']) : NULL;
-            $v_transactionID = !empty($data['transactionID']) ? trim($data['transactionID']) : NULL;
+            $v_userPwd = hash('sha256',microtime());
+            print $v_userPwd;die();
+
+
+
+
+
+
+
             if(is_null($v_buyUserQtd) || is_null($v_transactionID))
             {
                 $v_return['apiData']['status'] = false;

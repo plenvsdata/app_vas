@@ -162,17 +162,17 @@ if(isset($_SESSION['sectionIDCheck'])){
                     <div class="col-md-4">
                         <div class="form-group">
                             <label class="control-label">Perfil de Acesso</label>
-                            <select id=profileID" name="profileID" class="form-control custom-select selectpicker">
+                            <select id=profileID" name="profileID" class="form-control custom-select selectpicker profileID">
                             <?php foreach ($v_comboProfile['rsData'] as $key=>$value){ ?>
                                 <option value="<?=$value['access_profile_id']?>"><?=$value['access_profile_desc']?></option>
                             <?php } ?>
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div id="divCustomer" class="col-md-5 hide">
                         <div class="form-group">
                             <label class="control-label">Cliente:</label>
-                            <select id=customerID" name="customerID" class="form-control custom-select selectpicker">
+                            <select id=customerID" name="customerID" class="form-control custom-select selectpicker customerID">
                                 <?php foreach ($v_comboCustomer['rsData'] as $key=>$value){ ?>
                                     <option value="<?=$value['customer_id']?>"><?=$value['customer_nome_fantasia']?></option>
                                 <?php } ?>
@@ -637,16 +637,39 @@ if(isset($_SESSION['sectionIDCheck'])){
             if(v_erro != ''){
                 toastr["warning"](v_erro, "Atenção!");
             }else{
-                console.log('cadastrar Usuário ajax');
+
+                $.ajax({
+                    url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserAccess",
+                    type: "POST",
+                    dataType: "json",
+                    data:
+                        {
+                            method: 'POST',
+                            userName: v_userName,
+                            userNickname: v_userNickname,
+                            userPhone: v_userPhone,
+                            userEmail: v_userEmail
+
+                        },
+                    success: function(e)
+                    {
+                       alert('usuário inserido');
+                    }
+                });
             }
 
 
 
         });
 
-        $(document).on('change','#profileID',function(){
-            let v_profileID = $(this).selectpicker('val');
-            console.log('v_profileID='+v_profileID);
+
+        $('.profileID').on('changed.bs.select', function (e, clickedIndex, newValue, oldValue) {
+            let v_profileID = $(e.currentTarget).val();
+            if(v_profileID == 3){
+                $('#divCustomer').show();
+            }else{
+                $('#divCustomer').hide();
+            }
         });
 
     });
