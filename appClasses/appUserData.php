@@ -24,7 +24,19 @@ class appUserData extends appUserControl
         if($v_reqMethod === "POST")
         {
 
+            $v_userLogin = !empty($data['userEmail']) ? trim($data['userEmail']) : NULL;
+            $v_profileID = !empty($data['profileID']) ? trim($data['profileID']) : NULL;
+
+            if($v_profileID === 3){
+                $v_customerID = $v_customerID = !empty($data['customerID']) ? trim($data['customerID']) : NULL;
+            }else{
+                $v_customerID = NULL;
+            }
+
             $v_userPwd = hash('sha256',microtime());
+            $query = "INSERT INTO %appDBprefix%_user_access (clnt,user_login,user_pwd ,created_by) VALUES ('".$_SESSION['userClnt']."' , '".$v_userLogin."', '".$v_userPwd."','".$_SESSION['userID']."' )";
+            $v_return['apiData'] = $this->dbCon->dbInsert($query);
+            $v_userID = $v_return['apiData']['rsInsertID'];
             print $v_userPwd;die();
 
 
@@ -90,6 +102,35 @@ class appUserData extends appUserControl
                 echo json_encode($v_return);
             }
         }
+        elseif ($v_reqMethod === "PUT")
+        {
+            $v_fieldArray = array(
+                "updUserName" => "user_name",
+                "updUserNickname" => "user_nickname",
+                "updUserBirthday" => "user_birthday",
+                "updUserPhone" => "user_phone",
+                "updPwd" => "user_pwd"
+            );
+
+            $v_userID = !empty($data['userID']) ? trim($data['userID']) : NULL;
+            $v_userField = !empty($v_fieldArray[$data['dataControl']]) ? trim($v_fieldArray[$data['dataControl']]) :NULL;
+            $v_userData = !empty($data['userData']) ? trim($data['userData']) : "";
+
+            //TODO{continuar updPwd}
+
+            if(is_null($v_userID) || is_null($v_userField) || is_null($v_userData))
+            {
+                $v_return['status'] = false;
+                return $v_return;
+            }else
+            {
+                $query = "UPDATE %appDBprefix%_user_access SET ".$v_userField." = '".addslashes($v_userData)."' ";
+                $query.= " WHERE user_id = ".$v_userID;
+                $v_return = $this->dbCon->dbUpdate($query);
+                $v_return['status'] = true;
+                return $v_return;
+            }
+        }
         elseif ($v_reqMethod === "STATUS")
         {
             $v_userID = !empty($data['userID']) ? trim($data['userID']) : NULL;
@@ -118,7 +159,7 @@ class appUserData extends appUserControl
             }
             else
             {
-                $query = "SELECT user_id,user_info_id, clnt, user_login, user_pwd, user_name, user_nickname, user_birthday, gender_id, (IF(LENGTH(user_phone)>0,user_phone,'Not Available')) as user_phone, user_avatar, country_id, state_id, city_id, user_sess_id,user_status,created_at,created_by FROM %appDBprefix%_view_user_list WHERE user_id = ".$v_userID." AND clnt = '".$_SESSION['userClnt']."' ";
+                $query = "SELECT user_id, clnt, user_login, user_pwd, user_name, user_nickname, user_birthday, gender_id, (IF(LENGTH(user_phone)>0,user_phone,'Not Available')) as user_phone, user_avatar, country_id, state_id, city_id, user_sess_id,user_status,created_at,created_by FROM %appDBprefix%_view_user_list WHERE user_id = ".$v_userID." AND clnt = '".$_SESSION['userClnt']."' ";
                 $v_return['apiData'] = $this->dbCon->dbSelect($query);
                 $v_return['apiData']['status'] = true;
                 return $v_return;
@@ -178,8 +219,7 @@ class appUserData extends appUserControl
                 "updUserName" => "user_name",
                 "updUserNickname" => "user_nickname",
                 "updUserBirthday" => "user_birthday",
-                "updUserPhone" => "user_phone",
-                "updUserGender" => "gender_id"
+                "updUserPhone" => "user_phone"
             );
 
             $v_userID = !empty($data['userID']) ? trim($data['userID']) : NULL;
@@ -193,7 +233,7 @@ class appUserData extends appUserControl
                 return $v_return;
             }else
             {
-                $query = "UPDATE %appDBprefix%_user_info SET ".$v_userField." = '".addslashes($v_userData)."' ";
+                $query = "UPDATE %appDBprefix%_user_access SET ".$v_userField." = '".addslashes($v_userData)."' ";
                 $query.= " WHERE user_id = ".$v_userID;
                 $v_return = $this->dbCon->dbUpdate($query);
                 $v_return['status'] = true;
@@ -228,7 +268,7 @@ class appUserData extends appUserControl
             }
             else
             {
-                $query = "SELECT user_id,user_info_id, clnt, user_login, user_pwd, user_name, user_nickname, user_birthday, gender_id, user_phone, user_avatar, country_id, state_id, city_id, user_sess_id,user_status,created_at,created_by FROM %appDBprefix%_view_user_list WHERE user_id = ".$v_userID." AND clnt = '".$_SESSION['userClnt']."' ";
+                $query = "SELECT user_id, clnt, user_login, user_pwd, user_name, user_nickname, user_birthday, gender_id, user_phone, user_avatar, country_id, state_id, city_id, user_sess_id,user_status,created_at,created_by FROM %appDBprefix%_view_user_list WHERE user_id = ".$v_userID." AND clnt = '".$_SESSION['userClnt']."' ";
                 $v_return['apiData'] = $this->dbCon->dbSelect($query);
                 $v_return['apiData']['status'] = true;
                 echo json_encode($v_return);
@@ -255,7 +295,7 @@ class appUserData extends appUserControl
             }
             else
             {
-                $query = "SELECT user_id,user_name,user_nickname,user_phone,user_login,user_pwd,temp_pwd,user_sess_id,user_status,status_desc,status_class,owner,user_info_id,access_profile_id,access_profile_desc,user_avatar,user_data_status,access_profile_data_user_only,access_profile_homepage,access_profile_status,first_access,welcome_screen,transaction_id,billing_status,created_by,created_at,ok FROM %appDBprefix%_view_user WHERE user_id = ".$v_userID."  ";
+                $query = "SELECT user_id,user_name,user_nickname,user_phone,user_login,user_pwd,temp_pwd,user_sess_id,user_status,status_desc,status_class,owner,access_profile_id,access_profile_desc,user_avatar,access_profile_data_user_only,access_profile_homepage,access_profile_status,first_access,welcome_screen,transaction_id,billing_status,created_by,created_at,ok FROM %appDBprefix%_view_user WHERE user_id = ".$v_userID."  ";
                 $v_return['main'] = $this->dbCon->dbSelect($query);
             }
             return $v_return;

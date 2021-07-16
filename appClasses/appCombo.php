@@ -20,7 +20,7 @@ class appCombo
 
     public function comboSystemAllUserList($type=NULL)
     {
-        $query = "SELECT user_id,user_info_id,user_login,user_name,user_nickname,user_phone,user_avatar,user_status,created_at,created_by FROM %appDBprefix%_view_user WHERE first_access = 0 ORDER BY user_name ASC";
+        $query = "SELECT user_id,user_login,user_name,user_nickname,user_phone,user_avatar,user_status,created_at,created_by FROM %appDBprefix%_view_user WHERE first_access = 0 ORDER BY user_name ASC";
         $v_return = $this->dbCon->dbSelect($query);
 
         if(is_null($type))
@@ -569,7 +569,7 @@ class appCombo
         }
         public function comboSystemUserList($type='json',$userID=NULL)
         {
-            $query = "SELECT user_id,user_info_id,user_login,user_name,user_nickname,user_birthday,gender_id,user_phone,user_avatar,country_id,state_id,city_id,user_status,created_at,created_by FROM %appDBprefix%_view_user_list ";
+            $query = "SELECT user_id,user_login,user_name,user_nickname,user_birthday,gender_id,user_phone,user_avatar,country_id,state_id,city_id,user_status,created_at,created_by FROM %appDBprefix%_view_user_list ";
             $query .=" WHERE clnt = '".$_SESSION['userClnt']."' AND user_status = '2' ";
             if($userID!=NULL){
                 $query .= " AND user_id <> '".$userID."' ";

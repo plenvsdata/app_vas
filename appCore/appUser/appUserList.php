@@ -623,6 +623,8 @@ if(isset($_SESSION['sectionIDCheck'])){
             let v_userNickname = $("#userNickname").val();
             let v_userEmail = $("#userEmail").val();
             let v_userPhone = $("#userPhone").val();
+            let v_profileID = parseInt($(".profileID option:selected").val());
+            let v_customerID = parseInt($(".customerID option:selected").val());
             let v_erro = '';
 
             if(v_userName.length<5){
@@ -648,8 +650,9 @@ if(isset($_SESSION['sectionIDCheck'])){
                             userName: v_userName,
                             userNickname: v_userNickname,
                             userPhone: v_userPhone,
-                            userEmail: v_userEmail
-
+                            userEmail: v_userEmail,
+                            profileID: v_profileID,
+                            customerID: v_customerID
                         },
                     success: function(e)
                     {

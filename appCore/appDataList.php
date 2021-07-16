@@ -31,13 +31,13 @@ class appDataList
 
     public function appUserList()
     {
-        $query = "SELECT user_id,user_info_id, user_login, user_pwd, user_name, user_nickname, user_phone, user_avatar, user_sess_id,user_status,status_desc,status_class,owner,created_at,created_by FROM %appDBprefix%_view_user  ";
+        $query = "SELECT user_id, user_login, user_pwd, user_name, user_nickname, user_phone, user_avatar, user_sess_id,user_status,status_desc,status_class,owner,created_at,created_by FROM %appDBprefix%_view_user  ";
         return $this->dbCon->dbSelect($query);
     }
 
     public function appSettingsUserList()
     {
-        $query = "SELECT user_id,user_info_id, clnt, user_login, user_pwd, user_name, user_nickname, user_birthday, user_phone, user_avatar, user_sess_id,user_status,status_desc,status_class,owner,created_at,created_by FROM %appDBprefix%_view_settings_user_list WHERE clnt = '".$_SESSION['userClnt']."' ";
+        $query = "SELECT user_id, clnt, user_login, user_pwd, user_name, user_nickname, user_birthday, user_phone, user_avatar, user_sess_id,user_status,status_desc,status_class,owner,created_at,created_by FROM %appDBprefix%_view_settings_user_list WHERE clnt = '".$_SESSION['userClnt']."' ";
         return $this->dbCon->dbSelect($query);
     }
 
