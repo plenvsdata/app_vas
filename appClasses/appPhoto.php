@@ -115,16 +115,13 @@ class appPhoto
         if ($v_reqMethod === "PUT")
         {
             $v_fileInfo = pathinfo($file['fileData']['name']);
-
             $v_fileExt = $v_fileInfo['extension'];
             $v_fileServerName = (hash('sha256',$data['userID'].$data['userLogin'].date('U'))).'.'.$v_fileExt;
-
             $v_fileTarget = $v_serverRoot.$v_fileServerName;
 
             if(move_uploaded_file($file['fileData']['tmp_name'], $v_fileTarget))
             {
-                $query = "UPDATE %appDBprefix%_user_info SET  user_avatar = '".$v_fileServerName."' WHERE user_id = ".$data['userID'];
-
+                $query = "UPDATE %appDBprefix%_user_access SET  user_avatar = '".$v_fileServerName."' WHERE user_id = ".$data['userID'];
                 $v_updateData = $this->dbCon->dbUpdate($query);
                 $v_return['status'] = true;
                 $v_return['file'] = $v_fileServerName;

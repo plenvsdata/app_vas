@@ -26,81 +26,30 @@ class appUserData extends appUserControl
 
             $v_userLogin = !empty($data['userEmail']) ? trim($data['userEmail']) : NULL;
             $v_profileID = !empty($data['profileID']) ? trim($data['profileID']) : NULL;
+            $v_userName = !empty($data['userName']) ? trim($data['userName']) : NULL;
+            $v_userNickname = !empty($data['userNickname']) ? trim($data['userNickname']) : NULL;
+            $v_userPhone = !empty($data['userPhone']) ? trim($data['userPhone']) : NULL;
 
-            if($v_profileID === 3){
-                $v_customerID = $v_customerID = !empty($data['customerID']) ? trim($data['customerID']) : NULL;
+            if($v_profileID == 3){
+                $v_customerID = !empty($data['customerID']) ? trim($data['customerID']) : NULL;
             }else{
-                $v_customerID = NULL;
+                $v_customerID = 'NULL';
             }
 
             $v_userPwd = hash('sha256',microtime());
-            $query = "INSERT INTO %appDBprefix%_user_access (clnt,user_login,user_pwd ,created_by) VALUES ('".$_SESSION['userClnt']."' , '".$v_userLogin."', '".$v_userPwd."','".$_SESSION['userID']."' )";
+            $query = "INSERT INTO %appDBprefix%_user_access (user_name,user_nickname,user_login,user_pwd,user_phone,access_profile_id,customer_id,created_by) VALUES ('".$v_userName."','".$v_userNickname."','".$v_userLogin."', '".$v_userPwd."','".$v_userPhone."','".$v_profileID."',$v_customerID,'".$_SESSION['userID']."' )";
             $v_return['apiData'] = $this->dbCon->dbInsert($query);
             $v_userID = $v_return['apiData']['rsInsertID'];
-            print $v_userPwd;die();
 
-
-
-
-
-
-
-            if(is_null($v_buyUserQtd) || is_null($v_transactionID))
+            if($v_userID)
             {
-                $v_return['apiData']['status'] = false;
-                return $v_return;
-            }
-            else
-            {
-                $i = 1;
-
-                while ($i <= $v_buyUserQtd)
-                {
-                    //add user_access
-                    $v_userLogin = md5(microtime()).'@available';
-                    $v_userPwd = hash('sha256',microtime());
-                    $query = "INSERT INTO %appDBprefix%_user_access (clnt,user_login,user_pwd,user_status,transaction_id ,created_by) VALUES ('".$_SESSION['userClnt']."' , '".$v_userLogin."', '".$v_userPwd."','6','".$v_transactionID."','".$_SESSION['userID']."' )";
-                    $v_return['apiData'] = $this->dbCon->dbInsert($query);
-                    $v_userID = $v_return['apiData']['rsInsertID'];
-
-                    //add user_info
-                    $data['userID'] =  $v_userID;
-                    $userInfo = $this->appUserInfo($data);
-
-                    $i++;
-                }
-
-                if($v_userID)
-                {
-                    $v_return['apiData']['status'] = true;
-                    return $v_return;
-                }else
-                {
-                    $v_return['apiData']['status'] = false;
-                    return $v_return;
-                }
-
-            }
-        }
-        elseif ($v_reqMethod === "PUT")
-        {
-            $v_userID = !empty($data['userID']) ? trim($data['userID']) : NULL;
-            $v_userLogin = !empty($data['userLogin']) ? trim($data['userLogin']) : NULL;
-            $v_userPwdNew = !empty($data['userPwdNew']) ? trim($data['userPwdNew']) : NULL;
-
-            if(is_null($v_userLogin) || strlen($v_userLogin) < 1 || strlen($v_userPwdNew) < 1 || is_null($v_userPwdNew ) || empty($v_userID) )
-            {
-                $v_return['apiData']['status'] = false;
-                echo json_encode($v_return);
-            }
-            else
-            {
-                $v_userPwd = hash('sha256',$v_userPwdNew);
-                $query = "UPDATE %appDBprefix%_user_access SET user_login = '".addslashes($v_userLogin)."', user_pwd = '".$v_userPwd."'  WHERE clnt = '".$_SESSION['userClnt']."' AND user_id = ".$v_userID;
-                $v_return['apiData'] = $this->dbCon->dbUpdate($query);
                 $v_return['apiData']['status'] = true;
-                echo json_encode($v_return);
+
+            }else
+            {
+                $v_return['apiData']['status'] = false;
             }
+            return $v_return;
         }
         elseif ($v_reqMethod === "PUT")
         {
@@ -108,15 +57,12 @@ class appUserData extends appUserControl
                 "updUserName" => "user_name",
                 "updUserNickname" => "user_nickname",
                 "updUserBirthday" => "user_birthday",
-                "updUserPhone" => "user_phone",
-                "updPwd" => "user_pwd"
+                "updUserPhone" => "user_phone"
             );
 
             $v_userID = !empty($data['userID']) ? trim($data['userID']) : NULL;
             $v_userField = !empty($v_fieldArray[$data['dataControl']]) ? trim($v_fieldArray[$data['dataControl']]) :NULL;
             $v_userData = !empty($data['userData']) ? trim($data['userData']) : "";
-
-            //TODO{continuar updPwd}
 
             if(is_null($v_userID) || is_null($v_userField) || is_null($v_userData))
             {
@@ -139,15 +85,14 @@ class appUserData extends appUserControl
             if(is_null($v_userID))
             {
                 $v_return['status'] = false;
-                echo json_encode($v_return);
             }
             else
             {
                 $query = "UPDATE %appDBprefix%_user_access SET user_status = ".$v_userStatus."  WHERE clnt = '".$_SESSION['userClnt']."' AND user_id = ".$v_userID;
                 $v_return = $this->dbCon->dbUpdate($query);
                 $v_return['status'] = true;
-                echo json_encode($v_return);
             }
+            return $v_return;
         }
         elseif ($v_reqMethod === "GET")
         {
@@ -155,15 +100,14 @@ class appUserData extends appUserControl
             if(is_null($v_userID) || empty($v_userID))
             {
                 $v_return['apiData']['status'] = false;
-                echo json_encode($v_return);
             }
             else
             {
                 $query = "SELECT user_id, clnt, user_login, user_pwd, user_name, user_nickname, user_birthday, gender_id, (IF(LENGTH(user_phone)>0,user_phone,'Not Available')) as user_phone, user_avatar, country_id, state_id, city_id, user_sess_id,user_status,created_at,created_by FROM %appDBprefix%_view_user_list WHERE user_id = ".$v_userID." AND clnt = '".$_SESSION['userClnt']."' ";
                 $v_return['apiData'] = $this->dbCon->dbSelect($query);
                 $v_return['apiData']['status'] = true;
-                return $v_return;
             }
+            return $v_return;
         }
         elseif ($v_reqMethod === "DELETE")
         {
@@ -188,7 +132,7 @@ class appUserData extends appUserControl
                     $v_return = $this->dbCon->dbDelete($query);
                 }
                 $v_return['status'] = true;
-                echo json_encode($v_return);
+                return $v_return;
             }
         }
         else
@@ -198,6 +142,7 @@ class appUserData extends appUserControl
 
     }
 
+    /*
     public function appUserInfo($data = NULL)
     {
         $v_reqMethod = $data['method'];
@@ -280,7 +225,7 @@ class appUserData extends appUserControl
         }
 
     }
-
+*/
     public function appUserAllInfo($data = NULL)
     {
         $v_reqMethod = $data['method'];

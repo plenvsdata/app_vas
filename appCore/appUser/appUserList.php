@@ -636,6 +636,7 @@ if(isset($_SESSION['sectionIDCheck'])){
             if(v_userPhone.length<14){
                 v_erro+='-Telefone deve ter min. 14 caracteres.<br>';
             }
+
             if(v_erro != ''){
                 toastr["warning"](v_erro, "Atenção!");
             }else{
@@ -654,9 +655,19 @@ if(isset($_SESSION['sectionIDCheck'])){
                             profileID: v_profileID,
                             customerID: v_customerID
                         },
-                    success: function(e)
+                    success: function(d)
                     {
-                       alert('usuário inserido');
+
+                        if(d.apiData.status === true)
+                        {
+                            toastr["success"]("Usuário "+v_userName+" inserido(a) com sucesso.", "Success");
+                            $.docData.dtTable.ajax.reload();
+                            $('#userModal').modal('hide');
+                        }
+                        else
+                        {
+                            toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
+                        }
                     }
                 });
             }

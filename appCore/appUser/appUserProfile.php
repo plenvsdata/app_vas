@@ -498,7 +498,7 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
             else
             {
                 $.ajax({
-                    url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserInfo",
+                    url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserAccess",
                     type: "POST",
                     dataType: "json",
                     data:
@@ -567,7 +567,7 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
             else
             {
                 $.ajax({
-                    url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserInfo",
+                    url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserAccess",
                     type: "POST",
                     dataType: "json",
                     data:
@@ -638,7 +638,7 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
             else
             {
                 $.ajax({
-                    url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserInfo",
+                    url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserAccess",
                     type: "POST",
                     dataType: "json",
                     data:
@@ -843,8 +843,7 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
 
                         this.on('success', function(file,data)
                         {
-                            var v_result = JSON.parse(data);
-
+                            let v_result = JSON.parse(data);
                             if(v_result.status === true)
                             {
                                 let pathAvatar = '<?=$GLOBALS['g_appRoot']."/__appFiles/".$v_userID."/_userAvatar/"?>'+v_result.file;

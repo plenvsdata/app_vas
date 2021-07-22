@@ -74,6 +74,7 @@ elseif ($v_dataSec == "appUserAccess")
     $v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;
     $v_userAccess =  new appUserData();
     $v_UserAccessData = $v_userAccess->appUserAccess($v_appData);
+    echo json_encode($v_UserAccessData);
 }
 elseif ($v_dataSec == "FirstAccessComplete")
 {
