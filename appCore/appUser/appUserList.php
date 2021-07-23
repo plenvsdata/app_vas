@@ -25,9 +25,6 @@ if(isset($_SESSION['sectionIDCheck'])){
 
 ?>
 <style>
-    .modal-lg {
-        max-width: 90% !important;
-    }
     .flex-item
     {
         justify-content: space-around;
@@ -37,34 +34,11 @@ if(isset($_SESSION['sectionIDCheck'])){
     {
         display: none!important;
     }
-    .btn-organizer
-    {
-        border: 1px solid #D9D9D9!important;
-        height: 38px!important;
-        background-color: #ffffff;
-    }
-    .btn-organizer-error
-    {
-        border: 1px solid #ef5350!important;
-        height: 38px!important;
-        background-color: #ffffff;
-    }
-    .btn-left-radius
-    {
-        border-radius: 4px 0 0 4px!important;
-    }
-    .btn-right-radius
-    {
-        border-radius: 0 4px 4px 0!important;
-    }
     .bootbox .modal-header h4 {
         order: 0;
     }
     .bootbox .modal-header button {
         order: 1;
-    }
-    #divPurchase{
-        margin-left: 15%;
     }
     .teste_class .modal-header{
         display: flex!important;
@@ -212,10 +186,10 @@ if(isset($_SESSION['sectionIDCheck'])){
 
         $(".appUserStatus").on("click",function()
         {
-            var v_elemento = $(this);
-            var v_user_status_str = $(this).attr("data-user_status");
-            var v_user_status_array = v_user_status_str.split("_");
-            var v_user_status_new;
+            let v_elemento = $(this);
+            let v_user_status_str = $(this).attr("data-user_status");
+            let v_user_status_array = v_user_status_str.split("_");
+            let v_user_status_new;
             if(v_user_status_array[1]==2){
                 v_user_status_new = 1;
             }else{
@@ -548,7 +522,7 @@ if(isset($_SESSION['sectionIDCheck'])){
         }
 
         $(document).on('click','.appUserConfig',function(){
-            var v_userID = $(this).attr("data-user_id");
+            let v_userID = $(this).attr("data-user_id");
 
             $.ajax({
                 url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appComboSystemUserProfile",
@@ -561,7 +535,7 @@ if(isset($_SESSION['sectionIDCheck'])){
                     },
                 success: function(d)
                 {
-                    var v_data = d.apiData;
+                    let v_data = d.apiData;
                     $.docData.profileList = "";
                     $.each(v_data.rsData, function (key, val)
                     {
@@ -657,7 +631,6 @@ if(isset($_SESSION['sectionIDCheck'])){
                         },
                     success: function(d)
                     {
-
                         if(d.apiData.status === true)
                         {
                             toastr["success"]("Usuário "+v_userName+" inserido(a) com sucesso.", "Success");

@@ -236,7 +236,6 @@ class appUserData extends appUserControl
             if(is_null($v_userID) || empty($v_userID))
             {
                 $v_return['apiData']['status'] = false;
-                return $v_return;
             }
             else
             {

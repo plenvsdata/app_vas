@@ -18,43 +18,24 @@ $v_formData['userID'] = $v_userID;
 $v_apiData = new appUserData();
 $v_userResult = $v_apiData->appUserAllInfo($v_formData);
 $v_userInfo = $v_userResult['main']['rsData'][0];
-
 if(!$v_userInfo)
 {
     $_SESSION['sectionIDCheck'] = false;
     echo '<script>window.location="'.$GLOBALS['g_appRoot'].'/CRM/Users"</script>';
 }
 
-$v_userAddress = ($v_userResult['address']['rsTotal'] > 0) ? $v_userResult['address']['rsData'][0] : null;
-$v_userSocial = $v_userResult['social']['rsData'];
-
 if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_avatar.png')){
-    $v_avatarFolder = $GLOBALS['g_appRoot']."/__appFiles/".$_SESSION['userClnt']."/_userAvatar/".$v_userInfo['user_avatar'];
-    if(!file_exists(__DIR__."/../../__appFiles/".$_SESSION['userClnt']."/_userAvatar/".$v_userInfo['user_avatar']))
+    $v_avatarFolder = $GLOBALS['g_appRoot']."/__appFiles/".$_SESSION['userID']."/_userAvatar/".$v_userInfo['user_avatar'];
+    if(!file_exists(__DIR__."/../../__appFiles/".$_SESSION['userID']."/_userAvatar/".$v_userInfo['user_avatar']))
     {
-        $v_avatarFolder = $GLOBALS['g_appRoot']."/appImages/defaultImages/".$v_userInfo['gender_avatar'];
+        $v_avatarFolder = $GLOBALS['g_appRoot']."/appImages/defaultImages/default_avatar.png";
     }
 }else{
     $v_avatarFolder = $GLOBALS['g_appRoot']."/appImages/defaultImages/default_avatar.png";
 }
 
-if( !empty($v_userInfo['user_birthday']) && $v_userInfo['user_birthday'] != '0000-00-00'){
-    $v_userBirthdate = $v_userInfo['user_birthday'];
-}else{
-    $v_userBirthdate = '';
-}
-$v_altFormat = '';
-if($v_userInfo['user_locale_country_id']==2){
-    $v_altFormat.='M. j, Y';
-}else{
-    $v_altFormat.='d/m/Y';
-}
-
 //Combos
 $v_comboData = new appCombo();
-$v_comboFileType = $v_comboData->comboFileType();
-
-$v_addressMap = "https://www.google.com/maps/embed/v1/place?key=AIzaSyDQn5-gHSym_Az_ssLQ7FNdFACYJhs6ZGg&q=";
 ?>
 <style>
     .iconColor
@@ -197,9 +178,9 @@ $v_addressMap = "https://www.google.com/maps/embed/v1/place?key=AIzaSyDQn5-gHSym
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/Welcome">Home</a></li>
-                <li class="breadcrumb-item">System Settings</li>
-                <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/System/Users">Users</a></li>
-                <li class="breadcrumb-item active">User Details</li>
+                <li class="breadcrumb-item">Configurações</li>
+                <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/System/Users">Usuário</a></li>
+                <li class="breadcrumb-item active">Detalhes do Usuário</li>
             </ol>
         </div>
     </div>
@@ -250,67 +231,6 @@ $v_addressMap = "https://www.google.com/maps/embed/v1/place?key=AIzaSyDQn5-gHSym
                             <h6 class="card-subtitle"><?=$v_userInfo['access_profile_desc']?></h6>
                         </div>
                     </div>
-                    <div><hr></div>
-                    <div class="card-body">
-
-                        <small class="text-muted p-t-20 db">Address</small>
-                        <div class="appUserAddress">
-                            <?php
-                            if($v_userAddress)
-                            {
-                                ?>
-                                <div class="addressDataInfo" data-address_id="<?=$v_userAddress['address_id']?>">
-                                    <h6>
-                                        <small>
-                                            <? if($v_userAddress['address_main'] == 1){ ?>
-                                                <!--<li class="fa fa-star ocsStar" data-toggle="tooltip" data-placement="top" title="Main Address"></li>-->
-                                            <? } ?>
-                                            <span>
-                                                    <?=$v_userAddress['full_address']?>, <?=$v_userAddress['state_code']?> <?=$v_userAddress['zip_code']?>
-                                                </span>
-                                            &nbsp;<i class="fa fa-pencil iconColor editUserAddress" aria-hidden="true" data-address_id="<?=$v_userAddress['address_id']?>" data-address_main="<?=$v_userAddress['address_main']?>" data-country_id="<?=$v_userAddress['country_id']?>" data-state_id="<?=$v_userAddress['state_id']?>" data-city_id="<?=$v_userAddress['city_id']?>" data-full_address="<?=$v_userAddress['full_address']?>" data-complement="<?=$v_userAddress['complement']?>" data-zip_code="<?=$v_userAddress['zip_code']?>"></i>
-                                        </small>
-                                    </h6>
-                                    <div class="map-box">
-                                        <iframe src="<?=$v_addressMap?><?=$v_userAddress['address_google']?>" width="100%" height="150" frameborder="0" style="border:0" allowfullscreen></iframe>
-                                    </div>
-                                    <hr>
-                                </div>
-                                <?php
-                            }
-                            else
-                            {
-                                ?>
-                                <h6><small>No Address Available</small></h6>
-                                <?php
-                            }
-                            ?>
-                        </div>
-
-                        <small class="text-muted p-t-20 db">Social Profile <i class="fa fa-plus-circle iconColor addUserSocial" aria-hidden="true"></i></small>
-                        <div class="appUserSocial">
-                            <?php
-                            if($v_userResult['social']["rsTotal"] > 0)
-                            {
-                                foreach ($v_userSocial as $key=>$value)
-                                {
-                                    ?>
-                                    <div style="display: table-cell; padding: 3px!important; position: relative;" class="socialDivData div_<?=strtolower($value['social_type_desc'])?>">
-                                        <a href="<?=$value['social_address']?>" target="_blank" class="btn btn-circle btn-secondary socialMediaData"><i class="fa <?=$value['social_icon']?>"></i></a>
-                                        <small class="pull-left"><i class="fa fa-trash iconColor userSocialDel" data-social_id="<?=$value['social_id']?>" data-social_type="<?=$value['social_type_desc']?>" style="position: absolute; bottom:0!important;" aria-hidden="true"></i></small>
-                                    </div>
-                                    <?php
-                                }
-                            }
-                            else
-                            {
-                                ?>
-                                <h6><small>No Social Media Available</small></h6>
-                                <?php
-                            }
-                            ?>
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -318,7 +238,7 @@ $v_addressMap = "https://www.google.com/maps/embed/v1/place?key=AIzaSyDQn5-gHSym
                 <div class="card">
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs profile-tab" role="tablist">
-                        <li class="nav-item"> <a class="nav-link tabProfile active" data-toggle="tab" href="#profile" role="tab">Profile</a> </li>
+                        <li class="nav-item"> <a class="nav-link tabProfile active" data-toggle="tab" href="#profile" role="tab">Perfil</a> </li>
                     </ul>
                     <!-- Tab panes -->
                     <div class="tab-content">
@@ -326,7 +246,7 @@ $v_addressMap = "https://www.google.com/maps/embed/v1/place?key=AIzaSyDQn5-gHSym
                             <div class="card-body">
                                 <div class="row m-t-30">
                                     <div class="col-md-3 col-xs-12 b-r">
-                                        <strong class="userNameTitle">Full Name
+                                        <strong class="userNameTitle">Nome completo
                                             <small>
                                                 <i class="fa fa-pencil iconColor editUserNameTitle" data-title_id="<?=$v_userInfo['user_id']?>" aria-hidden="true"></i>
                                             </small>
@@ -335,7 +255,7 @@ $v_addressMap = "https://www.google.com/maps/embed/v1/place?key=AIzaSyDQn5-gHSym
                                         <p class="text-muted userNameData"><?=$v_userInfo['user_name']?></p>
                                     </div>
                                     <div class="col-md-3 col-xs-12 b-r">
-                                        <strong class="nicknameTitle">Nickname
+                                        <strong class="nicknameTitle">Conhecido por
                                             <small>
                                                 <i class="fa fa-pencil iconColor editNicknameTitle" data-title_id="<?=$v_userInfo['user_id']?>" aria-hidden="true"></i>
                                             </small>
@@ -343,30 +263,6 @@ $v_addressMap = "https://www.google.com/maps/embed/v1/place?key=AIzaSyDQn5-gHSym
                                         <br>
                                         <p class="text-muted nicknameData"><?=$v_userInfo['user_nickname']?></p>
                                     </div>
-                                    <div class="col-md-3 col-xs-12 b-r">
-                                        <strong class="genderTitle">Gender
-                                            <small>
-                                                <i class="fa fa-pencil iconColor editGender" aria-hidden="true"></i>
-                                            </small>
-                                        </strong>
-                                        <br>
-                                        <p class="text-muted genderData" data-gender_id="<?=$v_userInfo['gender_id']?>"><?=$v_userInfo['gender_desc']?></p>
-                                    </div>
-                                    <!--INICIO Criando novo Birthday-->
-
-                                    <div class="col-md-3 col-xs-12 b-r">
-                                        <strong class="birthdayTitle">Birthday
-                                            <small>
-                                                <i class="fa fa-pencil iconColor editBirthday" aria-hidden="true"></i>
-                                            </small>
-                                            <small>
-                                                <i class="fa fa-trash iconColor closeBirthday" aria-hidden="true"></i>
-                                            </small>
-                                        </strong>
-                                        <br>
-                                        <input  id="regUserBirthday" type="text" placeholder="No Birthday added." readonly="readonly" value="<?=$v_userBirthdate?>" style="width: 50px!important; background-color: #0b67cd!important;">
-                                    </div>
-                                    <!--FIM Criando novo Birthday-->
                                 </div>
                                 <hr>
                                 <div class="row m-t-30">
@@ -380,16 +276,16 @@ $v_addressMap = "https://www.google.com/maps/embed/v1/place?key=AIzaSyDQn5-gHSym
                                         <p class="text-muted userTitleData"><?=$v_userInfo['user_login']?></p>
                                     </div>
                                     <div class="col-md-4 col-xs-12 b-r">
-                                        <strong class="phoneTitle">Mobile
+                                        <strong class="phoneTitle">Telefone
                                             <small>
-                                                <i class="fa fa-pencil iconColor editPhoneTitle"  data-mobile_country_id="<?=$v_userInfo['mobile_country_id']?>" data-title_id="<?=$v_userInfo['user_phone']?>" aria-hidden="true"></i>
+                                                <i class="fa fa-pencil iconColor editPhoneTitle" data-mobile_country_id="" data-title_id="<?=$v_userInfo['user_phone']?>" aria-hidden="true"></i>
                                             </small>
                                         </strong>
                                         <br>
-                                        <span class="text-muted phoneCode"><?=$v_userInfo['country_phone_code']?> </span><span class="text-muted phoneData"><?=$v_userInfo['user_phone']?></span>
+                                        <span class="text-muted phoneCode"> </span><span class="text-muted phoneData"><?=$v_userInfo['user_phone']?></span>
                                     </div>
                                     <div class="col-md-3 col-xs-12 b-r">
-                                        <strong class="nameTitle">Password
+                                        <strong class="nameTitle">Senha
                                             <small>
                                                 <i class="fa fa-pencil iconColor editPassword" aria-hidden="true"></i>
                                             </small>
@@ -412,16 +308,11 @@ $v_addressMap = "https://www.google.com/maps/embed/v1/place?key=AIzaSyDQn5-gHSym
 
 <script type="text/javascript">
     $.docData = {
-        countryListPhone : null,
-        countryList : null,
         phoneCheck: false,
         zipCheck: false,
         phoneMask: null,
         divMaps: "<?=$v_addressMap?>",
-        stateLoad: true,
-        cityLoad: true,
         maxFiles:1,
-        currentBirthday: "<?=$v_userBirthdate?>"
     };
 
     let v_phoneClean,v_countryID,v_countryPhoneCode,v_zipcodeClean,v_countryCode;
@@ -603,28 +494,6 @@ $v_addressMap = "https://www.google.com/maps/embed/v1/place?key=AIzaSyDQn5-gHSym
     }
 
     $(document).ready(function () {
-        getCountryList();
-
-        $(document).on('change','#countryID',function() {
-            $('.popover').find('#stateID').prop('disabled',true).selectpicker({ 'title':'Loading States...' }).selectpicker('refresh');
-            $('.popover').find('#cityID').empty().prop('disabled',true).selectpicker({ 'title':'Select City' }).selectpicker('refresh');
-            $('.userZipCode').val("");
-            $('.userFullAddress').val("");
-            $('.userAddressComplement').val("");
-            let v_countryID = $('.popover').find('#countryID').selectpicker('val');
-            let v_zipMask = $('.popover').find('#countryID option:selected').attr('data-zipcode_mask');
-            $('.userZipCode').mask(v_zipMask,v_zipmaskOptions);
-            getStateList(v_countryID);
-        });
-
-        $(document).on('change','.userAddressState',function() {
-            let v_stateID = $('.popover').find('#stateID').selectpicker('val');
-            getCityList(v_stateID);
-        });
-
-        $(document).on('change','.userAddressCity',function() {
-            $('.userAddressCity option[value="0"]').remove();
-        });
 
         toastr.options = {
             "closeButton": false,
