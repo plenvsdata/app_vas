@@ -195,7 +195,7 @@ $v_comboData = new appCombo();
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h4 class="modal-title">Add New Photo</h4>
+                                            <h4 class="modal-title">Adicionar Foto</h4>
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                                         </div>
                                         <div class="modal-body">
@@ -214,12 +214,11 @@ $v_comboData = new appCombo();
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button id="userPhotoCancel" type="button" class="btn btn-sm btn-danger waves-effect" data-dismiss="modal">Cancelar</button>
-                                                        <button id="userPhotoSave" type="button" class="btn btn-sm btn-success waves-effect waves-light">Adicionar Arquivo</button>
+                                                        <button id="userPhotoSave" type="button" class="btn btn-sm btn-success waves-effect waves-light">Adicionar arquivo</button>
                                                     </div>
                                                 </form>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -304,14 +303,34 @@ $v_comboData = new appCombo();
 </div>
 
 <div id="popoverData" style="display: none"></div>
-
+<!-- Modal Password-->
+<div class="form-content" style="display:none;">
+    <form class="form" role="form">
+        <div class="form-group has-feedback curPwdDiv" id="curPwdDiv">
+            <label for="curPwd">Senha Atual</label>
+            <input type="password" class="form-control" id="curPwd" name="curPwd" placeholder="Senha Atual">
+        </div>
+        <div class="form-group has-feedback newPwdDiv" id="newPwdDiv">
+            <label for="newPwd">Senha Nova<span class="newPwdLabel text-danger hidden"></span></label><br>
+            <input type="password" class="form-control" id="newPwd" name="newPwd" placeholder="Senha Nova" aria-describedby="newPwdStatus">
+            <span class="glyphicon glyphicon-ok form-control-feedback"  style="margin-left: -180px!important;"></span>
+            <span id="newPwdStatus" class="sr-only">(success)</span>
+        </div>
+        <div class="form-group has-feedback rePwdDiv" id="rePwdDiv">
+            <label for="rePwd">Confirme Senha</label>
+            <input type="password" class="form-control" id="rePwd" name="rePwd" placeholder="Confirme Senha" aria-describedby="rePwdStatus"><br>
+            <span class="glyphicon glyphicon-ok form-control-feedback"  style="margin-left: -180px!important;"></span>
+            <span id="rePwdStatus" class="sr-only">(success)</span>
+        </div>
+    </form>
+</div>
+<!-- End Modal Password-->
 
 <script type="text/javascript">
     $.docData = {
         phoneCheck: false,
         zipCheck: false,
         phoneMask: null,
-        divMaps: "<?=$v_addressMap?>",
         maxFiles:1,
     };
 
@@ -349,150 +368,6 @@ $v_comboData = new appCombo();
         }
     };
 
-    let v_zipmaskOptions =  {
-        onComplete: function(zipcode) {
-            $.docData.zipCheck = true;
-            console.log("true");
-        },
-        onKeyPress: function(zipcode, event, currentField, v_zipmaskOptions){
-
-            v_countryCode = $('.popover').find('.userAddressCountry option:selected').attr('data-area_code');
-            v_zipcodeClean = String($('.popover').find('.userZipCode').cleanVal());
-            $.docData.zipCheck = validateZipData(v_zipcodeClean,v_countryPhoneCode);
-        },
-        onChange: function(zipcode){
-            //console.log('phone changed! ', phone);
-        },
-        onInvalid: function(val, e, f, invalid, v_zipmaskOptions){
-            $.docData.zipCheck = false;
-        }
-    };
-
-    function getCountryList(){
-        let v_countryListPhone = "";
-        let v_countryList = "";
-        $.ajax( {
-            url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appComboSystemCountry",
-            method: "POST",
-            data:{
-                method : "POST",
-                type : "json",
-                randData: Math.floor((Math.random() * 999999) + 1)
-            },
-            dataType: "JSON",
-            success:function(d)
-            {
-                $.each(d.rsData,function (i,v)
-                {
-                    v_countryListPhone += '<option value="'+v.country_id+'" data-country_code="'+v.country_code+'" data-phone_mask="'+v.phone_mask+'" data-area_code="'+v.country_phone_code+'">('+v.country_phone_code+') '+v.country_desc+'</option>';
-                    v_countryList += '<option value="'+v.country_id+'"  data-country_code="'+v.country_code+'" data-zipcode_mask="'+v.zipcode_mask+'" data-area_code="'+v.country_phone_code+'" data-locale="'+v.locale+'">'+v.country_desc+'</option>';
-                });
-            },
-            complete:function() {
-                $.docData.countryListPhone = v_countryListPhone;
-                $.docData.countryList = v_countryList;
-            }
-        });
-    }
-
-    function getStateList(countryID,stateID){
-        let v_stateList = "";
-        let v_stateSelect;
-        if(typeof stateID === 'undefined')
-        {
-            v_stateSelect = null;
-        }
-        else
-        {
-            v_stateSelect = stateID;
-        }
-
-        if($.docData.stateLoad === true) {
-            $.docData.stateLoad = false;
-            $.ajax({
-                url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appComboSystemState",
-                method: "POST",
-                data: {
-                    method: "POST",
-                    type: "json",
-                    countryID: countryID,
-                    randData: Math.floor((Math.random() * 999999) + 1)
-                },
-                dataType: "JSON",
-                success: function (d) {
-                    $.each(d.rsData, function (i, v) {
-                        v_stateList += '<option value="' + v.state_id + '" data-state_code="' + v.state_code + '">' + v.state_desc + '</option>';
-                    });
-                },
-                complete: function () {
-                    $.docData.stateLoad = true;
-                    $('.popover').find('#stateID').empty().html(v_stateList);
-                    if(v_stateSelect === null)
-                    {
-                        $('.popover').find('#stateID').prop('disabled', false).selectpicker({'title': 'Select State'}).selectpicker('render').selectpicker('refresh');
-                    }
-                    else
-                    {
-                        $('.popover').find('#stateID').prop('disabled', false);
-                        $('.userAddressState').selectpicker('render').val(stateID).selectpicker('refresh');
-                        $('.popover').find('.userAddressPlaceholderState').remove();
-                    }
-                }
-            });
-        }
-    }
-
-    function getCityList(stateID,cityID){
-        let v_cityList = "";
-        let v_citySelect;
-        if(typeof cityID === 'undefined')
-        {
-            v_citySelect = null;
-        }
-        else
-        {
-            v_citySelect = cityID;
-        }
-
-        if(stateID === "") { return false; }
-
-        if($.docData.cityLoad === true) {
-            $.docData.cityLoad = false;
-            $.ajax({
-                url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appComboSystemCity",
-                method: "POST",
-                data: {
-                    method: "POST",
-                    type: "json",
-                    stateID: stateID,
-                    randData: Math.floor((Math.random() * 999999) + 1)
-                },
-                dataType: "JSON",
-                success: function (d) {
-                    $.each(d.rsData, function (i, v) {
-                        v_cityList += '<option value="' + v.city_id + '">' + v.city_desc + '</option>';
-                    });
-                },
-                complete: function () {
-                    $.docData.cityLoad = true;
-                    $('.popover').find('#cityID').empty().html(v_cityList);
-                    if(v_citySelect === null)
-                    {
-                        $('.popover').find('#cityID').prop('disabled', false).selectpicker({'title': 'Select City'}).selectpicker('render').selectpicker('refresh');
-                    }
-                    else
-                    {
-                        $('.popover').find('#cityID').prop('disabled', false);
-                        $('.userAddressCity').selectpicker('render').val(cityID).selectpicker('refresh');
-                        $('.popover').find('.userAddressPlaceholderCity').remove();
-                    }
-
-
-                }
-            });
-        }
-    }
-
     $(document).ready(function () {
 
         toastr.options = {
@@ -521,9 +396,8 @@ $v_comboData = new appCombo();
             $(".popover").css("width","100%!important");
         });
 
-        //--Edit User
         $('.editUserNameTitle').popover({
-            title: '<div style="width:100%!important;">Edit Full Name<i class="fa fa-times fa-pull-right iconColor popoverClose" aria-hidden="true"></i></div>',
+            title: '<div style="width:100%!important;">Editar Nome Completo<i class="fa fa-times fa-pull-right iconColor popoverClose" aria-hidden="true"></i></div>',
             content : function()
             {
                 $('.popover').popover('hide');
@@ -531,7 +405,7 @@ $v_comboData = new appCombo();
                 let v_userID = $('#userID').val();
                 let v_userName = $(".userNameData").text();
                 let v_return = '<div class="input-group">'+
-                    '<input class="form-control newUserName" data-user_id="'+v_userID+'" style="width: 250px!important;" placeholder="New Full Name" value="'+v_userName+'">'+
+                    '<input class="form-control newUserName" data-user_id="'+v_userID+'" style="width: 250px!important;" placeholder="Novo Nome Completo" value="'+v_userName+'">'+
                     '<div class="input-group-btn">'+
                     '<button type="button" class="btn btn-success saveUserName" style="height: 38px!important;">'+
                     '<span class="fa fa-lg fa-check"></span>'+
@@ -554,12 +428,12 @@ $v_comboData = new appCombo();
 
             if(v_userName.length < 3)
             {
-                toastr["warning"](v_title+" too small. Fix it and try again.", "Attention!");
+                toastr["warning"](v_title+" muito curto. Ajuste e tente novamente.", "Atenção!");
             }
             else
             {
                 $.ajax({
-                    url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserInfo",
+                    url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserAccess",
                     type: "POST",
                     dataType: "json",
                     data:
@@ -571,18 +445,20 @@ $v_comboData = new appCombo();
                         },
                     success: function (d) {
                         if (d.status === true) {
-                            toastr["success"](v_title+" " + v_userName + " updated.", "Success");
+                            toastr["success"](v_title+" " + v_userName + " atualizado.", "Sucesso");
                             $('.userNameData').text(v_userName);
                             $('.txtName').text(v_userName);
+                            $(".userDetailTitle").html(v_userName);
                             $('.popover').popover('hide');
+
                         }
                         else {
-                            toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
+                            toastr["error"]("Ocorreu um erro. Tente novamente.", "Erro!");
                             $('.popover').popover('hide');
                         }
                     },
                     error: function () {
-                        toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
+                        toastr["error"]("Ocorreu um erro. Tente novamente.", "Erro!");
                         $('.popover').popover('hide');
                     }
                 });
@@ -615,18 +491,18 @@ $v_comboData = new appCombo();
         });
 
         $(document).on('click','.saveNickname',function () {
-            let v_userID = $('#userID').val();
-            let v_nickname = $.trim($('.newNickname').val());
-            let v_title = $('.nicknameTitle').text();
+            var v_userID = $('#userID').val();
+            var v_nickname = $.trim($('.newNickname').val());
+            var v_title = $('.nicknameTitle').text();
 
             if(v_nickname.length < 3)
             {
-                toastr["warning"](v_title+" too small. Fix it and try again.", "Attention!");
+                toastr["warning"](v_title+" muito curto. Ajuste e tente novamente.", "Atenção!");
             }
             else
             {
                 $.ajax({
-                    url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserInfo",
+                    url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserAccess",
                     type: "POST",
                     dataType: "json",
                     data:
@@ -638,17 +514,17 @@ $v_comboData = new appCombo();
                         },
                     success: function (d) {
                         if (d.status === true) {
-                            toastr["success"](v_title+" " + v_nickname + " updated.", "Success");
+                            toastr["success"](v_title+" " + v_nickname + " atualizado.", "Sucesso");
                             $('.nicknameData').text(v_nickname);
                             $('.popover').popover('hide');
                         }
                         else {
-                            toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
+                            toastr["error"]("Ocorreu um erro. Tente novamente.", "Erro!");
                             $('.popover').popover('hide');
                         }
                     },
                     error: function () {
-                        toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
+                        toastr["error"]("Ocorreu um erro. Tente novamente.", "Erro!");
                         $('.popover').popover('hide');
                     }
                 });
@@ -656,20 +532,15 @@ $v_comboData = new appCombo();
         });
 
         $('.editPhoneTitle').popover({
-            title: '<div>Edit Mobile <i class="fa fa-times fa-pull-right iconColor popoverClose" aria-hidden="true"></i></div>',
+            title: '<div>Editar Telefone<i class="fa fa-times fa-pull-right iconColor popoverClose" aria-hidden="true"></i></div>',
             content : function()
             {
                 $('.popover').popover('hide');
                 $('.popover').remove();
-                var v_userID = $('#userID').val();
-                var v_phone = $(".phoneData").text();
-                var v_return = '<div class="input-group">';
-                v_return += '<select class="form-control custom-select userMobileCountry customBootstrapSelect" name="countryID" id="countryID" data-live-search="true" data-live-search-normalize="true" data-container="body">';
-                v_return += $.docData.countryListPhone;
-                v_return += '</select>';
-                v_return += '</div>';
-                v_return += '<div class="input-group">';
-                v_return += '<input class="form-control newPhone" data-user_id="'+v_userID+'" placeholder="New Mobile" value="'+v_phone+'">'+
+                let v_userID = $('#userID').val();
+                let v_phone = $(".phoneData").text();
+                let v_return  = '<div class="input-group">';
+                v_return += '<input class="form-control newPhone" data-user_id="'+v_userID+'" placeholder="Novo Telefone" value="'+v_phone+'">'+
                     '<div class="input-group-btn">'+
                     '<button type="button" class="btn btn-success savePhone" style="height: 38px!important;">'+
                     '<span class="fa fa-lg fa-check"></span>'+
@@ -677,6 +548,7 @@ $v_comboData = new appCombo();
                     '</div>'+
                     '</div>';
                 return v_return;
+
             },
             html: true,
             placement: 'top',
@@ -686,34 +558,22 @@ $v_comboData = new appCombo();
         });
 
         $('.editPhoneTitle').on("shown.bs.popover",function (){
-            let v_countryID_default = $(this).attr('data-mobile_country_id');
-            $('.popover').find('#countryID').val(v_countryID_default);
-            $('.contactAddressCountry').selectpicker();
-            let v_phoneMask = $('.popover').find('#countryID option:selected').attr('data-phone_mask');
-            $(".newPhone").mask(v_phoneMask);
-        });
-
-        $(document).on('change','#countryID',function() {
-            $(".newPhone").val("");
-            let v_phoneMask = $('.popover').find('#countryID option:selected').attr('data-phone_mask');
-            $(".newPhone").mask(v_phoneMask);
+            $(".newPhone").mask('(00) 00000-0000');
         });
 
         $(document).on('click','.savePhone',function () {
             let v_userID = $('#userID').val();
             let v_phone = $.trim($('.newPhone').val());
             let v_title = $('.phoneTitle').text();
-            let v_countryID = $("#countryID").val();
-            let v_countryCode = $('.popover').find('#countryID option:selected').attr('data-area_code');
 
             if(v_phone.length < 3)
             {
-                toastr["warning"](v_title+" too small. Fix it and try again.", "Attention!");
+                toastr["warning"](v_title+" muito curto. Corrija e tente novamente.", "Atenção!");
             }
             else
             {
                 $.ajax({
-                    url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserInfo",
+                    url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserAccess",
                     type: "POST",
                     dataType: "json",
                     data:
@@ -721,558 +581,49 @@ $v_comboData = new appCombo();
                             method: "PUT",
                             userID: v_userID,
                             userData: v_phone,
-                            mobileCountryID:  v_countryID,
                             dataControl : 'updUserPhone',
                         },
                     success: function (d) {
                         if (d.status === true) {
                             $('.popover').popover('hide');
-                            toastr["success"](v_title+" " + v_phone + " updated.", "Success");
+                            toastr["success"](v_title+" " + v_phone + " atualizado.", "Sucesso");
                             $('.phoneData').text(v_phone);
-                            $('.phoneCode').text(v_countryCode+' ');
-                            $('.editPhoneTitle').attr('data-mobile_country_id',v_countryID);
                             $('.editPhoneTitle').attr('data-title_id',v_phone);
                         }
                         else {
-                            toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
+                            toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
                             $('.popover').popover('hide');
                         }
                     },
                     error: function () {
-                        toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
+                        toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
                         $('.popover').popover('hide');
                     }
                 });
             }
         });
 
-        $(document).on('click', '.editGender', function () {
-
-            $('.popover').popover('hide');
-            $('.popover').remove();
-
-            let v_userID = $('#userID').val();
-            let v_genderID = $('.genderData').attr("data-gender_id");
-            let v_content = "";
-            let v_data;
-            let v_popover = $(this);
-
-            $.ajax({
-                url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appComboSystemGender",
-                method: "POST",
-                data:{
-                    method : "POST",
-                    type : "json"
-                },
-                dataType: "JSON",
-                success:function(d){
-                    v_data = d;
-                    v_content  = '<div class="input-group">';
-                    v_content += '<input type="hidden" class="genderID" name="genderID" id="genderID" value="'+v_genderID+'">';
-                    v_content += '<select class="form-control custom-select comboGenderData" style="width: 250px!important;" name="comboGenderData" id="comboGenderData">';
-
-                    $.each(v_data.rsData,function (i,v)
-                    {
-                        v_content += '<option value="'+v.gender_id+'">'+v.gender_desc+'</option>';
-                    });
-
-                    v_content += '</select>';
-                    v_content += '<div class="input-group-btn">';
-                    v_content += '<button type="button" class="btn btn-success saveGender" style="height: 38px!important; width: 47px!important;">';
-                    v_content += '<span class="fa fa-lg fa-check"></span>';
-                    v_content += '</button>';
-                    v_content += '</div>';
-                    v_content += '</div>';
-
-                    $("#popoverData").html(v_content);
-                    $(v_popover).popover({
-                        html: true,
-                        title: '<div style="width:100%!important;">Edit Gender<i class="fa fa-times fa-pull-right iconColor popoverClose" aria-hidden="true"></i></div>',
-                        container: 'body',
-                        sanitize: false,
-                        placement: 'top',
-                        content: $("#popoverData").html(),
-                        delay: 100
-                    });
-                    $.docData.periodPopover = true;
-                    $(v_popover).popover('show');
-                },
-                complete:function()
-                {
-                    $(v_popover).on("shown.bs.popover",function (){
-                        $('.comboGenderData').val(v_genderID);
-                    });
-
-
-                }
-            });
+        $(document).on('keypress',"#curPwd",function(e)
+        {
+            var v_key = e.keyCode;
+            if (v_key === 32){
+                e.preventDefault();
+            }
         });
 
-        $(document).on('click','.saveGender',function () {
-            let v_userID = $('#userID').val();
-            let v_genderID = $('.popover').find('.comboGenderData').val();
-            $(".genderData").attr('data-gender_id',v_genderID);
-            let v_popover = $('.popover');
-            let v_genderTitleText = $.trim(v_popover.find('#comboGenderData option:selected').text());
-
-            $.ajax({
-                url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserInfo",
-                type: "POST",
-                dataType: "json",
-                data: {
-                    method: "PUT",
-                    userID: v_userID,
-                    userData: v_genderID,
-                    dataControl : 'updUserGender'
-                },
-                success: function (d) {
-                    if (d.status === true)
-                    {
-                        toastr["success"]("Gender " + v_genderTitleText + " updated.", "Success");
-                        $('.genderData').text(v_genderTitleText);
-                        $('.popover').popover('hide');
-                    }
-                    else {
-                        toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                        $('.popover').popover('hide');
-                    }
-                },
-                error: function () {
-                    toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                    $('.popover').popover('hide');
-                }
-            });
-
+        $(document).on('keypress',"#newPwd",function(e)
+        {
+            var v_key = e.keyCode;
+            if (v_key === 32){
+                e.preventDefault();
+            }
         });
-
-        $(document).on("click",'.editUserAddress',function(){
-
-            let v_userID = $('#userID').val();
-            let v_addressID = $(this).attr('data-address_id');
-            let v_addressMain = 1;//$(this).attr('data-address_main');
-            let v_countryID = $(this).attr('data-country_id');
-            let v_stateID = $(this).attr('data-state_id');
-            let v_cityID = $(this).attr('data-city_id');
-            let v_fullAddress = $(this).attr('data-full_address');
-            let v_complement = $(this).attr('data-complement');
-            let v_zipCode = $(this).attr('data-zip_code');
-            let v_popover = $(this);
-            let v_content;
-            $("#popoverData").empty();
-            $('.popover').popover('hide');
-            $('.popover').remove();
-
-            v_content  = '<div class="input-group">';
-            /*
-            v_content += '<button type="button" class="btn btn-sm btn-light userMainAddress" style="height:38px!important;width:47px!important;" data-toggle="tooltip" data-placement="top" title="Set as Main Address">';
-            v_content += '<span class="fa fa-lg ';
-
-            if(parseInt(v_addressMain) === 0)
-            {
-                v_content += 'fa-star-o';
+        $(document).on('keypress',"#rePwd",function(e)
+        {
+            var v_key = e.keyCode;
+            if (v_key === 32){
+                e.preventDefault();
             }
-            else
-            {
-                v_content += 'fa-star';
-            }
-
-            v_content += ' starAddress" style="color:#ffe821" data-main_address="'+v_addressMain+'"></span>';
-            v_content += '</button>';
-            */
-
-            v_content += '<select class="form-control custom-select userAddressCountry customBootstrapSelect" style="display:none!important; " name="countryID" id="countryID" data-live-search="true" data-live-search-normalize="true" data-container="body" data-style="btn-ocsCountry">';
-            v_content += $.docData.countryList;
-            v_content += '</select>';
-            v_content += '<button type="button" class="btn btn-success updateAddress" style="height:38px!important; width: 47px!important; border-radius: 0 5px 5px 0!important;">';
-            v_content += '<span class="fa fa-lg fa-check"></span>';
-            v_content += '</button>';
-            v_content += '</div>';
-
-            v_content += '<div class="input-group" style="margin-top:10px!important;width:100%!important;">';
-            v_content += '<div class="col-md-6" style="padding-left: 0!important; padding-right:5px!important; height: 38px;!important;">';
-            v_content += '<select class="form-control custom-select userAddressPlaceholderState" style="display:none!important;width:100%!important;" name="placeholderID" id="placeholderID" data-style="btn-ocsStateCity" data-title="Loading..." disabled></select>';
-            v_content += '<select class="form-control custom-select userAddressState" style="display:none!important;width:100%!important;" name="stateID" id="stateID" data-live-search="true" data-live-search-normalize="true" data-container="body" data-style="btn-ocsStateCity" data-title="Select a State" disabled>';
-            v_content += getStateList(v_countryID,v_stateID);
-            v_content += '</select>';
-            v_content += '</div>';
-            v_content += '<div class="col-md-6" style="padding-right: 0!important; padding-left:5px!important;">';
-            v_content += '<div style="height: 38px!important;">'
-            v_content += '<select class="form-control custom-select userAddressPlaceholderCity" style="display:none!important;width:100%!important;" name="placeholderID" id="placeholderID" data-style="btn-ocsStateCity" data-title="Loading..." disabled></select>';
-            v_content += '<select class="form-control custom-select userAddressCity" style="display:none!important;width:100%!important;" name="cityID" id="cityID" data-live-search="true" data-live-search-normalize="true" data-container="body" data-style="btn-ocsStateCity" data-title="Select a State first" disabled>';
-            v_content += getCityList(v_stateID,v_cityID);
-            v_content += '</select>';
-            v_content += '</div>';
-            v_content += '</div>';
-            v_content += '</div>';
-
-            v_content += '<div class="input-group" style="margin-top:10px!important;width:100%!important;">';
-            v_content += '<div class="col-md-12" style="padding-left: 0!important; padding-right:0!important;">';
-            v_content += '<input class="form-control userFullAddress" id="fullAddress" name="fullAddress" style="width:100%!important;" placeholder="Full Address" value="'+v_fullAddress+'">';
-            v_content += '</div>';
-            v_content += '</div>';
-
-            v_content += '<div class="input-group" style="margin-top:10px!important;width:100%!important;">';
-            v_content += '<div class="col-md-8" style="padding-left: 0!important; padding-right:5px!important;">';
-            v_content += '<input class="form-control userAddressComplement" id="addressComplement" name="addressComplement" style="width:100%!important;" placeholder="Complement" value="'+v_complement+'">';
-            v_content += '</div>';
-            v_content += '<div class="col-md-4" style="padding-left: 5px!important; padding-right:0!important;">';
-            v_content += '<input class="form-control userZipCode" id="zipCode" name="zipCode" style="width:100%!important;" placeholder="Zip Code" value="'+v_zipCode+'">';
-            v_content += '<input type="hidden" id="addressID" name="addressID" value="'+v_addressID+'">';
-            v_content += '<input type="hidden" id="userID" name="userID" value="'+v_userID+'">';
-            v_content += '</div>';
-            v_content += '</div>';
-
-            $("#popoverData").html(v_content);
-            $(v_popover).popover({
-                html: true,
-                title: '<div style="width:500px!important;">Edit Address<i class="fa fa-times fa-pull-right iconColor popoverClose" aria-hidden="true"></i></div>',
-                container: 'body',
-                sanitize: false,
-                placement: 'top',
-                content: $("#popoverData").html(),
-                delay: 100
-            });
-            $(v_popover).on("shown.bs.popover",function (){
-                $('.popover').find('.userAddressPlaceholderState').selectpicker('refresh');
-                $('.popover').find('.userAddressPlaceholderCity').selectpicker('refresh');
-                $('.userMainAddress').tooltip();
-                $('.popover').find('#countryID').val(v_countryID).selectpicker('refresh');
-                let v_zipMask = $('.popover').find('#countryID option:selected').attr('data-zipcode_mask');
-                $('.userZipCode').mask(v_zipMask,v_zipmaskOptions);
-            });
-
-            $(v_popover).popover('show');
-
-        });
-
-        $(document).on('click','.updateAddress',function () {
-            $('.popover').find('#zipCode').keyup();
-            let v_userID = $('#userID').val();
-            let v_addressID = $('#addressID').val();
-            let v_userMainAddress = 1;//$('.popover').find('.starAddress').attr("data-main_address");
-            let v_userCountryID = $('.popover').find('#countryID').val();
-            let v_userCountryDesc = $.trim($('.popover').find('#countryID option:selected').text());
-            let v_userCountryCode = $.trim($('.popover').find('#countryID option:selected').attr("data-country_code"));
-            let v_userStateID = $('.popover').find('#stateID').selectpicker('val');
-            let v_userStateDesc = $.trim($('.popover').find('#stateID option:selected').text());
-            let v_userStateCode = $.trim($('.popover').find('#stateID option:selected').attr("data-state_code"));
-            let v_userCityID = $('.popover').find('#cityID').selectpicker('val');
-            let v_userCityDesc = $.trim($('.popover').find('#cityID option:selected').text());
-            let v_userFullAddress = $('.popover').find('#fullAddress').val();
-            let v_userAddressComplement = $('.popover').find('#addressComplement').val();
-            let v_userZipCode = $('.popover').find('#zipCode').val();
-            let v_mapAddress = v_userFullAddress.replace(/\ /g,'+')+','+v_userCityDesc.replace(/\ /g,'+')+'+'+v_userStateCode.replace(/\ /g,'+')+','+v_userCountryDesc.replace(/\ /g,'+');
-            let v_countryCode = $('.popover').find('.userAddressCountry option:selected').attr('data-area_code');
-            let v_zipcodeClean = String($('.popover').find('#zipCode').cleanVal());
-            let v_addressInfo;
-
-            $.docData.zipCheck = validateZipData(v_zipcodeClean,v_countryCode);
-
-            if(v_userStateID === "")
-            {
-                toastr["warning"]("Select State and City", "Attention!");
-            }
-            else if(v_userCityID === "")
-            {
-                toastr["warning"]("Select City", "Attention!");
-            }
-            else if(v_userFullAddress.length < 5)
-            {
-                toastr["warning"]("Add a valid Address", "Attention!");
-            }
-            else if(!$.docData.zipCheck)
-            {
-                toastr["warning"]("Add a valid Zip Code", "Attention!");
-            }
-            else
-            {
-                $.ajax({
-                    url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserAddress",
-                    type: "POST",
-                    dataType: "json",
-                    data:
-                        {
-                            method: "PUT",
-                            userID: v_userID,
-                            addressID: v_addressID,
-                            mainAddress: v_userMainAddress,
-                            countryID: v_userCountryID,
-                            countryDesc: v_userCountryDesc,
-                            countryCode: v_userCountryCode,
-                            stateID: v_userStateID,
-                            stateDesc: v_userStateDesc,
-                            stateCode: v_userStateCode,
-                            cityID: v_userCityID,
-                            cityDesc: v_userStateDesc,
-                            fullAddress: v_userFullAddress,
-                            complement: v_userAddressComplement,
-                            zipCode: v_userZipCode
-                        },
-                    success: function (d) {
-
-                        if(Boolean(d.updateStatus) === true)
-                        {
-
-                            $("div.addressDataInfo[data-address_id='"+v_addressID+ "']").remove();
-
-                            v_addressInfo  = "<div class='addressDataInfo' data-address_id='"+v_addressID+"'>";
-                            v_addressInfo += "<h6><small>";
-
-                            if(parseInt(v_userMainAddress) === 1)
-                            {
-                                v_addressInfo += "<li class='fa fa-star ocsStar' data-toggle='tooltip' data-placement='top' title='Main Address'></li>";
-                            }
-
-                            v_addressInfo += "<span>"+v_userFullAddress+", "+v_userStateCode+" "+v_userZipCode+"</span>";
-                            v_addressInfo += "&nbsp;<i class='fa fa-pencil iconColor editUserAddress' aria-hidden='true' data-address_id='"+v_addressID+"'  data-address_main='"+v_userMainAddress+"' data-country_id='"+v_userCountryID+"' data-state_id='"+v_userStateID+"' data-city_id='"+v_userCityID+"' data-full_address='"+v_userFullAddress+"' data-complement='"+v_userAddressComplement+"' data-zip_code='"+v_userZipCode+"'></i>&nbsp;";
-                            //v_addressInfo += "<i class='fa fa-trash iconColor delUserAddress' aria-hidden='true' data-address_id='"+v_addressID+"'></i>&nbsp;";
-                            v_addressInfo += "</small></h6>";
-                            v_addressInfo += "<div class='map-box'>";
-                            v_addressInfo += "<iframe src='"+$.docData.divMaps+v_mapAddress+"' width='100%' height='150' frameborder='0' style='border:0' allowfullscreen></iframe>";
-                            v_addressInfo += "</div>";
-                            v_addressInfo += "<hr>";
-                            v_addressInfo += "</div>";
-
-                            let v_addressQuantity = $("[class='addressDataInfo']").length;
-
-                            if(v_addressQuantity < 1)
-                            {
-                                $(".appUserAddress").empty();
-                                //$('.appUserAddress').append('<h6><small>No Address Available</small></h6>');
-                            }
-
-                            if(parseInt(v_userMainAddress) === 1)
-                            {
-                                if(v_addressQuantity > 1)
-                                {
-                                    $(".appUserAddress").prepend(v_addressInfo);
-                                }
-                                else
-                                {
-                                    $(".appUserAddress").append(v_addressInfo);
-                                }
-
-                            }
-                            else
-                            {
-                                if(v_addressQuantity > 1)
-                                {
-                                    $(".appUserAddress div:last-child").after(v_addressInfo);
-                                }
-                                else
-                                {
-                                    $(".appUserAddress").append(v_addressInfo);
-                                }
-                            }
-
-                            toastr["success"]("New Address added.", "Success");
-                            $('.popover').popover('hide');
-                        }
-                        else {
-                            toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                            $('.popover').popover('hide');
-                        }
-                    },
-                    error: function () {
-                        toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                        $('.popover').popover('hide');
-                    }
-                });
-            }
-
-        });
-
-        $('.addUserSocial').on("click",function(){
-
-            let v_userID = $('#userID').val();
-            let v_popover = $(this);
-            let v_content = "";
-            let v_count = 0;
-            $("#popoverData").empty();
-            $('.popover').popover('hide');
-            $('.popover').remove();
-
-            $.ajax( {
-                url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appComboSystemSocial",
-                method: "POST",
-                data:{
-                    method : "POST",
-                    type : "json",
-                    userID: v_userID,
-                    randData: Math.floor((Math.random() * 999999) + 1)
-                },
-                dataType: "JSON",
-                success:function(d){
-                    v_content  = '<div class="input-group">';
-                    v_content += '<select class="form-control custom-select userSocialType" style="width:250px!important;" name="socialTypeID" id="socialTypeID">';
-
-
-                    $.each(d.rsData,function (i,v)
-                    {
-                        v_socialCheck = $("."+v.social_icon).length;
-
-                        if(v_socialCheck < 1)
-                        {
-                            v_count++;
-                            v_content += '<option value="'+v.social_id+'" data-social_icon="'+v.social_icon+'">'+v.social_desc+'</option>';
-                        }
-                    });
-
-                    v_content += '</select>';
-                    v_content += '</div>';
-
-                    v_content += '<div class="input-group" style="margin-top: 10px!important; width: 100%!important;">';
-                    v_content += '<input class="form-control userSocialAddress" id="userSocialAddress" name="userSocialAddress" style="width: 250px!important;" placeholder="New Social Media" value="">';
-                    v_content += '<div class="input-group-btn">';
-                    v_content += '<button type="button" class="btn btn-success saveSocialMedia" style="height: 38px!important; width: 47px!important;">';
-                    v_content += '<span class="fa fa-lg fa-check"></span>';
-                    v_content += '</button>';
-                    v_content += '</div>';
-                    v_content += '</div>';
-
-                    $("#popoverData").html(v_content);
-                    $(v_popover).popover({
-                        html: true,
-                        title: '<div style="width:350px!important;">Add New Social Media<i class="fa fa-times fa-pull-right iconColor popoverClose" aria-hidden="true"></i></div>',
-                        container: 'body',
-                        sanitize: false,
-                        placement: 'top',
-                        content: $("#popoverData").html(),
-                        delay: 100
-                    });
-                    if(v_count === 0)
-                    {
-                        toastr["warning"]("All types of Social Media already added.", "Attention!");
-                        return false;
-                    }
-
-                    $(v_popover).popover('show');
-                },
-                complete:function()
-                {
-                    $(v_popover).on("shown.bs.popover",function (){
-
-                    });
-                }
-            });
-        });
-
-        $(document).on('click','.saveSocialMedia',function () {
-            let v_userID = $('#userID').val();
-            let v_userSocialTypeID = $('.popover').find('.userSocialType').val();
-            let v_userSocialAddress = $.trim($('.popover').find('#userSocialAddress').val());
-            let v_userSocialType = $.trim($('.popover').find('#socialTypeID option:selected').text());
-            let v_socialClass = v_userSocialType.toLowerCase();
-            let v_userSocialIcon = $.trim($('.popover').find('#socialTypeID option:selected').attr('data-social_icon'));
-            let v_socialInfo;
-
-            if(!validator.isURL(v_userSocialAddress))
-            {
-                toastr["warning"]("Add a valid social media url", "Attention!");
-            }
-            else
-            {
-                $.ajax({
-                    url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserSocial",
-                    type: "POST",
-                    dataType: "json",
-                    data:
-                        {
-                            method: "POST",
-                            userID: v_userID,
-                            socialTypeID: v_userSocialTypeID,
-                            socialAddress: v_userSocialAddress
-                        },
-                    success: function (d) {
-                        if(Boolean(d.status) === true)
-                        {
-                            v_socialInfo  = '<div style="display:table-cell;padding:3px!important;position:relative;" class="socialDivData div_'+v_socialClass+'">';
-                            v_socialInfo += '<a href="'+v_userSocialAddress+'" target="_blank" class="btn btn-circle btn-secondary socialMediaData">';
-                            v_socialInfo += '<i class="fa '+v_userSocialIcon+'"></i></a>';
-                            v_socialInfo += '<small class="pull-left"><i class="fa fa-trash iconColor userSocialDel pull-left" data-social_id="'+d.socialID+'" data-social_type="'+v_userSocialType+'" style="position: absolute; bottom:0!important;" aria-hidden="true"></i></small>';
-                            v_socialInfo += '</div>';
-
-                            if($(".socialDivData").length < 1)
-                            {
-                                $('.appUserSocial').empty();
-                            }
-
-
-                            $(".appUserSocial").append(v_socialInfo);
-                            toastr["success"]("New Social Media added.", "Success");
-                            $('.popover').popover('hide');
-                        }
-                        else {
-                            toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                            $('.popover').popover('hide');
-                        }
-                    },
-                    error: function () {
-                        toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                        $('.popover').popover('hide');
-                    }
-                });
-            }
-
-        });
-
-        $(document).on('click','.userSocialDel',function () {
-            let v_userID = $('#userID').val();
-            let v_socialID = $(this).attr('data-social_id');
-            let v_socialDesc = $(this).attr('data-social_type');
-            let v_socialClass = v_socialDesc.toLowerCase();
-
-            bootbox.confirm({
-                message: "Are you sure you want to remove <br/><h3 class='text-center'>"+v_socialDesc+"</h3>",
-                buttons: {
-                    confirm: {
-                        label: 'Yes',
-                        className: 'btn btn-success btn-sm'
-                    },
-                    cancel: {
-                        label: 'No',
-                        className: 'btn btn-danger btn-sm'
-                    }
-                },
-                callback: function (result) {
-                    if(result===true)
-                    {
-                        $.ajax({
-                            url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserSocial",
-                            type: "POST",
-                            dataType: "json",
-                            data:
-                                {
-                                    method: "DELETE",
-                                    userID: v_userID,
-                                    socialID: v_socialID
-                                },
-                            success: function(d)
-                            {
-                                if(d.deleteStatus === true)
-                                {
-                                    $(".div_"+v_socialClass).remove();
-
-                                    if($(".socialDivData").length < 1)
-                                    {
-                                        $('.appUserSocial').append('<h6><small>No Social Media Available</small></h6>');
-                                    }
-
-                                    toastr["success"](v_socialDesc+" removed.", "Success");
-                                }
-                                else
-                                {
-                                    toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                                }
-                            },
-                            error:function ()
-                            {
-                                toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                            }
-                        });
-                    }
-                }
-            });
         });
 
         $(document).on('click','.editPassword',function () {
@@ -1280,57 +631,110 @@ $v_comboData = new appCombo();
             let v_userID = $('#userID').val();
             let v_userName = $('.userNameData').text();
             let v_userLogin = $('#userLogin').val();
-            bootbox.dialog(
-                {
-                    title: 'User Password Reset',
-                    message:
-                        '<div class="row">'+
-                        '<div class="col-md-12">Attention!</div>'+
-                        '<div class="col-md-12">When click on confirm, the user\'s password will be reset and a new one will be send as a temporary password.</div>'+
-                        '</div>',
-                    buttons: {
-                        confirm: {
-                            label: 'Confirm',
-                            className: 'btn-success',
-                            callback: function ()
-                            {
-                                $.ajax({
-                                    url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserPasswordReset",
-                                    type: "POST",
-                                    dataType: "json",
-                                    data:
-                                        {
-                                            userID:v_userID,
-                                            userName:v_userName,
-                                            userLogin:v_userLogin,
-                                            method:"POST"
-                                        },
-                                    success: function(d)
-                                    {
-                                        if(d.sendEmail === true)
-                                        {
-                                            toastr["success"]("Password updated.", "Success");
-                                        }else{
-                                            toastr["warning"]("Password can't be reset. Try again.", "Attention!");
-                                        }
-
-                                    },
-                                    error: function(d)
-                                    {
-                                        toastr["warning"]("Password can't be reset. Try again.", "Attention!");
-                                    }
-                                });
+            let modal = bootbox.dialog({
+                title: "Editar Senha",
+                message: $(".form-content").html(),
+                buttons: [
+                    {
+                        label: "Salvar",
+                        className: "btn btn-sm btn-success pull-left",
+                        callback: function()
+                        {
+                            let form = modal.find(".form");
+                            let v_curPwd = modal.find("#curPwd").val();
+                            let v_newPwd = modal.find("#newPwd").val();
+                            let v_rePwd = modal.find("#rePwd").val();
+                            let v_erroCurPwd = false;
+                            let v_erroNewPwd = false;
+                            // Validate lowercase letters
+                            let lowerCaseLetters = /[a-z]/g;
+                            let upperCaseLetters = /[A-Z]/g;
+                            let numbers = /[0-9]/g;
+                            let specialChars = /[!@#$%&*?]/g;
+                            if(!v_curPwd.match(lowerCaseLetters) || !v_curPwd.match(upperCaseLetters) || !v_curPwd.match(numbers) || !v_curPwd.match(specialChars) || v_curPwd.length<8) {
+                                v_erroCurPwd = true;
+                                $(".curPwdDiv").addClass('has-danger');
+                                toastr["warning"]("A senha atual deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número, um char. especial e 8 ou mais caracteres.", "Atenção!");
+                            }else{
+                                $(".curPwdDiv").removeClass('has-danger');
                             }
-                        },
-                        cancel: {
-                            label: 'Cancel',
-                            className: 'btn-danger',
-                            callback: function () { return true; }
-                        }
-                    }
-                });
 
+                            if(v_newPwd != v_rePwd)
+                            {
+                                toastr["warning"]("A Nova Senha and Confirme a Senha devem ser iguais.", "Atenção!");
+                                $(".newPwdDiv").addClass('has-danger');
+                                v_erroNewPwd = true;
+                            }else if(!v_newPwd.match(lowerCaseLetters) || !v_newPwd.match(upperCaseLetters) || !v_newPwd.match(numbers) || !v_newPwd.match(specialChars) || v_newPwd.length<8){
+                                toastr["warning"]("A senha atual deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número, um char. especial e 8 ou mais caracteres.", "Atenção!");
+                                $(".newPwdDiv").addClass('has-danger');
+                                v_erroNewPwd = true;
+                            }else{
+                                $(".newPwdDiv").removeClass('has-danger');
+                            }
+
+                            if(v_erroCurPwd===true || v_erroNewPwd===true)
+                            {
+                                return false;
+                            }
+                            //alert('enviar ajax');return false;
+                            $.ajax( {
+                                url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserChangePassword",
+                                method: "POST",
+                                data:{
+                                    method : "POST",
+                                    type : "json",
+                                    userID : v_userID,
+                                    curPwd : v_curPwd,
+                                    newPwd : v_newPwd
+                                },
+                                dataType: "JSON",
+                                success:function(d)
+                                {
+                                    if(d.updateStatus===true)
+                                    {
+                                        toastr["success"]("Senha atualizada.", "Sucesso!");
+                                        modal.modal("hide");
+                                    }else{
+                                        if(d.msg == 'erro_pwd')
+                                        {
+                                            $(".curPwdDiv").addClass('has-danger');
+                                            toastr["warning"]("Senha atual incorreta.", "Atenção!");
+                                        }else if(d.msg == 'erro_format')
+                                        {
+                                            toastr["warning"]("A Nova Senha atual deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número, um char. especial e 8 ou mais caracteres.", "Atenção!");
+                                            $(".newPwdDiv").addClass('has-danger');
+                                        }
+                                    }
+                                },
+                                complete:function() {
+
+                                }
+                            });
+                            return false;
+                        }
+                    },
+                    {
+                        label: "Fechar",
+                        className: "btn btn-sm btn-danger pull-left",
+                        callback: function() {
+                            $(".curPwdDiv").removeClass('has-danger');
+                            $(".newPwdDiv").removeClass('has-danger');
+                        }
+
+                    }
+                ],
+                show: false,
+                onEscape: function() {
+                    $(".curPwdDiv").removeClass('has-danger');
+                    $(".newPwdDiv").removeClass('has-danger');
+                    modal.modal("hide");
+                }
+            });
+
+            modal.modal("show");
         });
+
+        let userPhotoDropzone;
 
         function dropzonePhotoCreate(){
             return new Dropzone("#userPhotoDropzone",
@@ -1351,14 +755,14 @@ $v_comboData = new appCombo();
                             {
                                 if(file.size > (1024 * 1024 * 10))//10MB
                                 {
-                                    toastr["warning"]("File is too big!<br>Max 10mb.", "Ooops!");
+                                    toastr["warning"]("Arquivo muito grande!<br>Max 10mb.", "Atenção!");
                                 }else if(this.files.length > $.docData.maxFiles)
                                 {
-                                    toastr["warning"]("Only one photo allowed.", "Ooops!");
+                                    toastr["warning"]("Só é permitido enviar uma foto.", "Atenção!");
                                 }
                                 else
                                 {
-                                    toastr["warning"]("File type not allowed.", "Ooops!");
+                                    toastr["warning"]("Tipo de arquivo não permitido.", "Atenção!");
                                 }
                                 this.removeFile(file);
                             }
@@ -1375,19 +779,20 @@ $v_comboData = new appCombo();
                         this.on('success', function(file,data)
                         {
                             let v_result = JSON.parse(data);
-
                             if(v_result.status === true)
                             {
-                                var pathAvatar = '<?=$GLOBALS['g_appRoot']."/__appFiles/".$_SESSION['userClnt']."/_userAvatar/"?>'+v_result.file;
+                                let pathAvatar = '<?=$GLOBALS['g_appRoot']."/__appFiles/".$v_userID."/_userAvatar/"?>'+v_result.file;
                                 $("#avatarImg").css('background-image',"url("+pathAvatar+")");
+                                //$("#profilePic").css('background-image',"url("+pathAvatar+")");
+                                //$("#profilePic2").css('background-image',"url("+pathAvatar+")");
                                 $("#userAvatar").val(v_result.file);
                                 $('#appAddUserPhoto').modal('hide');
-
-                                toastr["success"]("Avatar updated.", "Success");
+                                $.docData.tourAvatar = 1;
+                                toastr["success"]("Avatar atualizado.", "Sucesso");
                             }
                             else
                             {
-                                toastr["warning"]("Upload not possible. Please try again.", "Ooops!");
+                                toastr["warning"]("Erro no envio do arquivo. Tente novamente.", "Atenção!");
                             }
                         });
 
@@ -1396,116 +801,21 @@ $v_comboData = new appCombo();
                             if (userPhotoDropzone.files.length>0) {
                                 userPhotoDropzone.processQueue();
                             } else {
-                                toastr["warning"]("Photo Required", "Ooops!");
+                                toastr["warning"]("Foto obrigatória!", "Atenção!");
                             }
                         });
                     }
                 });
         }
 
-        var userPhotoDropzone;
         $('#appAddUserPhoto').on('show.bs.modal', function (e) {
             userPhotoDropzone = dropzonePhotoCreate();
         });
+
         $('#appAddUserPhoto').on('hidden.bs.modal', function (e) {
             userPhotoDropzone.destroy();
             userPhotoDropzone = null;
         });
-
-        const flatCalendar = $("#regUserBirthday").flatpickr({
-            altInput: true,
-            altFormat: "<?=$v_altFormat?>",
-            dateFormat: "Y-m-d",
-            maxDate: "today",
-            allowInput: false,
-            disableMobile: true,
-            onClose: function(selectedDates, dateStr, instance){
-
-                let v_userID = $('#userID').val();
-                if($.docData.currentBirthday != dateStr){
-                    $.ajax({
-                        url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserInfo",
-                        type: "POST",
-                        dataType: "json",
-                        data:
-                            {
-                                method: "PUT",
-                                userID: v_userID,
-                                userData: dateStr,
-                                dataControl : 'updUserBirthday'
-                            },
-                        success: function (d) {
-                            if (d.status === true) {
-                                toastr["success"]("Birthday updated.", "Success");
-                                $.docData.currentBirthday = dateStr;
-                            }
-                            else {
-                                toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                            }
-                        },
-                        error: function () {
-                            toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                        }
-                    });
-                }
-            }
-        });
-
-        $(document).on('click','.editBirthday', function (){
-            flatCalendar.toggle();
-        });
-
-        $(document).on('click','.closeBirthday', function (){
-
-            bootbox.confirm({
-                message: "Remove birthday info?",
-                buttons: {
-                    confirm: {
-                        label: 'Yes',
-                        className: 'btn btn-success btn-sm'
-                    },
-                    cancel: {
-                        label: 'No',
-                        className: 'btn btn-danger btn-sm'
-                    }
-                },
-                callback: function (result) {
-                    if(result===true)
-                    {
-                        flatCalendar.clear();
-                        $.docData.currentBirthday = '';
-
-                        let v_userID = $('#userID').val();
-                        $.ajax({
-                            url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserInfo",
-                            type: "POST",
-                            dataType: "json",
-                            data:
-                                {
-                                    method: "PUT",
-                                    userID: v_userID,
-                                    userData: '',
-                                    dataControl : 'updUserBirthday'
-                                },
-                            success: function (d) {
-                                if (d.status === true) {
-                                    toastr["success"]("Birthday updated.", "Success");
-                                }
-                                else {
-                                    toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                                }
-                            },
-                            error: function () {
-                                toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                            }
-                        });
-                    }
-                }
-            });
-
-        });
-
-
     });
 
 </script>
