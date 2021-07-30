@@ -25,8 +25,8 @@ if(!$v_userInfo)
 }
 
 if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_avatar.png')){
-    $v_avatarFolder = $GLOBALS['g_appRoot']."/__appFiles/".$_SESSION['userID']."/_userAvatar/".$v_userInfo['user_avatar'];
-    if(!file_exists(__DIR__."/../../__appFiles/".$_SESSION['userID']."/_userAvatar/".$v_userInfo['user_avatar']))
+    $v_avatarFolder = $GLOBALS['g_appRoot']."/__appFiles/".$v_userID."/_userAvatar/".$v_userInfo['user_avatar'];
+    if(!file_exists(__DIR__."/../../__appFiles/".$v_userID."/_userAvatar/".$v_userInfo['user_avatar']))
     {
         $v_avatarFolder = $GLOBALS['g_appRoot']."/appImages/defaultImages/default_avatar.png";
     }
@@ -179,7 +179,7 @@ $v_comboData = new appCombo();
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/Welcome">Home</a></li>
                 <li class="breadcrumb-item">Configurações</li>
-                <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/System/Users">Usuário</a></li>
+                <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/System/Users">Usuários</a></li>
                 <li class="breadcrumb-item active">Detalhes do Usuário</li>
             </ol>
         </div>
@@ -770,7 +770,7 @@ $v_comboData = new appCombo();
 
                         this.on('sending', function(file, xhr, formData)
                         {
-                            var data = $('#formUserPhoto').serializeArray();
+                            let data = $('#formUserPhoto').serializeArray();
                             $.each(data, function(key, el) {
                                 formData.append(el.name, el.value);
                             });
@@ -779,6 +779,8 @@ $v_comboData = new appCombo();
                         this.on('success', function(file,data)
                         {
                             let v_result = JSON.parse(data);
+                            console.log(data);
+                            console.log(v_result);
                             if(v_result.status === true)
                             {
                                 let pathAvatar = '<?=$GLOBALS['g_appRoot']."/__appFiles/".$v_userID."/_userAvatar/"?>'+v_result.file;

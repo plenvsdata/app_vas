@@ -104,8 +104,9 @@ class appPhoto
 
     public function  appUserPhotoData($data = NULL,$file = NULL)
     {
+
         $v_reqMethod = $data['method'];
-        $v_serverRoot = $_SERVER['DOCUMENT_ROOT']."/__appFiles/".$_SESSION['userID']."/_userAvatar/";
+        $v_serverRoot = $_SERVER['DOCUMENT_ROOT']."/__appFiles/".$data['userID']."/_userAvatar/";
         $v_dirCheck = (!file_exists($v_serverRoot)) ? (mkdir($v_serverRoot, 0777, true)) : true;
 
         if(!$v_dirCheck)
@@ -126,7 +127,7 @@ class appPhoto
                 $v_return['status'] = true;
                 $v_return['file'] = $v_fileServerName;
 
-                if($data['userAvatar']!='default_avatar.png')
+                if($data['userAvatar']!='default_avatar.png' &&  $data['userAvatar']!='')
                 {
                     unlink($v_serverRoot.$data['userAvatar']);
                 }
