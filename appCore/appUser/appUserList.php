@@ -74,6 +74,7 @@ if(isset($_SESSION['sectionIDCheck'])){
                                 <th>User</th>
                                 <th>Email</th>
                                 <th>Phone</th>
+                                <th>Cliente</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -278,6 +279,22 @@ if(isset($_SESSION['sectionIDCheck'])){
                         { data: "user_phone", "className":"text-left" },
                         { data:
                                 {
+                                    _: function(data)
+                                    {
+                                        if(parseInt(data.access_profile_id) === 3)
+                                        {
+                                            return data.customer_nome_fantasia;
+                                        }else
+                                        {
+                                            return "<i class=\"fa fa-minus\"></i>";
+                                        }
+
+                                    },
+                                    _sort: "customer_nome_fantasia"
+                                }
+                        },
+                        { data:
+                                {
                                     sort: "user_status",
                                     _: function (data)
                                     {
@@ -328,10 +345,17 @@ if(isset($_SESSION['sectionIDCheck'])){
                 "columnDefs":
                     [
                         {
-                            "targets": 4,
-                            "orderable": false,
-                            "searchable": false
-
+                            targets: 3,
+                            "createdCell": function (td, cellData, rowData, rol, col)
+                            {
+                                if(parseInt(rowData.access_profile_id) === 3)
+                                {
+                                    $(td).addClass('text-left');
+                                }else
+                                {
+                                    $(td).addClass('text-center');
+                                }
+                            }
                         }
                     ]
             }
