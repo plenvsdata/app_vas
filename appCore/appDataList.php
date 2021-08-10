@@ -41,6 +41,15 @@ class appDataList
         return $this->dbCon->dbSelect($query);
     }
 
+    public function appAlarmeViperList()
+    {
+        $query = "SELECT alarme_viper_id,customer_id,ori,idr,nor,cod,dat,nuc,apl,ins,origem_id,origem_desc,subtipo_id,subtipo_desc,nsb,sbn,cor,ips,pos,created_at,ok FROM %appDBprefix%_view_alarme_viper_data  ";
+        return $this->dbCon->dbSelect($query);
+    }
+
+
+
+
     public function appProductPhotoList($data)
     {
         $v_productID = !empty($data['productID']) ? $data['productID'] : NULL;

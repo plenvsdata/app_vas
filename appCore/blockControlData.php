@@ -76,6 +76,18 @@ elseif ($v_dataSec == "appUserAccess")
     $v_UserAccessData = $v_userAccess->appUserAccess($v_appData);
     echo json_encode($v_UserAccessData);
 }
+
+elseif($v_dataSec == "appListAlarmeViper")
+{
+    $v_appData = new appDataList();
+    $v_appViperList = $v_appData->appAlarmeViperList();
+    $v_returnData["appViperList"] = $v_appViperList["rsData"];
+    echo json_encode($v_returnData);
+}
+
+
+
+
 elseif ($v_dataSec == "FirstAccessComplete")
 {
     $v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;
