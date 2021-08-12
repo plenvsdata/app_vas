@@ -74,7 +74,7 @@ $g_emailFrom = array('address' => 'plenvs@goabh.com', 'name' => 'Plenvs Data Sys
 $g_emailReplyTo = array('address' => 'plenvs@goabh.com', 'name' => 'Plenvs Data System');
 $g_emailSubject = 'Bem vindo ao V A Systems!';
 $g_alternateTextBody = '';
-
+$g_allowExport = [1,2];//permitir export
 // IPStack
 $g_ipStackURL = 'https://api.ipstack.com/{{checkUserIP}}?access_key={{ipStackKey}}';
 $g_ipStackAPIKey = '6cac277bcba0d3c568ba318b9e5b3be7';
@@ -92,40 +92,11 @@ $g_defaultCountryID = 2;
 
 // Page Control
 $g_appPageData = array(
-    "Companies" => "appCustomer/appCustomerList",
-    "Company" => "appCustomer/appCustomerDetail",
-    "Customers" => "appCustomer/appCustomerListBR",
-    "Customer" => "appCustomer/appCustomerDetailBR",
-    "Individuals" => "appIndividual/appIndividualList",
-    "Individual" => "appIndividual/appIndividualDetail",
-    "Contacts" => "appContact/appContactList",
-    "Contact" => "appContact/appContactDetail",
-    "Products" => "appProduct/appProductList",
-    "Product" => "appProduct/appProductDetail",
+    "Clientes" => "appClientes/appClientesList",
     "Users" => "appUser/appUserList",
     "User" => "appUser/appUserDetail",
     "MeuPerfil" => "appUser/appUserProfile",
-    "Opportunities" => "appOpportunity/appOpportunityList",
-    "Businesses" => "appBusiness/appBusinessList",
-    "Opportunity" => "appOpportunity/appOpportunityDetail",
-    "Business" => "appBusiness/appBusinessDetail",
-    "BusinessOpportunity" => "appBusiness/appBusinessOpportunity",
-    "MileageControl" => "appReport/appMileageControl",
-    "ExpenseReport" => "appReport/appExpenseReport",
-    "ExpenseReportDetail" => "appReport/appExpenseReportDetail",
-    "OpportunityGlobal" => "appReport/appOpportunityGlobalReport",
-    "SalesGlobal" => "appReport/appSalesGlobalReport",
-    "GlobalReports" => "appReport/appReportGlobal",
-    "LovManagement" => "appLovManagement/appLovManagementList",
-    "GlobalSettings" => "appGlobalSetting/appGlobalSettings",
-    "ImportData" => "appImportData/appImportData",
-    "ManageImportedData" => "appImportData/appManageImportedData",
-    "CompaniesLocation" => "appMaps/appCompaniesMap",
-    "ContactsLocation" => "appMaps/appContactsMap",
-    "IndividualsLocation" => "appMaps/appIndividualsMap",
-    "OpportunitiesLocation" => "appMaps/appOpportunitiesMap",
-    "LayoutTest" => "appMaps/appLayoutMap",
-    "Stages" => "appBusiness/appBusinessStage"
+    "LayoutTest" => "appMaps/appLayoutMap"
 );
 
 setlocale(LC_ALL,$g_locale.".UTF-8"); //ToDo: Ajustar itens para cada país

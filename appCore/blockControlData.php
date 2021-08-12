@@ -84,10 +84,22 @@ elseif($v_dataSec == "appListAlarmeViper")
     $v_returnData["appViperList"] = $v_appViperList["rsData"];
     echo json_encode($v_returnData);
 }
+elseif ($v_dataSec == "appListCustomer")
+{
+    $v_appCustomerData = new appDataList();
+    $v_appCustomerList = $v_appCustomerData->appCustomerList();
+    $v_returnData["appCustomerList"] = $v_appCustomerList["rsData"];
+    echo json_encode($v_returnData);
+}
+/*VAS*/
 
 
 
 
+
+
+
+/*PLENVS INICIO*/
 elseif ($v_dataSec == "FirstAccessComplete")
 {
     $v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;
@@ -1370,14 +1382,6 @@ elseif ($v_dataSec == "appListContactPhoto")
     $v_appData = !empty($_REQUEST['appFormData']) ? $_REQUEST['appFormData'] : NULL;
     $v_contactPhoto =  new appDataList();
     $v_appContactPhotoList = $v_contactPhoto->appContactPhotoList($v_appData);
-}
-elseif ($v_dataSec == "appListCustomer")
-{
-    $v_appData = !empty($_REQUEST['customerTypeID']) ? $_REQUEST['customerTypeID'] : NULL;
-    $v_appCustomerData = new appDataList();
-    $v_appCustomerList = $v_appCustomerData->appCustomerList($v_appData);
-    $v_returnData["appCustomerList"] = $v_appCustomerList["rsData"];
-    echo json_encode($v_returnData);
 }
 elseif ($v_dataSec == "appListProduct")
 {

@@ -18,14 +18,11 @@ class appDataList
         $this->dbCon = new appDBClass();
     }
 
-    public function appCustomerList($data = NULL)
+    public function appCustomerList()
     {
-        $v_customerTypeID = !empty($data['customerTypeID']) ? $data['customerTypeID'] : NULL;
-        $query = "SELECT customer_id,customer_name,customer_nickname,customer_group_desc,customer_type_desc,(IF(customer_phone IS NULL,'Not Available',customer_phone)) AS customer_phone,(IF(customer_email IS NULL,'Not Available',customer_email)) AS customer_email,customer_cnpj,check_opportunity,check_business,has_map,customer_status FROM %appDBprefix%_view_customer_list WHERE clnt = '".$_SESSION['userClnt']."' ";
-        if(!is_null($v_customerTypeID)) {
-            $query .= " AND customer_type_id = '".$v_customerTypeID."' ";
-        }
-        $query.=" ORDER BY customer_nickname";
+        //$query = "SELECT customer_id,customer_name,customer_nickname,customer_group_desc,customer_type_desc,(IF(customer_phone IS NULL,'Not Available',customer_phone)) AS customer_phone,(IF(customer_email IS NULL,'Not Available',customer_email)) AS customer_email,customer_cnpj,check_opportunity,check_business,has_map,customer_status FROM %appDBprefix%_view_customer_list WHERE clnt = '".$_SESSION['userClnt']."' ";
+        $query = "SELECT customer_id,customer_cnpj,customer_razao_social,customer_nome_fantasia,customer_phone,customer_email,allow_delete,customer_status,ok FROM %appDBprefix%_customer_data WHERE 1=1 ";
+        $query.=" ORDER BY customer_nome_fantasia";
         return $this->dbCon->dbSelect($query);
     }
 
