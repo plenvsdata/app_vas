@@ -154,17 +154,17 @@ if(isset($_SESSION['sectionIDCheck'])){
                 <form id="addNewCustomer" name="addNewCustomer">
                     <div class="row divCustomerCompany">
                         <div class="col-md-6">
-                            <div class="form-group divCustomerRazaoSocial has-feedback">
-                                <label for="customerRazaoSocial" class="control-label">Razão Social:</label>
-                                <input type="text" class="form-control" id="customerRazaoSocial" name="customerRazaoSocial" aria-describedby="customerRazaoSocialHelp">
-                                <span id="customerRazaoSocialHelp" class="help-block">Min 3 characters</span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
                             <div class="form-group divCustomerNomeFantasia has-feedback">
                                 <label for="customerNomeFantasia" class="control-label" >Nome Fantasia:</label>
                                 <input type="text" class="form-control" id="customerNomeFantasia" name="customerNomeFantasia" aria-describedby="customerNomeFantasiaHelp">
                                 <span id="customerNomeFantasiaHelp" class="help-block">Min 3 characters</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group divCustomerRazaoSocial has-feedback">
+                                <label for="customerRazaoSocial" class="control-label">Razão Social:</label>
+                                <input type="text" class="form-control" id="customerRazaoSocial" name="customerRazaoSocial" aria-describedby="customerRazaoSocialHelp">
+                                <span id="customerRazaoSocialHelp" class="help-block">Min 3 characters</span>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -247,45 +247,19 @@ if(isset($_SESSION['sectionIDCheck'])){
 
         $("#btnSave").click(function() {
 
-            let v_erro = 0;
+            let v_erro = '';
             let serial_form = $("form[id=addNewCustomer]").find('select, textarea, input').serialize();
-            let v_customerNickname = $("form[id=addNewCustomer]").find("#customerNickname").val();
             let v_customerNomeFantasia = $("#customerNomeFantasia").val();
 
-
-
-            let v_customerPhone = $("#customerPhone").val();
-            if(v_customerPhone.length < 14){
-                v_erro+='-Telefone deve ter min. 14 caracteres.<br>';
+            if(v_customerNomeFantasia.length < 3)
+            {
+                v_erro+='-Nome Fantasia deve ter min. 3 caracteres.<br>';
             }
 
-            let v_customerName = $("form[id=addNewCustomer]").find("#customerName").val();
-            if(v_customerNomeFantasia.length > 2)
-            {
-                $("form[id=addNewCustomer]").find(".divCustomerNomeFantasia" ).removeClass( "has-danger" ).addClass( "has-success" );
-                $("form[id=addNewCustomer]").find("#customerNomeFantasiaHelp" ).hide();
-            }else
-            {
-                $("form[id=addNewCustomer]").find(".divCustomerNomeFantasia" ).removeClass( "has-success" ).addClass( "has-danger" );
-                $("form[id=addNewCustomer]").find("#customerNomeFantasiaHelp" ).show();
-                v_erro = 1;
+            if(v_erro != ''){
+                toastr["warning"](v_erro, "Atenção!");
+                return false;
             }
-
-            let v_websiteUrl = $("form[id=addNewCustomer]").find("#websiteUrl").val();
-            v_websiteUrl = v_websiteUrl.trim();
-            if(validator.isURL(v_websiteUrl) || v_websiteUrl.length==0)
-            {
-                $("form[id=addNewCustomer]").find(".divWebsiteUrl" ).removeClass( "has-danger" ).addClass( "has-success" );
-                $("form[id=addNewCustomer]").find("#websiteUrlHelp" ).hide();
-            }else
-            {
-                $("form[id=addNewCustomer]").find(".divWebsiteUrl" ).removeClass("has-success").addClass("has-danger");
-                $("form[id=addNewCustomer]").find("#websiteUrlHelp" ).show();
-                v_erro = 1;
-            }
-            if(v_erro === 1){return false;}
-            alert('fim');return false;
-
 
             $.ajax({
                 url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appCustomer",
@@ -294,15 +268,17 @@ if(isset($_SESSION['sectionIDCheck'])){
                 data:
                     {
                         formData: serial_form,
-                        customerTypeID:customerTypeID,
                         method :'POST'
                     },
                 success: function(d)
                 {
-                    //console.log(d);
+                    console.log(d);
                     if(d.status === true)
                     {
-                        location.href = "<?=$GLOBALS['g_appRoot']?>/CRM/Company/"+d.customerID;
+                        toastr["success"]("Cliente Adicionado!", "Success");
+                        $.docData.dtTable.ajax.reload();
+                        $('#addNewCustomer').trigger("reset");
+                        $('#newCustomerModal').modal('hide');
                     }
                     else
                     {
@@ -311,7 +287,6 @@ if(isset($_SESSION['sectionIDCheck'])){
                 },
                 error:function (d)
                 {
-                    //console.log(d);
                     toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
                 }
             });
@@ -374,12 +349,18 @@ if(isset($_SESSION['sectionIDCheck'])){
                                     _: function (data)
                                     {
                                         let v_options = '';
+
+                                        v_options = "<div style='display: inline-flex;' class='flex-item'>"+
+                                            "<i class=\"fa fa-border fa-pencil appCustomerEdit\" style='cursor: pointer;' data-customer_id='"+data.customer_id+"' data-customer_nome_fantasia='"+data.customer_nome_fantasia+"' data-customer_razao_social='"+data.customer_razao_social+"' data-customer_email='"+data.customer_email+"' data-customer_phone='"+data.customer_phone+"' data-customer_cnpj='"+data.customer_cnpj+"'></i>"+
+                                            "</div>";
+
+
                                         if(data.allow_delete == 1){
-                                            v_options = "<div style='width:100%!important; display: inline-flex;' class='flex-item'>"+
+                                            v_options += "<div style='display: inline-flex;' class='flex-item'>"+
                                                 "<i class=\"fa fa-border fa-trash appCustomerDel\" style='cursor: pointer;' data-customer_id='"+data.customer_id+"' data-customer_nome_fantasia='"+data.customer_nome_fantasia+"' ></i>"+
                                                 "</div>";
                                         }else{
-                                            v_options = "<div style='width:100%!important; display: inline-flex;' class='flex-item'>"+
+                                            v_options += "<div style='display: inline-flex;' class='flex-item'>"+
                                                 "<i data-toggle='tooltip' data-placement='top' title='Este cliente não pode ser excluído.' class=\"fa fa-lock\" data-customer_id='"+data.customer_id+"' data-customer_nome_fantasia='"+data.customer_nome_fantasia+"' ></i>"+
                                                 "</div>";
                                         }
@@ -440,17 +421,17 @@ if(isset($_SESSION['sectionIDCheck'])){
 
         $.docData.dtTable.on("click",".appCustomerDel",function() {
             let v_customerID = $(this).attr("data-customer_id");
-            let v_customerName = $(this).attr("data-customer_name");
+            let v_customerName = $(this).attr("data-customer_nome_fantasia");
 
             bootbox.confirm({
-                message: "Are you sure you want to delete this company:<br/><h3 class='text-center'>"+v_customerName+"</h3><h3 style='color: #ef5350'>EVERYTHING related to this company will also be PERMANENTLY DELETED!</h3>",
+                message: "Tem certeza que deseja excluir este cliente:<br/><h3 class='text-center'>"+v_customerName+"</h3><h3 style='color: #ef5350'>TODOS DADOS relacionados serão PERMANENTEMENTE DELETADOS!</h3>",
                 buttons: {
                     confirm: {
-                        label: 'Yes',
+                        label: 'Sim',
                         className: 'btn btn-success btn-sm'
                     },
                     cancel: {
-                        label: 'No',
+                        label: 'Não',
                         className: 'btn btn-danger btn-sm'
                     }
                 },
@@ -470,17 +451,17 @@ if(isset($_SESSION['sectionIDCheck'])){
                             {
                                 if(d.status === true)
                                 {
-                                    toastr["success"]("Company "+v_customerName+" deleted.", "Success");
+                                    toastr["success"]("Cliente "+v_customerName+" excluído.", "Success");
                                     $.docData.dtTable.ajax.reload();
                                 }
                                 else
                                 {
-                                    toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
+                                    toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
                                 }
                             },
                             error:function ()
                             {
-                                toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
+                                toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
                             }
                         });
                     }
@@ -601,6 +582,22 @@ if(isset($_SESSION['sectionIDCheck'])){
                 }
             });
         });
+
+        $(document).on('click','.appCustomerEdit',function (){
+            let v_customerFantasia = $(this).attr("data-customer_nome_fantasia");
+            let v_customerRazao = $(this).attr("data-customer_razao_social");
+            let v_customerEmail = $(this).attr("data-customer_email");
+            let v_customerPhone = $(this).attr("data-customer_phone");
+            let v_customerCnpj = $(this).attr("data-customer_cnpj");
+            $("#customerNomeFantasia").val(v_customerFantasia);
+            $("#customerRazaoSocial").val(v_customerRazao);
+            $("#customerEmail").val(v_customerEmail);
+            $("#customerPhone").val(v_customerPhone);
+            $("#customerCnpj").val(v_customerCnpj);
+            $("#newCustomerModal").modal('show');
+        });
+
+
         function correctHeight(){
             $('#mainCard').height('auto');
             setTimeout(function() {
@@ -613,8 +610,6 @@ if(isset($_SESSION['sectionIDCheck'])){
                 }
             }, 200);
         }
-
-
     });
 </script>
 

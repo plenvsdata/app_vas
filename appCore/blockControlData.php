@@ -248,41 +248,11 @@ elseif ($v_dataSec == "appCustomer")
             $v_appData[$key] = $valor;
         }
         unset($v_appData['formData']);
-
         //add costumer
         $v_customer =  new appCustomer();
         $v_customerData = $v_customer->appCustomerData($v_appData);
+        echo json_encode($v_customerData);
 
-        if($v_customerData['apiData']['status'])
-        {
-            $v_customer_id = $v_customerData['apiData']['rsInsertID'];
-            $v_appData['customerID']=  $v_customer_id;
-            $v_websiteUrl = !empty($v_appData['websiteUrl']) ? strtolower(trim($v_appData['websiteUrl'])) : NULL;
-
-            if(strlen($v_websiteUrl) > 3)
-            {
-                //add website
-                $v_customerWebsiteData = new appWebsite();
-                $v_appCustomerWebsite = $v_customerWebsiteData->appWebsiteData($v_appData);
-                if($v_appCustomerWebsite['status'])
-                {
-                    $v_return['addWebsite'] = true;
-                }else
-                {
-                    $v_return['addWebsite'] = false;
-                }
-            }
-
-            $v_return['status'] = true;
-            $v_return['customerID'] = $v_customer_id;
-            echo json_encode($v_return);
-
-        } else
-        {
-            $v_return['status'] = false;
-            $v_return['customerID'] = false;
-            echo json_encode($v_return);
-        }
     }else
     {
         $v_customer =  new appCustomer();
