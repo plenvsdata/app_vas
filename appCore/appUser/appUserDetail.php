@@ -466,7 +466,7 @@ $v_comboData = new appCombo();
         });
 
         $('.editNicknameTitle').popover({
-            title: '<div style="width:100%!important;">Edit Nickname <i class="fa fa-times fa-pull-right iconColor popoverClose" aria-hidden="true"></i></div>',
+            title: '<div style="width:100%!important;">Editar Conhecido por <i class="fa fa-times fa-pull-right iconColor popoverClose" aria-hidden="true"></i></div>',
             content : function()
             {
                 $('.popover').popover('hide');

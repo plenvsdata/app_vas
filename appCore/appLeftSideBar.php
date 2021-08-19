@@ -33,7 +33,7 @@ $v_apiData = new appUserControl();
                 </li>
                 -->
                 <?php }
-                if($v_apiData->checkFeaturePermission(4)){
+                if($v_apiData->checkFeaturePermission(1)){
                 ?>
                 <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="fa fa-lg fa-vcard-o"></i><span class="hide-menu">CRM</span></a>
                     <ul aria-expanded="false" class="collapse">
@@ -43,7 +43,7 @@ $v_apiData = new appUserControl();
                 <?php
                 }
 
-                if($v_apiData->checkFeaturePermission(10)){
+                if($v_apiData->checkFeaturePermission(2)){
                         ?>
                         <li><a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
                                         class="fa fa-lg fa-sliders"></i><span
@@ -54,6 +54,18 @@ $v_apiData = new appUserControl();
                         </li>
                          <?php
                     }
+
+                if($v_apiData->checkFeaturePermission(3)){
+                    ?>
+                    <li><a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
+                                    class="fa fa-lg fa-sliders"></i><span
+                                    class="hide-menu">Relatórios</span></a>
+                        <ul aria-expanded="false" class="collapse">
+                            <li><a href="<?=$GLOBALS['g_appRoot']?>/Relatorio/Viper">Viper</a></li>
+                        </ul>
+                    </li>
+                    <?php
+                }
                 ?>
             </ul>
         </nav>
