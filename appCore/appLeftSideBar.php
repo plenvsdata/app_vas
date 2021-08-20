@@ -58,7 +58,7 @@ $v_apiData = new appUserControl();
                 if($v_apiData->checkFeaturePermission(3)){
                     ?>
                     <li><a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
-                                    class="fa fa-lg fa-sliders"></i><span
+                                    class="fa fa-lg fa-list"></i><span
                                     class="hide-menu">Relatórios</span></a>
                         <ul aria-expanded="false" class="collapse">
                             <li><a href="<?=$GLOBALS['g_appRoot']?>/Relatorio/Viper">Viper</a></li>

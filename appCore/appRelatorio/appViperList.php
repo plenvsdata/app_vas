@@ -105,7 +105,7 @@ if(isset($_SESSION['sectionIDCheck'])){
     <div class="col-md-7 align-self-center">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/Welcome">Home</a></li>
-            <li class="breadcrumb-item">CRM</li>
+            <li class="breadcrumb-item">Relatório</li>
             <li class="breadcrumb-item active"><?=$v_appCrmPage?></li>
         </ol>
     </div>
@@ -118,16 +118,16 @@ if(isset($_SESSION['sectionIDCheck'])){
             <div class="card" id="mainCard">
                 <div class="card-body">
                     <!-- Nav tabs -->
-                    <div style="position:absolute; left: 20px!important;"><button type="button" class="btn btn-sm waves-effect waves-light btn-success appAddCustomer" data-toggle="modal" data-target="#newCustomerModal">Adicionar Cliente</button></div>
                     <div class="table-responsive">
                         <table id="appDatatable" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                             <thead>
                             <tr>
                                 <th>Cliente</th>
-                                <th>Telefone</th>
-                                <th>Email</th>
-                                <th>CNPJ</th>
-                                <th class="text-center org-col-50">Action</th>
+                                <th>Aplicação</th>
+                                <th>Origem</th>
+                                <th>Código</th>
+                                <th>Câmera</th>
+                                <th>Data</th>
                             </tr>
                             </thead>
                             <tbody class="text-center"></tbody>
@@ -142,64 +142,6 @@ if(isset($_SESSION['sectionIDCheck'])){
 <!-- End Container fluid  -->
 <!-- ============================================================== -->
 
-<!-- sample modal content -->
-<div id="newCustomerModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title"><span id="txtLabel">Adicionar</span> Cliente</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            </div>
-            <div class="modal-body">
-                <form id="addNewCustomer" name="addNewCustomer">
-                    <div class="row divCustomerCompany">
-                        <div class="col-md-6">
-                            <div class="form-group divCustomerNomeFantasia has-feedback">
-                                <label for="customerNomeFantasia" class="control-label" >Nome Fantasia:</label>
-                                <input type="text" class="form-control" id="customerNomeFantasia" name="customerNomeFantasia" aria-describedby="customerNomeFantasiaHelp">
-                                <span id="customerNomeFantasiaHelp" class="help-block">Min 3 characters</span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group divCustomerRazaoSocial has-feedback">
-                                <label for="customerRazaoSocial" class="control-label">Razão Social:</label>
-                                <input type="text" class="form-control" id="customerRazaoSocial" name="customerRazaoSocial" aria-describedby="customerRazaoSocialHelp">
-                                <span id="customerRazaoSocialHelp" class="help-block">Min 3 characters</span>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group has-feedback divCustomerEmail">
-                                <label for="userEmail" class="control-label">Email:</label>
-                                <input type="text" class="form-control customerEmail" required id="customerEmail" name="customerEmail" aria-describedby="customerEmailHelp">
-                                <span id="customerEmailHelp" class="help-block text-danger">Min 3 caracteres</span>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group has-feedback divCustomerPhone">
-                                <label for="customerPhone" class="control-label">Telefone:</label>
-                                <input type="text" class="form-control customerPhone" id="customerPhone" name="customerPhone" aria-describedby="customerPhoneHelp">
-                                <span id="customerPhoneHelp" class="help-block text-danger">Min 3 characters</span>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group divCustomerCnpj has-feedback">
-                                <label for="customerCnpj" class="control-label">CNPJ:</label>
-                                <input type="text" class="form-control" id="customerCnpj" name="customerCnpj" aria-describedby="customerCnpjHelp">
-                                <span id="customerCnpjHelp" class="help-block">Min 3 characters</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-sm btn-danger waves-effect" data-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-sm btn-success waves-effect waves-light" id="btnSave">Salvar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- /.modal -->
-
 <div id="popoverData" style="display: none"></div>
 
 <script type="text/javascript">
@@ -212,7 +154,6 @@ if(isset($_SESSION['sectionIDCheck'])){
         countryChangeState : false,
         stateChangeState : false,
         dataSectionCheck : <?=$_dataSectionCheck?>
-
     };
 
     function showMap() {
@@ -220,66 +161,6 @@ if(isset($_SESSION['sectionIDCheck'])){
     }
 
     $(document).ready(function() {
-
-        if($.docData.dataSectionCheck === false){
-            toastr["warning"]("Este cliente não existe.", "Atenção!");
-        }
-
-        $("#customerPhone").mask('(00) 00000-0000');
-        $('#customerCnpj').mask('00.000.000/0000-00', {reverse: true});
-
-        $("#btnSave").click(function() {
-
-            let v_erro = '';
-            let serial_form = $("form[id=addNewCustomer]").find('select, textarea, input').serialize();
-            let v_customerNomeFantasia = $("#customerNomeFantasia").val();
-            let v_customerEmail = $("#customerEmail").val();
-
-            if(v_customerNomeFantasia.length < 3)
-            {
-                v_erro+="-Nome Fantasia deve ter min. 3 caracteres.<br>";
-            }
-
-            if(!validator.isEmail(v_customerEmail))
-            {
-                v_erro+="-Adicione um email válido.<br>";
-            }
-
-            if(v_erro != ''){
-                toastr["warning"](v_erro, "Atenção!");
-                return false;
-            }else{
-                $.ajax({
-                    url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appCustomer",
-                    type: "POST",
-                    dataType: "json",
-                    data:
-                        {
-                            formData: serial_form,
-                            method :'POST'
-                        },
-                    success: function(d)
-                    {
-                        console.log(d);
-                        if(d.status === true)
-                        {
-                            toastr["success"]("Cliente Adicionado!", "Success");
-                            $.docData.dtTable.ajax.reload();
-                            $('#addNewCustomer').trigger("reset");
-                            $('#newCustomerModal').modal('hide');
-                        }
-                        else
-                        {
-                            toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                        }
-                    },
-                    error:function (d)
-                    {
-                        toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                    }
-                });
-            }
-        });
 
         $.docData.dtTable = $('#appDatatable').DataTable(
             {
@@ -289,9 +170,9 @@ if(isset($_SESSION['sectionIDCheck'])){
                 "dom": '<"dtFloatRight"f><"dtInfoBeta">rt<"dtCenter"i<"#excelBtnDiv.dtFloatLeft hidden"B><"dtFloatLeft"><"dtFloatRight"p>>',
                 "ajax":
                     {
-                        "url": "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appListCustomer",
+                        "url": "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appListAlarmeViper",
                         "xhrFields": { withCredentials: true },
-                        "dataSrc": "appCustomerList",
+                        "dataSrc": "appViperList",
                         "dataType": "json",
                         "type": "POST",
                         "headers":
@@ -324,159 +205,26 @@ if(isset($_SESSION['sectionIDCheck'])){
                     v_setTooltip();
                 },
                 "drawCallback": function( settings ) {
-                    console.log( 'DataTables has redrawn the table' );
-                    //correctHeight();
                 },
                 "columns":
                     [
                         { data: "customer_nome_fantasia", "className":"text-left" },
-                        { data: "customer_phone", "className":"text-left" },
-                        { data: "customer_email", "className":"text-left" },
-                        { data: "customer_cnpj", "className":"text-left" },
-                        { data:
-                                {
-                                    _: function (data)
-                                    {
-                                        let v_options = '';
-
-                                        v_options = "<div style='display: inline-flex;' class='flex-item'>"+
-                                            "<i class=\"fa fa-border fa-pencil appCustomerEdit\" style='cursor: pointer;' data-customer_id='"+data.customer_id+"' data-customer_nome_fantasia='"+data.customer_nome_fantasia+"' data-customer_razao_social='"+data.customer_razao_social+"' data-customer_email='"+data.customer_email+"' data-customer_phone='"+data.customer_phone+"' data-customer_cnpj='"+data.customer_cnpj+"'></i>"+
-                                            "</div>";
-
-
-                                        if(data.allow_delete == 1){
-                                            v_options += "<div style='display: inline-flex;' class='flex-item'>"+
-                                                "<i class=\"fa fa-border fa-trash appCustomerDel\" style='cursor: pointer;' data-customer_id='"+data.customer_id+"' data-customer_nome_fantasia='"+data.customer_nome_fantasia+"' ></i>"+
-                                                "</div>";
-                                        }else{
-                                            v_options += "<div style='display: inline-flex;' class='flex-item'>"+
-                                                "<i data-toggle='tooltip' data-placement='top' title='Este cliente não pode ser excluído.' class=\"fa fa-lock\" data-customer_id='"+data.customer_id+"' data-customer_nome_fantasia='"+data.customer_nome_fantasia+"' ></i>"+
-                                                "</div>";
-                                        }
-
-                                        return v_options;
-                                    }
-                                },
-                            "className":"text-center"
-                        }
+                        { data: "apl", "className":"text-left" },
+                        { data: "origem_desc", "className":"text-left" },
+                        { data: "cod", "className":"text-right" },
+                        { data: "nuc", "className":"text-right" },
+                        { data: "data_br", "className":"text-right text-monospace" }
                     ],
                 "createdRow": function( row, data, dataIndex )
                 {
-                    $(row).attr("data-customer_id",data.customer_id);
                 },
                 "columnDefs":
                     [
                         {
-                            "targets": [4],
-                            "orderable": false,
-                            "searchable": false
                         }
                     ]
             }
         );
-
-        $.docData.dtTable.on("click",".appCustomerStatus",function() {
-            let v_customerStatus = $(this).attr("data-customer_status")
-            let v_customerID = $(this).attr("data-customer_id");
-
-            $.ajax({
-                url:"<?=$GLOBALS['g_appRoot']?>/appDataAPI/appCustomer",
-                method:"POST",
-                dataType:"json",
-                data:
-                    {
-                        customerID: v_customerID,
-                        customerStatus: v_customerStatus,
-                        method: "STATUS"
-                    },
-                success:function(d)
-                {
-                    if(d.status === true)
-                    {
-                        toastr["success"]("Company Status Changed", "Success");
-                        $.docData.dtTable.ajax.reload();
-                    }
-                    else
-                    {
-                        toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                    }
-                },
-                error:function()
-                {
-                    toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                }
-            });
-        });
-
-        $.docData.dtTable.on("click",".appCustomerDel",function() {
-            let v_customerID = $(this).attr("data-customer_id");
-            let v_customerName = $(this).attr("data-customer_nome_fantasia");
-
-            bootbox.confirm({
-                message: "Tem certeza que deseja excluir este cliente:<br/><h3 class='text-center'>"+v_customerName+"</h3><h3 style='color: #ef5350'>TODOS DADOS relacionados serão PERMANENTEMENTE DELETADOS!</h3>",
-                buttons: {
-                    confirm: {
-                        label: 'Sim',
-                        className: 'btn btn-success btn-sm'
-                    },
-                    cancel: {
-                        label: 'Não',
-                        className: 'btn btn-danger btn-sm'
-                    }
-                },
-                callback: function (result) {
-                    if(result===true)
-                    {
-                        $.ajax({
-                            url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appCustomer",
-                            type: "POST",
-                            dataType: "json",
-                            data:
-                                {
-                                    method: "DELETE",
-                                    customerID: v_customerID
-                                },
-                            success: function(d)
-                            {
-                                if(d.status === true)
-                                {
-                                    toastr["success"]("Cliente "+v_customerName+" excluído.", "Success");
-                                    $.docData.dtTable.ajax.reload();
-                                }
-                                else
-                                {
-                                    toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
-                                }
-                            },
-                            error:function ()
-                            {
-                                toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
-                            }
-                        });
-                    }
-                }
-            });
-
-        });
-
-        $(document).on('click','.appAddCustomer',function () {
-            $("#txtLabel").text('Adicionar');
-        });
-
-        $(document).on('click','.appCustomerEdit',function (){
-            let v_customerFantasia = $(this).attr("data-customer_nome_fantasia");
-            let v_customerRazao = $(this).attr("data-customer_razao_social");
-            let v_customerEmail = $(this).attr("data-customer_email");
-            let v_customerPhone = $(this).attr("data-customer_phone");
-            let v_customerCnpj = $(this).attr("data-customer_cnpj");
-            $("#customerNomeFantasia").val(v_customerFantasia);
-            $("#customerRazaoSocial").val(v_customerRazao);
-            $("#customerEmail").val(v_customerEmail);
-            $("#customerPhone").val(v_customerPhone);
-            $("#customerCnpj").val(v_customerCnpj);
-            $("#txtLabel").text('Editar');
-            $("#newCustomerModal").modal('show');
-        });
     });
 </script>
 

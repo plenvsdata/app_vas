@@ -129,7 +129,7 @@ $v_measureData = $v_measureSystemData['rsData'][0];
     <div class="col-md-5 align-self-center">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/Welcome">Home</a></li>
-            <li class="breadcrumb-item">System Settings</li>
+            <li class="breadcrumb-item">Configurações</li>
             <li class="breadcrumb-item active">Global Settings</li>
         </ol>
     </div>

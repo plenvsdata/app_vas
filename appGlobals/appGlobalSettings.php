@@ -15,7 +15,7 @@ $g_appDevIP = $g_envData['devIP'][$g_envData['devIPset']];
 // App Global Settings
 $g_appRoot = (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'];
 $g_appDocRoot = $_SERVER['DOCUMENT_ROOT'];
-$g_appTitle = "Plenvs Data System";
+$g_appTitle = "VA System";
 $g_appIcon = "";
 $g_appLanguage = "en";
 $g_appHeaderLogo = "plenvsDataSystemAltType.svg";

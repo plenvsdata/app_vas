@@ -30,7 +30,6 @@ $v_sec = !empty($_REQUEST['sec']) ? $_REQUEST['sec'] : '';
 $v_pageName = $v_appCrmPage.$v_sec;
 
 $v_pageContent = array_key_exists($v_pageName,$g_appPageData) ? $g_appPageData[$v_pageName] : "appTemplate";
-var_dump($v_pageContent);
 if(!file_exists($v_pageContent.".php")) {
     /*
         $v_url = $GLOBALS['g_appRoot'].'/Welcome';

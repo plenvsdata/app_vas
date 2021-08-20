@@ -9,8 +9,8 @@ RewriteRule    ^MeuPerfil?$    appCore/appMainCRM.php?pageData=$1&sec=MeuPerfil 
 RewriteRule    ^CRM/([A-Za-z0-9-]+)/?$                      appCore/appMainCRM.php?pageData=$1    [NC,L]    # Handle requests for "adminPanel"
 RewriteRule    ^CRM/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/?$      appCore/appMainCRM.php?pageData=$1&dataValue=$2  [NC,L]
 
-RewriteRule    ^Reports/([A-Za-z0-9-]+)/?$                      appCore/appMainCRM.php?pageData=$1    [NC,L]    # Handle requests for "adminPanel"
-RewriteRule    ^Reports/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/?$      appCore/appMainCRM.php?pageData=$1&dataValue=$2  [NC,L]
+RewriteRule    ^Relatorio/([A-Za-z0-9-]+)/?$                      appCore/appMainCRM.php?pageData=$1    [NC,L]    # Handle requests for "adminPanel"
+RewriteRule    ^Relatorio/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/?$      appCore/appMainCRM.php?pageData=$1&dataValue=$2  [NC,L]
 
 RewriteRule    ^Stages/([A-Za-z0-9-]+)/?$                      appCore/appMainCRM.php?pageData=$1    [NC,L]    # Handle requests for "adminPanel"
 RewriteRule    ^Stages/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/?$      appCore/appMainCRM.php?pageData=$1&dataValue=$2  [NC,L]

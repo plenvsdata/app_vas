@@ -53,7 +53,7 @@ if(isset($_SESSION['sectionIDCheck'])){
     <div class="col-md-7 align-self-center">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/Welcome">Home</a></li>
-            <li class="breadcrumb-item">System Settings</li>
+            <li class="breadcrumb-item">Configurações</li>
             <li class="breadcrumb-item active"><?=$v_appCrmPage?></li>
         </ol>
     </div>
