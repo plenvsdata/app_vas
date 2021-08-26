@@ -94,6 +94,7 @@ $g_defaultCountryID = 2;
 $g_appPageData = array(
     "Clientes" => "appClientes/appClientesList",
     "Viper" => "appRelatorio/appViperList",
+    "Obcon" => "appRelatorio/appObconList",
     "Users" => "appUser/appUserList",
     "User" => "appUser/appUserDetail",
     "MeuPerfil" => "appUser/appUserProfile",

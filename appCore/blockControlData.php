@@ -84,6 +84,13 @@ elseif($v_dataSec == "appListAlarmeViper")
     $v_returnData["appViperList"] = $v_appViperList["rsData"];
     echo json_encode($v_returnData);
 }
+elseif($v_dataSec == "appListAlarmeObcon")
+{
+    $v_appData = new appDataList();
+    $v_appObconList = $v_appData->appAlarmeObconList();
+    $v_returnData["appObconList"] = $v_appObconList["rsData"];
+    echo json_encode($v_returnData);
+}
 elseif ($v_dataSec == "appListCustomer")
 {
     $v_appCustomerData = new appDataList();

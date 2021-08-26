@@ -40,7 +40,13 @@ class appDataList
 
     public function appAlarmeViperList()
     {
-        $query = "SELECT alarme_viper_id,customer_id,customer_nome_fantasia,ori,idr,nor,cod,dat,data_br,nuc,apl,ins,origem_id,origem_desc,subtipo_id,subtipo_desc,nsb,sbn,cor,ips,pos,alarme_completo,created_at,ok FROM %appDBprefix%_view_alarme_viper_data  ";
+        $query = "SELECT alarme_viper_id,customer_id,customer_nome_fantasia,ori,idr,nor,cod,dat,data_br,nuc,apl,ins,origem_id,origem_desc,subtipo_id,subtipo_desc,nsb,sbn,cor,ips,pos,alarme_viper_completo,created_at,ok FROM %appDBprefix%_view_alarme_viper_data  ";
+        return $this->dbCon->dbSelect($query);
+    }
+
+    public function appAlarmeObconList()
+    {
+        $query = "SELECT alarme_obcon_id,customer_id,customer_nome_fantasia,clid,ninst,data,data_br,hora,cam,tw,sent,numo,tama,alarme_obcon_completo,created_at,ok FROM %appDBprefix%_view_alarme_obcon_data  ";
         return $this->dbCon->dbSelect($query);
     }
 

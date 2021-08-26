@@ -62,6 +62,7 @@ $v_apiData = new appUserControl();
                                     class="hide-menu">Relatórios</span></a>
                         <ul aria-expanded="false" class="collapse">
                             <li><a href="<?=$GLOBALS['g_appRoot']?>/Relatorio/Viper">Viper</a></li>
+                            <li><a href="<?=$GLOBALS['g_appRoot']?>/Relatorio/Obcon">Obcon</a></li>
                         </ul>
                     </li>
                     <?php

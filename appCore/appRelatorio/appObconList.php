@@ -128,43 +128,29 @@ if(isset($_SESSION['sectionIDCheck'])){
                         <table id="appDatatable" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                             <thead>
                             <tr>
+                                <th>Clid</th>
                                 <th>Cliente</th>
-                                <th>ORI</th>
-                                <th>IDR</th>
-                                <th>NOR</th>
-                                <th>COD</th>
+                                <th>NINST</th>
                                 <th>Data</th>
-                                <th>NUC</th>
-                                <th>APL</th>
-                                <th>INS</th>
-                                <th>Origem</th>
-                                <th>Subtipo</th>
-                                <th>NSB</th>
-                                <th>SBN</th>
-                                <th>COR</th>
-                                <th>IPS</th>
-                                <th>POS</th>
+                                <th>Hora</th>
+                                <th>CAM</th>
+                                <th>TW</th>
+                                <th>SENT</th>
+                                <th>NUMO</th>
                             </tr>
                             </thead>
                             <tbody class="text-center"></tbody>
                             <tfoot id="appDatatableFoot" class="collapse">
                             <tr id="trFilters" class="collapse">
+                                <th>Clid</th>
                                 <th>Cliente</th>
-                                <th>ORI</th>
-                                <th>IDR</th>
-                                <th>NOR</th>
-                                <th>COD</th>
+                                <th>NINST</th>
                                 <th>Data</th>
-                                <th>NUC</th>
-                                <th>APL</th>
-                                <th>INS</th>
-                                <th>Origem</th>
-                                <th>Subtipo</th>
-                                <th>NSB</th>
-                                <th>SBN</th>
-                                <th>COR</th>
-                                <th>IPS</th>
-                                <th>POS</th>
+                                <th>Hora</th>
+                                <th>CAM</th>
+                                <th>TW</th>
+                                <th>SENT</th>
+                                <th>NUMO</th>
                             </tr>
                             </tfoot>
                         </table>
@@ -184,17 +170,8 @@ if(isset($_SESSION['sectionIDCheck'])){
 
     $.docData = {
         dtTable : null,
-        comboCountry : "",
-        mapData :  null,
-        customerDtTable : null,
-        countryChangeState : false,
-        stateChangeState : false,
         dataSectionCheck : <?=$_dataSectionCheck?>
     };
-
-    function showMap() {
-        $('.mapDiv').fadeOut(500);
-    }
 
     $(document).ready(function() {
 
@@ -212,9 +189,9 @@ if(isset($_SESSION['sectionIDCheck'])){
                 "dom": '<"dtFloatRight"f><"dtInfoBeta">rt<"dtCenter"i<"#excelBtnDiv.dtFloatLeft hidden"B><"dtFloatLeft"><"dtFloatRight"p>>',
                 "ajax":
                     {
-                        "url": "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appListAlarmeViper",
+                        "url": "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appListAlarmeObcon",
                         "xhrFields": { withCredentials: true },
-                        "dataSrc": "appViperList",
+                        "dataSrc": "appObconList",
                         "dataType": "json",
                         "type": "POST",
                         "headers":
@@ -257,22 +234,15 @@ if(isset($_SESSION['sectionIDCheck'])){
                 },
                 "columns":
                     [
+                        { data: "clid", "className":"text-right text-monospace" },
                         { data: "customer_nome_fantasia", "className":"text-left text-monospace" },
-                        { data: "ori", "className":"text-center text-monospace" },
-                        { data: "idr", "className":"text-right text-monospace" },
-                        { data: "nor", "className":"text-left text-monospace" },
-                        { data: "cod", "className":"text-right text-monospace" },
-                        { data: "data_br", "className":"text-right text-monospace" },
-                        { data: "nuc", "className":"text-right text-monospace" },
-                        { data: "apl", "className":"text-left text-monospace" },
-                        { data: "ins", "className":"text-right text-monospace" },
-                        { data: "origem_desc", "className":"text-left text-monospace" },
-                        { data: "subtipo_desc", "className":"text-left text-monospace" },
-                        { data: "nsb", "className":"text-right text-monospace" },
-                        { data: "sbn", "className":"text-right text-monospace" },
-                        { data: "cor", "className":"text-left text-monospace" },
-                        { data: "ips", "className":"text-left text-monospace" },
-                        { data: "pos", "className":"text-left text-monospace" }
+                        { data: "ninst", "className":"text-right text-monospace" },
+                        { data: "data_br", "className":"text-left text-monospace" },
+                        { data: "hora", "className":"text-right text-monospace" },
+                        { data: "cam", "className":"text-right text-monospace" },
+                        { data: "tw", "className":"text-right text-monospace" },
+                        { data: "sent", "className":"text-left text-monospace" },
+                        { data: "numo", "className":"text-right text-monospace" }
                     ],
                 "createdRow": function( row, data, dataIndex )
                 {
