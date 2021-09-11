@@ -76,7 +76,13 @@ elseif ($v_dataSec == "appUserAccess")
     $v_UserAccessData = $v_userAccess->appUserAccess($v_appData);
     echo json_encode($v_UserAccessData);
 }
-
+elseif($v_dataSec == "appListInstallation")
+{
+    $v_appData = new appDataList();
+    $v_appInstallationList = $v_appData->appInstallationList();
+    $v_returnData["appInstallationList"] = $v_appInstallationList["rsData"];
+    echo json_encode($v_returnData);
+}
 elseif($v_dataSec == "appListAlarmeViper")
 {
     $v_appData = new appDataList();

@@ -209,7 +209,7 @@ if(isset($_SESSION['sectionIDCheck'])){
                 "autoWidth": false,
                 "paging": true,
                 "pageLength": 10,
-                "dom": '<"dtFloatRight"f><"dtInfoBeta">rt<"dtCenter"i<"#excelBtnDiv.dtFloatLeft hidden"B><"dtFloatLeft"><"dtFloatRight"p>>',
+                "dom": '<"dtFloatRight"f><"#excelBtnDiv.dtFloatLeft hidden"B><"dtInfoBeta">rt<"dtCenter"i<"dtFloatLeft"><"dtFloatRight"p>>',
                 "ajax":
                     {
                         "url": "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appListAlarmeViper",

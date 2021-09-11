@@ -137,6 +137,7 @@ if(isset($_SESSION['sectionIDCheck'])){
                                 <th>TW</th>
                                 <th>SENT</th>
                                 <th>NUMO</th>
+                                <th>TAMA</th>
                             </tr>
                             </thead>
                             <tbody class="text-center"></tbody>
@@ -151,6 +152,7 @@ if(isset($_SESSION['sectionIDCheck'])){
                                 <th>TW</th>
                                 <th>SENT</th>
                                 <th>NUMO</th>
+                                <th>TAMA</th>
                             </tr>
                             </tfoot>
                         </table>
@@ -186,7 +188,7 @@ if(isset($_SESSION['sectionIDCheck'])){
                 "autoWidth": false,
                 "paging": true,
                 "pageLength": 10,
-                "dom": '<"dtFloatRight"f><"dtInfoBeta">rt<"dtCenter"i<"#excelBtnDiv.dtFloatLeft hidden"B><"dtFloatLeft"><"dtFloatRight"p>>',
+                "dom": '<"dtFloatRight"f><"#excelBtnDiv.dtFloatLeft hidden"B><"dtInfoBeta">rt<"dtCenter"i<"dtFloatLeft"><"dtFloatRight"p>>',
                 "ajax":
                     {
                         "url": "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appListAlarmeObcon",
@@ -242,7 +244,8 @@ if(isset($_SESSION['sectionIDCheck'])){
                         { data: "cam", "className":"text-right text-monospace" },
                         { data: "tw", "className":"text-right text-monospace" },
                         { data: "sent", "className":"text-left text-monospace" },
-                        { data: "numo", "className":"text-right text-monospace" }
+                        { data: "numo", "className":"text-right text-monospace" },
+                        { data: "tama", "className":"text-right text-monospace" }
                     ],
                 "createdRow": function( row, data, dataIndex )
                 {

@@ -97,6 +97,7 @@ $g_appPageData = array(
     "Obcon" => "appRelatorio/appObconList",
     "Users" => "appUser/appUserList",
     "User" => "appUser/appUserDetail",
+    "Instalacao" => "appInstallation/appInstallationList",
     "MeuPerfil" => "appUser/appUserProfile",
     "LayoutTest" => "appMaps/appLayoutMap"
 );
