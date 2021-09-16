@@ -17,6 +17,10 @@ use app\userAccess\appUserControl;
 use app\System\Lov\appLov;
 use app\System\Customer\appCustomer;
 use app\System\Combo\appCombo;
+use app\System\Installation\appInstallation;
+
+
+
 use app\System\Product\appProduct;
 use app\System\Lists\appDataList;
 use app\System\Photo\appPhoto;
@@ -28,12 +32,8 @@ use app\System\Phone\appPhone;
 use app\System\Reference\appReference;
 use app\System\Spec\appSpec;
 use app\System\Email\appEmail;
-use app\System\Opportunity\appOpportunity;
-use app\System\Business\appBusiness;
-use app\System\Social\appSocial;
-use app\System\FollowUp\appFollowUp;
-use app\System\Timeline\appTimeline;
-use app\System\SaleItem\appSaleItem;
+
+
 use app\System\Website\appWebsite;
 use app\System\Price\appPrice;
 use app\System\Tools\appSystemTools;
@@ -68,6 +68,12 @@ elseif ($v_dataSec == "appUser")
     $v_contactData =  new appContact();
     $v_appContact = $v_contactData->appContactData($v_appData);
     echo json_encode($v_appContact);
+}
+elseif ($v_dataSec == "appInstallation")
+{
+    $v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;
+    $v_data =  new appInstallation();
+    $v_appReturn = $v_data->appInstallationData($v_appData);
 }
 elseif ($v_dataSec == "appUserAccess")
 {
@@ -2969,6 +2975,12 @@ elseif ($v_dataSec == "appComboExpenseOpportunity")
     $v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;
     $v_appCombo =  new appCombo();
     $v_comboItem = $v_appCombo->comboExpenseOpportunity($v_appData);
+}
+elseif ($v_dataSec == "appComboNinst")
+{
+    $v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;
+    $v_appCombo =  new appCombo();
+    $v_comboItem = $v_appCombo->comboNinst($v_appData);
 }
 /* API Test */
 elseif ($v_dataSec == "appApiTest")

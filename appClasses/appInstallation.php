@@ -44,67 +44,13 @@ class appInstallation
         }
         elseif ($v_reqMethod == "PUT")
         {
-            $v_fieldArray = array(
-                "updLegalName" => "customer_name",
-                "updName" => "customer_name",
-                "updDBA" => "customer_nickname",
-                "updIE" => "customer_ie",
-                "updIM" => "customer_im",
-                "updNickname" => "customer_nickname",
-                "updGroup" => "customer_group_id",
-                "updAddInfo" => "more_information",
-                "updTitle" => "title_id"
-            );
+            $v_installationID = !empty($data['installationID']) ? $data['installationID'] : NULL;
+            $v_installationDesc = !empty($data['installationDesc']) ? addslashes($data['installationDesc']) : NULL;
 
-            $v_updateType = !empty($_REQUEST['updateType']) ? $_REQUEST['updateType'] : '1';
-
-            if($v_updateType === '2')
-            {
-                $v_newData['method'] = 'POST';
-                $v_newData['customerGroupDesc'] = $_REQUEST['newGroup'];
-                $v_groupData = $this->appCustomerGroupData($v_newData);
-                $data['customerGroupID'] = $v_groupData['rsInsertID'];
-            }
-            else
-            {
-                $data['customerGroupID'] = $data['customerData'];
-            }
-            $v_customerID = !empty($data['customerID']) ? $data['customerID'] : NULL;
-            $v_customerField = !empty($v_fieldArray[$data['dataControl']]) ? trim($v_fieldArray[$data['dataControl']]) :NULL;
-
-            if($v_fieldArray[$data['dataControl']] == "updGroup")
-            {
-                $v_customerData = !empty($data['customerGroupID']) ? trim($data['customerGroupID']) : 1;
-            }
-            else{
-                $v_customerData = !empty($data['customerData']) ? trim($data['customerData']) : "";
-            }
-
-            if(is_null($v_customerID) || is_null($v_customerField) || is_null($v_customerData) || empty($_SESSION['userClnt']) || empty($_SESSION['userID']))
-            {
-                $v_return['status'] = false;
-                $v_return['msg'] = "You're not allowed to use this feature";
-                echo json_encode($v_return);
-            }
-            else
-            {
-                $query = "UPDATE %appDBprefix%_customer_data SET ".$v_customerField." = '".addslashes($v_customerData)."' WHERE clnt = '".$_SESSION['userClnt']."' AND customer_id = ".$v_customerID;
-
-                $v_return = $this->dbCon->dbUpdate($query);
-                $v_return['status'] = true;
-
-                if($v_fieldArray[$data['dataControl']] == "updGroup")
-                {
-                    $v_return['customerGroupID'] = $v_customerData;
-                    $v_return['customerGroupDesc'] = !empty($_REQUEST['newGroup']) ? $_REQUEST['newGroup'] : "";
-                }
-                $v_updateBatchID = new appSetNullBatchID();
-                if($v_customerID != NULL){
-                    $v_updateBatchID->updateCustomerBatchID($v_customerID);
-                }
-
-                echo json_encode($v_return);
-            }
+            $query = "UPDATE %appDBprefix%_customer_installation SET installation_desc = '".$v_installationDesc."'  WHERE  installation_id = ".$v_installationID;
+            $v_return = $this->dbCon->dbUpdate($query);
+            $v_return['status'] = true;
+            echo json_encode($v_return);
         }
         elseif ($v_reqMethod == "STATUS")
         {

@@ -271,7 +271,6 @@ if(isset($_SESSION['sectionIDCheck'])){
             });
         });
 
-
         $('.filterPage').on( 'click',function () {
             $('#filterDiv').collapse('toggle');
             $('#appDatatableFoot').collapse('toggle');

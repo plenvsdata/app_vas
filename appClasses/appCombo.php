@@ -48,6 +48,21 @@ class appCombo
         }
     }
 
+    public function comboNinst($data=NULL)
+    {
+        $query = "SELECT ninst_id,ninst,customer_id,customer_raz FROM %appDBprefix%_view_combo_obcon_ninst WHERE 1=1 AND customer_id = '".$data['customerID']."' ORDER BY customer_nome_fantasia ASC";
+        $v_return = $this->dbCon->dbSelect($query);
+
+        if(is_null($data['type']))
+        {
+            return json_encode($v_return);
+        }
+        else
+        {
+            return $v_return;
+        }
+    }
+
     public function comboSystemAccessProfile($type=NULL)
     {
         $query = "SELECT access_profile_id, access_profile_desc, access_profile_status FROM %appDBprefix%_lov_system_access_profile ORDER BY access_profile_desc ASC";
