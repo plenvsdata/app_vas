@@ -75,6 +75,12 @@ elseif ($v_dataSec == "appInstallation")
     $v_data =  new appInstallation();
     $v_appReturn = $v_data->appInstallationData($v_appData);
 }
+elseif ($v_dataSec == "appCamera")
+{
+    $v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;
+    $v_data =  new appInstallation();
+    $v_appReturn = $v_data->appCameraData($v_appData);
+}
 elseif ($v_dataSec == "appUserAccess")
 {
     $v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;
@@ -87,6 +93,13 @@ elseif($v_dataSec == "appListInstallation")
     $v_appData = new appDataList();
     $v_appInstallationList = $v_appData->appInstallationList();
     $v_returnData["appInstallationList"] = $v_appInstallationList["rsData"];
+    echo json_encode($v_returnData);
+}
+elseif($v_dataSec == "appListCamera")
+{
+    $v_appData = new appDataList();
+    $v_appList = $v_appData->appCameraList();
+    $v_returnData["appCameraList"] = $v_appList["rsData"];
     echo json_encode($v_returnData);
 }
 elseif($v_dataSec == "appListAlarmeViper")

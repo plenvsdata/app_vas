@@ -48,13 +48,13 @@ if(isset($_SESSION['sectionIDCheck'])){
 </style>
 <div class="row page-titles basicContent">
     <div class="col-md-5 align-self-center">
-        <h3 class="text-themecolor">Instalações Obcon</h3>
+        <h3 class="text-themecolor">Câmera Obcon</h3>
     </div>
     <div class="col-md-7 align-self-center">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/Welcome">Home</a></li>
             <li class="breadcrumb-item">Configurações</li>
-            <li class="breadcrumb-item active">Instalações Obcon</li>
+            <li class="breadcrumb-item active">Câmera Obcon</li>
         </ol>
     </div>
 </div>
@@ -72,7 +72,9 @@ if(isset($_SESSION['sectionIDCheck'])){
                             <tr>
                                 <th>Cliente</th>
                                 <th>Ninst</th>
-                                <th>Descrição</th>
+                                <th>Instalação</th>
+                                <th>Cam</th>
+                                <th>Cam Desc</th>
                                 <th class="text-center org-col-50">Action</th>
                             </tr>
                             </thead>
@@ -81,7 +83,9 @@ if(isset($_SESSION['sectionIDCheck'])){
                             <tr id="trFilters" class="collapse">
                                 <th>Cliente</th>
                                 <th>Ninst</th>
-                                <th>Descrição</th>
+                                <th>Instalação</th>
+                                <th>Cam</th>
+                                <th>Cam Desc</th>
                                 <th hidden>Action</th>
                             </tr>
                             </tfoot>
@@ -99,21 +103,21 @@ if(isset($_SESSION['sectionIDCheck'])){
 <!-- ============================================================== -->
 <!-- Start Modal Buy Users  -->
 <!-- ============================================================== -->
-<div class="modal fade" id="installationModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel">
+<div class="modal fade" id="cameraModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel">
     <div class="modal-dialog modal-dialog-centered modal-dialog-centered-90" >
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Editar Instalação</h4>
+                <h4 class="modal-title">Editar Câmera Obcon</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <input type="hidden" id="installationID">
+                <input type="hidden" id="obconCameraID">
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group has-feedback divDescricao">
-                            <label for="installationDesc" class="control-label">Descrição:</label>
-                            <input type="text" class="form-control installationDesc" id="installationDesc" name="installationDesc" aria-describedby="installationDescHelp">
-                            <span id="installationDescHelp" class="help-block text-danger">Min 3 caracteres</span>
+                            <label for="camDesc" class="control-label">Descrição:</label>
+                            <input type="text" class="form-control camDesc" id="camDesc" name="camDesc" aria-describedby="camDescHelp">
+                            <span id="camDescHelp" class="help-block text-danger">Min 3 caracteres</span>
                         </div>
                     </div>
                 </div>
@@ -152,9 +156,9 @@ if(isset($_SESSION['sectionIDCheck'])){
                 "dom": '<"dtFloatRight"f><"#excelBtnDiv.dtFloatLeft hidden"B><"dtInfoBeta">rt<"dtCenter"i<"dtFloatLeft"><"dtFloatRight"p>>',
                 "ajax":
                     {
-                        "url": "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appListInstallation",
+                        "url": "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appListCamera",
                         "xhrFields": { withCredentials: true },
-                        "dataSrc": "appInstallationList",
+                        "dataSrc": "appCameraList",
                         "dataType": "json",
                         "headers":
                             {
@@ -197,13 +201,15 @@ if(isset($_SESSION['sectionIDCheck'])){
                         { data: "customer_nome_fantasia", "className":"text-left" },
                         { data: "ninst", "className":"text-right" },
                         { data: "installation_desc", "className":"text-left" },
+                        { data: "cam", "className":"text-right" },
+                        { data: "cam_desc", "className":"text-left" },
                         { data:
                                 {
                                     _: function (data)
                                     {
 
                                         return "<div style='display: inline-flex;' class='flex-item'>"+
-                                            "<i class=\"fa fa-border fa-pencil appEditDesc\" style='cursor: pointer;' data-installation_id='"+data.installation_id+"' data-installation_desc='"+data.installation_desc+"'></i>"+
+                                            "<i class=\"fa fa-border fa-pencil appEditDesc\" style='cursor: pointer;' data-obcon_camera_id='"+data.obcon_camera_id+"' data-cam_desc='"+data.cam_desc+"'></i>"+
                                             "</div>";
                                     }
                                 },
@@ -223,10 +229,10 @@ if(isset($_SESSION['sectionIDCheck'])){
         // Apply the search
         $.docData.dtTable.columns().every( function () {
             let that = this;
-            console.log(that);
+            //console.log(that);
             $( 'input', this.footer() ).on( 'keyup change', function ()
             {
-                console.log(that.search()+'-vs-'+this.value);
+                //console.log(that.search()+'-vs-'+this.value);
                 if ( that.search() !== this.value )
                 {
                     that.search( this.value ).draw();
@@ -241,19 +247,19 @@ if(isset($_SESSION['sectionIDCheck'])){
         });
 
         $.docData.dtTable.on("click",".appEditDesc",function(){
-            let v_installation_id = $(this).attr("data-installation_id");
-            let v_installation_desc = $(this).attr("data-installation_desc");
-            $("#installationID").val(v_installation_id);
-            $("#installationDesc").val(v_installation_desc);
-            $("#installationModal").modal('show');
+            let v_obcon_camera_id = $(this).attr("data-obcon_camera_id");
+            let v_cam_desc = $(this).attr("data-cam_desc");
+            $("#obconCameraID").val(v_obcon_camera_id);
+            $("#camDesc").val(v_cam_desc);
+            $("#cameraModal").modal('show');
         });
 
         $(document).on('click','#btnSave',function(){
-            let v_installation_id = $("#installationID").val();
-            let v_installation_desc = $("#installationDesc").val();
+            let v_obcon_camera_id = $("#obconCameraID").val();
+            let v_cam_desc = $("#camDesc").val();
             let v_erro = '';
 
-            if(v_installation_desc.length<3){
+            if(v_cam_desc.length<3){
                 v_erro+='-Descrição deve ter min. 3 caracteres.<br>';
             }
 
@@ -262,22 +268,22 @@ if(isset($_SESSION['sectionIDCheck'])){
             }else{
 
                 $.ajax({
-                    url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appInstallation",
+                    url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appCamera",
                     type: "POST",
                     dataType: "json",
                     data:
                         {
                             method: 'PUT',
-                            installationID: v_installation_id,
-                            installationDesc: v_installation_desc
+                            obconCameraID: v_obcon_camera_id,
+                            camDesc: v_cam_desc
                         },
                     success: function(d)
                     {
                         if(d.status === true)
                         {
-                            toastr["success"]("Instalação atualizada com sucesso.", "Success");
+                            toastr["success"]("Câmera atualizada com sucesso.", "Success");
                             $.docData.dtTable.ajax.reload();
-                            $('#installationModal').modal('hide');
+                            $('#cameraModal').modal('hide');
                         }
                         else
                         {

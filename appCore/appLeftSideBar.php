@@ -50,7 +50,8 @@ $v_apiData = new appUserControl();
                                         class="hide-menu">Configurações</span></a>
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="<?=$GLOBALS['g_appRoot']?>/System/Users">Usuários</a></li>
-                                <li><a href="<?=$GLOBALS['g_appRoot']?>/System/Instalacao">Instalação Obcon</a></li>
+                                <li><a href="<?=$GLOBALS['g_appRoot']?>/System/Instalacao">Instalações Obcon</a></li>
+                                <li><a href="<?=$GLOBALS['g_appRoot']?>/System/Camera">Câmera Obcon</a></li>
                             </ul>
                         </li>
                          <?php

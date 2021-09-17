@@ -44,6 +44,12 @@ class appDataList
         return $this->dbCon->dbSelect($query);
     }
 
+    public function appCameraList()
+    {
+        $query = "SELECT obcon_camera_id,installation_id,installation_desc,customer_id,customer_nome_fantasia,cam,cam_desc,ninst,created_at,ok FROM %appDBprefix%_view_obcon_camera  ";
+        return $this->dbCon->dbSelect($query);
+    }
+
     public function appAlarmeViperList()
     {
         $query = "SELECT alarme_viper_id,customer_id,customer_nome_fantasia,ori,idr,nor,cod,dat,data_br,nuc,apl,ins,origem_id,origem_desc,subtipo_id,subtipo_desc,nsb,sbn,cor,ips,pos,alarme_viper_completo,created_at,ok FROM %appDBprefix%_view_alarme_viper_data  ";
