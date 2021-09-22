@@ -48,13 +48,13 @@ if(isset($_SESSION['sectionIDCheck'])){
 </style>
 <div class="row page-titles basicContent">
     <div class="col-md-5 align-self-center">
-        <h3 class="text-themecolor"><?=$v_appCrmPage?></h3>
+        <h3 class="text-themecolor">Dashboard</h3>
     </div>
     <div class="col-md-7 align-self-center">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/Welcome">Home</a></li>
-            <li class="breadcrumb-item">Configurações</li>
-            <li class="breadcrumb-item active"><?=$v_appCrmPage?></li>
+            <li class="breadcrumb-item">Obcon</li>
+            <li class="breadcrumb-item active">Dashboard</li>
         </ol>
     </div>
 </div>
@@ -66,20 +66,22 @@ if(isset($_SESSION['sectionIDCheck'])){
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <div style="position:absolute;"><button type="button" class="btn btn-sm waves-effect waves-light btn-success" data-toggle="modal" data-target="#userModal">Adicionar Usuário</button></div>
+                    <div style="position:absolute;"><button type="button" class="btn btn-sm waves-effect waves-light btn-success" data-toggle="modal" data-target="#dashboardModal">Adicionar Dashboard</button></div>
                     <div class="table-responsive">
                         <table id="appDatatable" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                             <thead>
                             <tr>
-                                <th>User</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Cliente</th>
-                                <th>Status</th>
-                                <th>Action</th>
+                                <th>Descrição</th>
+                                <th class="text-center org-col-50">Action</th>
                             </tr>
                             </thead>
                             <tbody style="text-align: center!important;"></tbody>
+                            <tfoot id="appDatatableFoot" class="collapse">
+                            <tr id="trFilters" class="collapse">
+                                <th>Descrição</th>
+                                <th hidden>Action</th>
+                            </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
@@ -92,70 +94,26 @@ if(isset($_SESSION['sectionIDCheck'])){
 <!-- ============================================================== -->
 
 <!-- ============================================================== -->
-<!-- Start Modal Buy Users  -->
+<!-- Start Modal Dashboard  -->
 <!-- ============================================================== -->
-<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel">
+<div class="modal fade" id="dashboardModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel">
     <div class="modal-dialog modal-dialog-centered modal-dialog-centered-90" >
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Adicionar Usuário</h4>
+                <h4 class="modal-title">Editar Dashboard</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <input type="hidden" id="dashboardID">
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-5">
-                        <div class="form-group has-feedback divUserName">
-                            <label for="userName" class="control-label">Nome completo:</label>
-                            <input type="text" class="form-control userName" id="userName" name="userName" aria-describedby="userNameHelp">
-                            <span id="userNameHelp" class="help-block text-danger">Min 3 characters</span>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group has-feedback divUserNickname">
-                            <label for="userNickname" class="control-label">Conhecido por:</label>
-                            <input type="text" class="form-control userNickname" id="userNickname" name="userNickname" aria-describedby="userNicknameHelp">
-                            <span id="userNicknameHelp" class="help-block text-danger">Min 3 caracteres</span>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group has-feedback divUserEmail">
-                            <label for="userEmail" class="control-label">Email:</label>
-                            <input type="text" class="form-control userEmail" required id="userEmail" name="userEmail" aria-describedby="userEmailHelp">
-                            <span id="userEmailHelp" class="help-block text-danger">Min 3 caracteres</span>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="form-group has-feedback divUserPhone">
-                            <label for="userPhone" class="control-label">Telefone:</label>
-                            <input type="text" class="form-control userPhone" id="userPhone" name="userPhone" aria-describedby="userPhoneHelp">
-                            <span id="userPhoneHelp" class="help-block text-danger">Min 3 characters</span>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label class="control-label">Perfil de Acesso</label>
-                            <select id=profileID" name="profileID" class="form-control custom-select selectpicker profileID">
-                            <?php foreach ($v_comboProfile['rsData'] as $key=>$value){ ?>
-                                <option value="<?=$value['access_profile_id']?>"><?=$value['access_profile_desc']?></option>
-                            <?php } ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div id="divCustomer" class="col-md-5 hide">
-                        <div class="form-group">
-                            <label class="control-label">Cliente:</label>
-                            <select id=customerID" name="customerID" class="form-control custom-select selectpicker customerID">
-                                <?php foreach ($v_comboCustomer['rsData'] as $key=>$value){ ?>
-                                    <option value="<?=$value['customer_id']?>"><?=$value['customer_nome_fantasia']?></option>
-                                <?php } ?>
-                            </select>
+                    <div class="col-md-12">
+                        <div class="form-group has-feedback divDescricao">
+                            <label for="dashboardDesc" class="control-label">Descrição:</label>
+                            <input type="text" class="form-control dashboardDesc" id="dashboardDesc" name="dashboardDesc" aria-describedby="dashboardDescHelp">
+                            <span id="dashboardDescHelp" class="help-block text-danger">Min 3 caracteres</span>
                         </div>
                     </div>
                 </div>
-
                 <div class="modal-footer">
                     <button type="button" class="btn btn-sm btn-danger waves-effect" data-dismiss="modal" id="btnCancel">Cancelar</button>
                     <button type="button" class="btn btn-sm btn-success waves-effect waves-light" id="btnSave">Salvar</button>
@@ -165,7 +123,7 @@ if(isset($_SESSION['sectionIDCheck'])){
     </div>
 </div>
 <!-- ============================================================== -->
-<!-- End Modal Buy Users  -->
+<!-- End Modal Dashboard  -->
 <!-- ============================================================== -->
 <script src="../../assets/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js" type="text/javascript"></script>
 
@@ -178,59 +136,10 @@ if(isset($_SESSION['sectionIDCheck'])){
             profileList : '',
             dataSectionCheck : <?=$_dataSectionCheck?>
         };
-
-        if($.docData.dataSectionCheck === false){
-            toastr["warning"]("This user doesn't exist.", "Attention!");
-        }
-
-        $("#userPhone").mask('(00) 00000-0000');
-
-        $(".appUserStatus").on("click",function()
-        {
-            let v_elemento = $(this);
-            let v_user_status_str = $(this).attr("data-user_status");
-            let v_user_status_array = v_user_status_str.split("_");
-            let v_user_status_new;
-            if(v_user_status_array[1]==2){
-                v_user_status_new = 1;
-            }else{
-                v_user_status_new = 2;
-            }
-            $.ajax({
-                url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUser",
-                type: "POST",
-                dataType: "json",
-                data:
-                    {
-                        appFormData:{
-                            method: "STATUS",
-                            userID: v_user_status_array[0],
-                            userStatus: v_user_status_new
-                        }
-                    },
-                success: function(d)
-                {
-                    if(d.apiData.status==true)
-                    {
-                        location.reload();
-                        if(v_user_status_new==2)
-                        {
-                            $(v_elemento).removeClass("btn-warning").addClass("btn-info");
-                            $(v_elemento).text("Active");
-                            $(v_elemento).data('user_status',v_user_status_array[0]+'_'+v_user_status_new);
-
-
-                        }else{
-                            $(v_elemento).removeClass("btn-info").addClass("btn-warning");
-                            $(v_elemento).text("Inactive");
-                            $(v_elemento).data('user_status',v_user_status_array[0]+'_'+v_user_status_new);
-                        }
-                    }else{
-                        console.log('Can´t change status user');
-                    }
-                }
-            });
-
+        // Setup - add a text input to each footer cell
+        $('#appDatatable tfoot th').each( function () {
+            //var title = $(this).text();
+            $(this).html( '<input type="text" placeholder="Fitro" />' );
         });
 
         $.docData.dtTable = $('#appDatatable').DataTable({
@@ -240,9 +149,9 @@ if(isset($_SESSION['sectionIDCheck'])){
                 "dom": '<"dtFloatRight"f><"dtInfoBeta">rt<"dtCenter"i<"dtFloatLeft"B><"dtFloatLeft"><"dtFloatRight"p>>',
                 "ajax":
                     {
-                        "url": "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appListUser",
+                        "url": "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appListDashboard",
                         "xhrFields": { withCredentials: true },
-                        "dataSrc": "appUserList",
+                        "dataSrc": "appDashboardList",
                         "dataType": "json",
                         "headers":
                             {
@@ -256,83 +165,23 @@ if(isset($_SESSION['sectionIDCheck'])){
                     ],
                 "initComplete": function () {
                     $(".dt-buttons").removeClass("btn-group");
+                    let r = $('#appDatatable tfoot tr');
+                    r.find('th').each(function(){
+                        $(this).css('padding', 8);
+                    });
+                    $('#appDatatable thead').append(r);
                 },
                 "columns":
                     [
-                        { data:
-                                {
-                                    _: function(data)
-                                    {
-                                        if(data.user_status==1||data.user_status==2)
-                                        {
-                                            return "<a href='User/"+data.user_id+"'>"+data.user_name+"</a>";
-                                        }else
-                                        {
-                                            return "<div>"+data.user_name+"</div>";
-                                        }
-
-                                    },
-                                    _sort: "user_name"
-                                }, "className":"text-left"
-                        },
-                        { data: "user_login", "className":"text-left" },
-                        { data: "user_phone", "className":"text-left" },
-                        { data:
-                                {
-                                    _: function(data)
-                                    {
-                                        if(parseInt(data.access_profile_id) === 3)
-                                        {
-                                            return data.customer_nome_fantasia;
-                                        }else
-                                        {
-                                            return "<i class=\"fa fa-minus\"></i>";
-                                        }
-
-                                    },
-                                    _sort: "customer_nome_fantasia"
-                                }
-                        },
-                        { data:
-                                {
-                                    sort: "user_status",
-                                    _: function (data)
-                                    {
-                                        if(data.user_status === "1"){
-                                            return "<button type='button' data-user_id='"+data.user_id+"' data-user_status='2' class='btn waves-effect waves-light btn-xs btn-"+data.status_class+" appUserStatus' style='width:100%!important;'>"+data.status_desc+"</button>";
-                                        }else if (data.user_status === "2") {
-                                            return "<button type='button' data-user_id='"+data.user_id+"' data-user_status='1' class='btn waves-effect waves-light btn-xs btn-"+data.status_class+" appUserStatus' style='width:100%!important;'>"+data.status_desc+"</button>";
-                                        }
-                                        else if(data.user_status === "3"){
-                                            return "<button type='button' data-user_id='"+data.user_id+"'  class='btn waves-effect waves-light btn-xs btn-"+data.status_class+" appUserInvite' style='width:100%!important;'>"+data.status_desc+"</button>";
-                                        }
-                                        else if(data.user_status === "4"){
-                                            return "<button type='button' data-user_id='"+data.user_id+"'  class='btn waves-effect waves-light btn-xs btn-"+data.status_class+" appUserInvite' style='width:100%!important;'>"+data.status_desc+"</button>";
-                                        }else if(data.user_status === "6"){
-                                            return "<button type='button' data-user_id='"+data.user_id+"'  class='btn waves-effect waves-light btn-xs btn-"+data.status_class+" appUserConfig'  style='width:100%!important;'>"+data.status_desc+"</button>";
-                                        }else{
-                                            return "<button type='button' data-user_id='"+data.user_id+"'  class='btn waves-effect waves-light btn-xs btn-"+data.status_class+" ' style='width:100%!important;'>"+data.status_desc+"</button>";
-                                        }
-                                    }
-                                },
-                            "className":"text-center" },
+                        { data: "dashboard_desc", "className":"text-left" },
                         { data:
                                 {
                                     _: function (data)
                                     {
-                                        if(data.owner==1)
-                                        {
-                                            var v_options = "<div style='width:100%!important; display: inline-flex;' class='flex-item'>"+
-                                                "<i class=\"fa fa-border fa-star\" style='cursor: pointer;' data-user_id='"+data.user_id+"' data-user_name='"+data.user_name+"' data-toggle='tooltip' data-placement='top'  data-original-title='"+data.user_name+"'></i>"+
-                                                "</div>";
-                                        }else
-                                        {
-                                            var v_options = "<div style='width:100%!important; display: inline-flex;' class='flex-item'>"+
-                                                "<i class=\"fa fa-border fa-trash appUserDel\" style='cursor: pointer;' data-user_status_del='"+data.user_status+"' data-user_id='"+data.user_id+"' data-user_name='"+data.user_name+"'></i>"+
-                                                "</div>";
-                                        }
 
-                                        return v_options;
+                                        return "<div style='display: inline-flex;' class='flex-item'>"+
+                                            "<i class=\"fa fa-border fa-pencil appEditDesc\" style='cursor: pointer;' data-dashboard_id='"+data.dashboard_id+"' data-dashboard_desc='"+data.dashboard_desc+"'></i>"+
+                                            "</div>";
                                     }
                                 },
                             "className":"text-center"
@@ -340,62 +189,89 @@ if(isset($_SESSION['sectionIDCheck'])){
                     ],
                 "createdRow": function( row, data, dataIndex )
                 {
-                    $(row).attr("data-user_id",data.user_id);
+                    $(row).attr("data-dashboard_id",data.dashboard_id);
                 },
                 "columnDefs":
                     [
-                        {
-                            targets: 3,
-                            "createdCell": function (td, cellData, rowData, rol, col)
-                            {
-                                if(parseInt(rowData.access_profile_id) === 3)
-                                {
-                                    $(td).addClass('text-left');
-                                }else
-                                {
-                                    $(td).addClass('text-center');
-                                }
-                            }
-                        }
+                        {}
                     ]
             }
         );
-
-        $.docData.dtTable.on("click",".appUserStatus",function() {
-            var v_userStatus = $(this).attr("data-user_status")
-            var v_userID = $(this).attr("data-user_id");
-
-            $.ajax({
-                url:"<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserAccess",
-                method:"POST",
-                dataType:"json",
-                data:
-                    {
-                        appFormData:{
-                            userID: v_userID,
-                            userStatus: v_userStatus,
-                            method: "STATUS"
-                        }
-
-                    },
-                success:function(d)
+        // Apply the search
+        $.docData.dtTable.columns().every( function () {
+            let that = this;
+            console.log(that);
+            $( 'input', this.footer() ).on( 'keyup change', function ()
+            {
+                console.log(that.search()+'-vs-'+this.value);
+                if ( that.search() !== this.value )
                 {
-                    if(d.status === true)
-                    {
-                        toastr["success"]("User Status Changed", "Success");
-                        $.docData.dtTable.ajax.reload();
-                    }
-                    else
-                    {
-                        toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                    }
-                },
-                error:function()
-                {
-                    toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
+                    that.search( this.value ).draw();
                 }
             });
         });
+
+        $('.filterPage').on( 'click',function () {
+            $('#filterDiv').collapse('toggle');
+            $('#appDatatableFoot').collapse('toggle');
+            $('#trFilters').collapse('toggle');
+        });
+
+        $.docData.dtTable.on("click",".appEditDesc",function(){
+            let v_dashboard_id = $(this).attr("data-dashboard_id");
+            let v_dashboard_desc = $(this).attr("data-dashboard_desc");
+            $("#dashboardID").val(v_dashboard_id);
+            $("#dashboardDesc").val(v_dashboard_desc);
+            $("#dashboardModal").modal('show');
+        });
+
+        $(document).on('click','#btnSave',function(){
+            let v_dashboard_id = $("#dashboardID").val();
+            let v_dashboard_desc = $("#dashboardDesc").val();
+            let v_erro = '';
+
+            if(v_dashboard_desc.length<3){
+                v_erro+='-Descrição deve ter min. 3 caracteres.<br>';
+            }
+
+            if(v_erro != ''){
+                toastr["warning"](v_erro, "Atenção!");
+            }else{
+
+                $.ajax({
+                    url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appDashboard",
+                    type: "POST",
+                    dataType: "json",
+                    data:
+                        {
+                            method: 'PUT',
+                            dashboardID: v_dashboard_id,
+                            dashboardDesc: v_dashboard_desc
+                        },
+                    success: function(d)
+                    {
+                        if(d.status === true)
+                        {
+                            toastr["success"]("Dasboard atualizada com sucesso.", "Success");
+                            $.docData.dtTable.ajax.reload();
+                            $('#dashboardModal').modal('hide');
+                        }
+                        else
+                        {
+                            toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
+                        }
+                    }
+                });
+            }
+
+
+
+        });
+
+
+
+
+
 
         $.docData.dtTable.on("click",".appUserDel",function() {
             var v_userID = $(this).attr("data-user_id");
@@ -616,64 +492,6 @@ if(isset($_SESSION['sectionIDCheck'])){
             });
         });
 
-        $(document).on('click','#btnSave',function(){
-            let v_userName = $("#userName").val();
-            let v_userNickname = $("#userNickname").val();
-            let v_userEmail = $("#userEmail").val();
-            let v_userPhone = $("#userPhone").val();
-            let v_profileID = parseInt($(".profileID option:selected").val());
-            let v_customerID = parseInt($(".customerID option:selected").val());
-            let v_erro = '';
-
-            if(v_userName.length<5){
-                v_erro+='-Nome completo deve ter min. 5 caracteres.<br>';
-            }
-            if(v_userNickname.length<3){
-                v_erro+='-Conhecido por deve ter min. 3 caracteres.<br>';
-            }
-            if(v_userPhone.length<14){
-                v_erro+='-Telefone deve ter min. 14 caracteres.<br>';
-            }
-
-            if(v_erro != ''){
-                toastr["warning"](v_erro, "Atenção!");
-            }else{
-
-                $.ajax({
-                    url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserAccess",
-                    type: "POST",
-                    dataType: "json",
-                    data:
-                        {
-                            method: 'POST',
-                            userName: v_userName,
-                            userNickname: v_userNickname,
-                            userPhone: v_userPhone,
-                            userEmail: v_userEmail,
-                            profileID: v_profileID,
-                            customerID: v_customerID
-                        },
-                    success: function(d)
-                    {
-                        if(d.apiData.status === true)
-                        {
-                            toastr["success"]("Usuário "+v_userName+" inserido(a) com sucesso.", "Success");
-                            $.docData.dtTable.ajax.reload();
-                            $('#userModal').modal('hide');
-                        }
-                        else
-                        {
-                            toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
-                        }
-                    }
-                });
-            }
-
-
-
-        });
-
-
         $('.profileID').on('changed.bs.select', function (e, clickedIndex, newValue, oldValue) {
             let v_profileID = $(e.currentTarget).val();
             if(v_profileID == 3){
@@ -685,5 +503,3 @@ if(isset($_SESSION['sectionIDCheck'])){
 
     });
 </script>
-
-

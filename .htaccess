@@ -24,6 +24,9 @@ RewriteRule    ^BusinessCenter/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/?$      appCore/a
 RewriteRule    ^System/([A-Za-z0-9-]+)/?$                      appCore/appMainCRM.php?pageData=$1    [NC,L]    # Handle requests for "adminPanel"
 RewriteRule    ^System/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/?$      appCore/appMainCRM.php?pageData=$1&dataValue=$2  [NC,L]
 
+RewriteRule    ^Obcon/([A-Za-z0-9-]+)/?$                      appCore/appMainCRM.php?pageData=$1    [NC,L]    # Handle requests for "adminPanel"
+RewriteRule    ^Obcon/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/?$      appCore/appMainCRM.php?pageData=$1&dataValue=$2  [NC,L]
+
 RewriteRule    ^adminPanel/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/?$    adminPanel.php?Control=$1&Action=$2    [NC,L]    # Handle requests for "adminPanel"
 RewriteRule    ^appAccessAPI/([A-Za-z0-9-]+)/?$    appCore/appAccessControlData.php?dataSec=$1   [NC,L]    # Handle requests for "blockControlData"
 
