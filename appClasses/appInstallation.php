@@ -320,23 +320,18 @@ class appInstallation
 
         if($v_reqMethod == "POST")
         {
-            $v_customerNomeFantasia = !empty($data['customerNomeFantasia']) ? addslashes(trim($data['customerNomeFantasia'])) : NULL;
-            $v_customerRazaoSocial = !empty($data['customerRazaoSocial']) ? addslashes(trim($data['customerRazaoSocial'])) : NULL;
-            $v_customerEmail = !empty($data['customerEmail']) ? addslashes(trim($data['customerEmail'])) : NULL;
-            $v_customerPhone = !empty($data['customerPhone']) ? trim($data['customerPhone']) : NULL;
-            $v_customerCnpj = !empty($data['customerCnpj']) ? trim($data['customerCnpj']) : NULL;
-            $v_token =  hash('sha256', date("Y-m-d H:i:s").$v_customerNomeFantasia);
-            if(is_null($v_customerNomeFantasia) || strlen($v_customerNomeFantasia) < 3)
+            $v_dashboardDesc = !empty($data['dashboardDesc']) ? addslashes($data['dashboardDesc']) : NULL;
+            if(is_null($v_dashboardDesc) || strlen($v_dashboardDesc) < 3)
             {
                 $v_return['status'] = false;
             }
             else
             {
-                $query = "INSERT INTO %appDBprefix%_customer_data (customer_cnpj,customer_razao_social,customer_nome_fantasia,customer_phone,customer_email,customer_token) VALUES ('".$v_customerCnpj."','".$v_customerRazaoSocial."','".$v_customerNomeFantasia."','".$v_customerPhone."','".$v_customerEmail."','".$v_token."') ";
+                $query = "INSERT INTO %appDBprefix%_obcon_dashboard (dashboard_desc) VALUES ('".$v_dashboardDesc."') ";
                 $v_return = $this->dbCon->dbInsert($query);
                 $v_return['status'] = true;
             }
-            return $v_return;
+            echo json_encode($v_return);
         }
         elseif ($v_reqMethod == "PUT")
         {
@@ -384,15 +379,15 @@ class appInstallation
         }
         elseif ($v_reqMethod == "DELETE")
         {
-            $v_customerID = !empty($data['customerID']) ? $data['customerID'] : NULL;
-            if(is_null($v_customerID) || empty($v_customerID))
+            $v_dashboardID = !empty($data['dashboardID']) ? $data['dashboardID'] : NULL;
+            if(is_null($v_dashboardID) || empty($v_dashboardID))
             {
                 $v_return['status'] = false;
                 echo json_encode($v_return);
             }
             else
             {
-                $query = "DELETE FROM %appDBprefix%_customer_data WHERE customer_id = $v_customerID ";
+                $query = "DELETE FROM %appDBprefix%_obcon_dashboard WHERE dashboard_id = $v_dashboardID ";
                 $v_return = $this->dbCon->dbDelete($query);
 
 

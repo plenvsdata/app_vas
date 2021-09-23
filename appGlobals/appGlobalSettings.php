@@ -99,6 +99,7 @@ $g_appPageData = array(
     "User" => "appUser/appUserDetail",
     "Instalacao" => "appInstallation/appInstallationList",
     "Dashboard" => "appDashboard/appDashboardList",
+    "DashboardConfig" => "appDashboard/appDashboardConfig",
     "Camera" => "appInstallation/appInstallationCameraList",
     "MeuPerfil" => "appUser/appUserProfile",
     "LayoutTest" => "appMaps/appLayoutMap"

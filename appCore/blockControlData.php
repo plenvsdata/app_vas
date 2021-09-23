@@ -115,6 +115,13 @@ elseif($v_dataSec == "appListDashboard")
     $v_returnData["appDashboardList"] = $v_appDashboardList["rsData"];
     echo json_encode($v_returnData);
 }
+elseif($v_dataSec == "appDashboardConfig")
+{
+    $v_appData = new appDataList();
+    $v_appDashboardConfig = $v_appData->appDashboardConfig();
+    $v_returnData["appDashboardConfig"] = $v_appDashboardConfig["rsData"];
+    echo json_encode($v_returnData);
+}
 elseif($v_dataSec == "appListAlarmeViper")
 {
     $v_appData = new appDataList();
@@ -282,7 +289,7 @@ elseif ($v_dataSec == "appCustomer")
 {
     $v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;
 
-    if($v_appData['method']=='POST')
+    if($v_appData['method']=='POST' || $v_appData['method']=='PUT')
     {
         //tratamento serialize
         $v_formData = array();
@@ -297,7 +304,6 @@ elseif ($v_dataSec == "appCustomer")
         $v_customer =  new appCustomer();
         $v_customerData = $v_customer->appCustomerData($v_appData);
         echo json_encode($v_customerData);
-
     }else
     {
         $v_customer =  new appCustomer();

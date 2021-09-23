@@ -149,9 +149,11 @@ if(isset($_SESSION['sectionIDCheck'])){
             <div class="modal-header">
                 <h4 class="modal-title"><span id="txtLabel">Adicionar</span> Cliente</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <input type="hidden" id="action">
             </div>
             <div class="modal-body">
                 <form id="addNewCustomer" name="addNewCustomer">
+                    <input type="hidden" id="customerID">
                     <div class="row divCustomerCompany">
                         <div class="col-md-6">
                             <div class="form-group divCustomerNomeFantasia has-feedback">
@@ -212,7 +214,6 @@ if(isset($_SESSION['sectionIDCheck'])){
         countryChangeState : false,
         stateChangeState : false,
         dataSectionCheck : <?=$_dataSectionCheck?>
-
     };
 
     function showMap() {
@@ -234,6 +235,8 @@ if(isset($_SESSION['sectionIDCheck'])){
             let serial_form = $("form[id=addNewCustomer]").find('select, textarea, input').serialize();
             let v_customerNomeFantasia = $("#customerNomeFantasia").val();
             let v_customerEmail = $("#customerEmail").val();
+            let v_action = $("#action").val();
+            let v_customerID = $("#customerID").val();
 
             if(v_customerNomeFantasia.length < 3)
             {
@@ -249,35 +252,68 @@ if(isset($_SESSION['sectionIDCheck'])){
                 toastr["warning"](v_erro, "Atenção!");
                 return false;
             }else{
-                $.ajax({
-                    url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appCustomer",
-                    type: "POST",
-                    dataType: "json",
-                    data:
+                if(v_action === 'POST'){
+                    $.ajax({
+                        url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appCustomer",
+                        type: "POST",
+                        dataType: "json",
+                        data:
+                            {
+                                formData: serial_form,
+                                method :'POST'
+                            },
+                        success: function(d)
                         {
-                            formData: serial_form,
-                            method :'POST'
+                            console.log(d);
+                            if(d.status === true)
+                            {
+                                toastr["success"]("Cliente Adicionado!", "Success");
+                                $.docData.dtTable.ajax.reload();
+                                $('#newCustomerModal').modal('hide');
+                            }
+                            else
+                            {
+                                toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
+                            }
                         },
-                    success: function(d)
-                    {
-                        console.log(d);
-                        if(d.status === true)
-                        {
-                            toastr["success"]("Cliente Adicionado!", "Success");
-                            $.docData.dtTable.ajax.reload();
-                            $('#addNewCustomer').trigger("reset");
-                            $('#newCustomerModal').modal('hide');
-                        }
-                        else
+                        error:function (d)
                         {
                             toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
                         }
-                    },
-                    error:function (d)
-                    {
-                        toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                    }
-                });
+                    });
+                }else if(v_action === 'PUT'){
+                    $.ajax({
+                        url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appCustomer",
+                        type: "POST",
+                        dataType: "json",
+                        data:
+                            {
+                                formData: serial_form,
+                                customerID: v_customerID,
+                                method:'PUT'
+                            },
+                        success: function(d)
+                        {
+                            console.log(d);
+                            if(d.status === true)
+                            {
+                                toastr["success"]("Cliente Alterado!", "Success");
+                                $.docData.dtTable.ajax.reload();
+                                $('#addNewCustomer').trigger("reset");
+                                $('#newCustomerModal').modal('hide');
+                            }
+                            else
+                            {
+                                toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
+                            }
+                        },
+                        error:function (d)
+                        {
+                            toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
+                        }
+                    });
+                }
+
             }
         });
 
@@ -461,14 +497,19 @@ if(isset($_SESSION['sectionIDCheck'])){
 
         $(document).on('click','.appAddCustomer',function () {
             $("#txtLabel").text('Adicionar');
+            $("#action").val('POST');
+            cleanCustomer();
         });
 
         $(document).on('click','.appCustomerEdit',function (){
+            $("#action").val('PUT');
+            let v_customerID = $(this).attr("data-customer_id");
             let v_customerFantasia = $(this).attr("data-customer_nome_fantasia");
             let v_customerRazao = $(this).attr("data-customer_razao_social");
             let v_customerEmail = $(this).attr("data-customer_email");
             let v_customerPhone = $(this).attr("data-customer_phone");
             let v_customerCnpj = $(this).attr("data-customer_cnpj");
+            $("#customerID").val(v_customerID);
             $("#customerNomeFantasia").val(v_customerFantasia);
             $("#customerRazaoSocial").val(v_customerRazao);
             $("#customerEmail").val(v_customerEmail);
@@ -478,6 +519,10 @@ if(isset($_SESSION['sectionIDCheck'])){
             $("#newCustomerModal").modal('show');
         });
     });
+
+    function cleanCustomer(){
+        $('#addNewCustomer').trigger("reset");
+    }
 </script>
 
 

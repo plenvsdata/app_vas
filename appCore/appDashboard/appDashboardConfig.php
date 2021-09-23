@@ -9,9 +9,10 @@ use app\System\Lists\appDataList;
 use app\System\Combo\appCombo;
 //use app\System\Lov\appGetValue;
 
+$v_dashboardID = !empty($_REQUEST['dataValue']) ? $_REQUEST['dataValue'] : null;
+print $v_dashboardID;
 $v_comboData = new appCombo();
 $v_comboProfile = $v_comboData->comboSystemAccessProfile('array');
-$v_comboCustomer = $v_comboData->comboCustomer('array');
 
 $v_sectionIDCheck = true;
 $_dataSectionCheck = 'true';

@@ -33,9 +33,6 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
 }else{
     $v_avatarFolder = $GLOBALS['g_appRoot']."/appImages/defaultImages/default_avatar.png";
 }
-
-//Combos
-$v_comboData = new appCombo();
 ?>
 <style>
     .iconColor

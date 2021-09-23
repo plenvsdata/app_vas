@@ -21,7 +21,6 @@ class appCustomer
     public function appCustomerData($data = NULL)
     {
         $v_reqMethod = $data['method'];
-
         if($v_reqMethod == "POST")
         {
             $v_customerNomeFantasia = !empty($data['customerNomeFantasia']) ? addslashes(trim($data['customerNomeFantasia'])) : NULL;
@@ -44,67 +43,24 @@ class appCustomer
         }
         elseif ($v_reqMethod == "PUT")
         {
-            $v_fieldArray = array(
-                "updLegalName" => "customer_name",
-                "updName" => "customer_name",
-                "updDBA" => "customer_nickname",
-                "updIE" => "customer_ie",
-                "updIM" => "customer_im",
-                "updNickname" => "customer_nickname",
-                "updGroup" => "customer_group_id",
-                "updAddInfo" => "more_information",
-                "updTitle" => "title_id"
-            );
-
-            $v_updateType = !empty($_REQUEST['updateType']) ? $_REQUEST['updateType'] : '1';
-
-            if($v_updateType === '2')
-            {
-                $v_newData['method'] = 'POST';
-                $v_newData['customerGroupDesc'] = $_REQUEST['newGroup'];
-                $v_groupData = $this->appCustomerGroupData($v_newData);
-                $data['customerGroupID'] = $v_groupData['rsInsertID'];
-            }
-            else
-            {
-                $data['customerGroupID'] = $data['customerData'];
-            }
-            $v_customerID = !empty($data['customerID']) ? $data['customerID'] : NULL;
-            $v_customerField = !empty($v_fieldArray[$data['dataControl']]) ? trim($v_fieldArray[$data['dataControl']]) :NULL;
-
-            if($v_fieldArray[$data['dataControl']] == "updGroup")
-            {
-                $v_customerData = !empty($data['customerGroupID']) ? trim($data['customerGroupID']) : 1;
-            }
-            else{
-                $v_customerData = !empty($data['customerData']) ? trim($data['customerData']) : "";
-            }
-
-            if(is_null($v_customerID) || is_null($v_customerField) || is_null($v_customerData) || empty($_SESSION['userClnt']) || empty($_SESSION['userID']))
+            $v_customerID = !empty($data['customerID']) ? addslashes(trim($data['customerID'])) : NULL;
+            $v_customerNomeFantasia = !empty($data['customerNomeFantasia']) ? addslashes(trim($data['customerNomeFantasia'])) : NULL;
+            $v_customerRazaoSocial = !empty($data['customerRazaoSocial']) ? addslashes(trim($data['customerRazaoSocial'])) : NULL;
+            $v_customerEmail = !empty($data['customerEmail']) ? addslashes(trim($data['customerEmail'])) : NULL;
+            $v_customerPhone = !empty($data['customerPhone']) ? trim($data['customerPhone']) : NULL;
+            $v_customerCnpj = !empty($data['customerCnpj']) ? trim($data['customerCnpj']) : NULL;
+            if(is_null($v_customerNomeFantasia) || strlen($v_customerNomeFantasia) < 3)
             {
                 $v_return['status'] = false;
-                $v_return['msg'] = "You're not allowed to use this feature";
-                echo json_encode($v_return);
             }
             else
             {
-                $query = "UPDATE %appDBprefix%_customer_data SET ".$v_customerField." = '".addslashes($v_customerData)."' WHERE clnt = '".$_SESSION['userClnt']."' AND customer_id = ".$v_customerID;
-
+                $query = "UPDATE %appDBprefix%_customer_data SET customer_cnpj = '".$v_customerCnpj."',customer_razao_social = '".$v_customerRazaoSocial."',customer_nome_fantasia = '".$v_customerNomeFantasia."',customer_phone = '".$v_customerPhone."',customer_email = '".$v_customerEmail."' WHERE customer_id = ".$v_customerID;
+                //print $query;die();
                 $v_return = $this->dbCon->dbUpdate($query);
                 $v_return['status'] = true;
-
-                if($v_fieldArray[$data['dataControl']] == "updGroup")
-                {
-                    $v_return['customerGroupID'] = $v_customerData;
-                    $v_return['customerGroupDesc'] = !empty($_REQUEST['newGroup']) ? $_REQUEST['newGroup'] : "";
-                }
-                $v_updateBatchID = new appSetNullBatchID();
-                if($v_customerID != NULL){
-                    $v_updateBatchID->updateCustomerBatchID($v_customerID);
-                }
-
-                echo json_encode($v_return);
             }
+            return $v_return;
         }
         elseif ($v_reqMethod == "STATUS")
         {
