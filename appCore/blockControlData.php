@@ -3014,6 +3014,12 @@ elseif ($v_dataSec == "appComboNinst")
     $v_appCombo =  new appCombo();
     $v_comboItem = $v_appCombo->comboNinst($v_appData);
 }
+elseif ($v_dataSec == "appComboInstallation")
+{
+    $v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;
+    $v_appCombo =  new appCombo();
+    $v_comboItem = $v_appCombo->comboInstallation($v_appData);
+}
 /* API Test */
 elseif ($v_dataSec == "appApiTest")
 {

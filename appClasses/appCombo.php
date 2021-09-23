@@ -63,6 +63,23 @@ class appCombo
         }
     }
 
+    public function comboInstallation($data=NULL)
+    {
+
+        $query = "SELECT installation_id,customer_id,customer_nome_fantasia,ninst,installation_desc FROM %appDBprefix%_view_installation WHERE installation_status = 1 AND customer_id = '".$data['customerID']."' ORDER BY customer_nome_fantasia ASC";
+        $v_return = $this->dbCon->dbSelect($query);
+        if(is_null($data['type']))
+        {
+            print 'type null';
+            return json_encode($v_return);
+        }
+        else
+        {
+            print 'type array';
+            return $v_return;
+        }
+    }
+
     public function comboSystemAccessProfile($type=NULL)
     {
         $query = "SELECT access_profile_id, access_profile_desc, access_profile_status FROM %appDBprefix%_lov_system_access_profile ORDER BY access_profile_desc ASC";

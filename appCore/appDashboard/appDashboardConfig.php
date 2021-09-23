@@ -10,10 +10,11 @@ use app\System\Combo\appCombo;
 //use app\System\Lov\appGetValue;
 
 $v_dashboardID = !empty($_REQUEST['dataValue']) ? $_REQUEST['dataValue'] : null;
-print $v_dashboardID;
+//print $v_dashboardID;
 $v_comboData = new appCombo();
 $v_comboProfile = $v_comboData->comboSystemAccessProfile('array');
-
+$v_comboCustomer = $v_comboData->comboCustomer('array');
+//print_r($v_comboCustomer);
 $v_sectionIDCheck = true;
 $_dataSectionCheck = 'true';
 if(isset($_SESSION['sectionIDCheck'])){
@@ -44,8 +45,6 @@ if(isset($_SESSION['sectionIDCheck'])){
     .teste_class .modal-header{
         display: flex!important;
     }
-
-
 </style>
 <div class="row page-titles basicContent">
     <div class="col-md-5 align-self-center">
@@ -108,11 +107,31 @@ if(isset($_SESSION['sectionIDCheck'])){
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group has-feedback divDescricao">
-                            <label for="dashboardDesc" class="control-label">Descrição:</label>
-                            <input type="text" class="form-control dashboardDesc" id="dashboardDesc" name="dashboardDesc" aria-describedby="dashboardDescHelp">
-                            <span id="dashboardDescHelp" class="help-block text-danger">Min 3 caracteres</span>
+                    <div id="divCustomer" class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Cliente:</label>
+                            <select id=customerID" name="customerID" class="form-control custom-select selectpicker customerID">
+                                <option value="">Selecione Cliente</option>
+                                <?php foreach ($v_comboCustomer['rsData'] as $key=>$value){ ?>
+                                    <option value="<?=$value['customer_id']?>"><?=$value['customer_nome_fantasia']?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="divCustomer" class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Instalação:</label>
+                            <select id=customerID" name="installationID" class="form-control custom-select selectpicker installationID">
+                                <option value="">Selecione a Instalação</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="divCustomer" class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Câmeras:</label>
+                            <select id=obconCameraID" name="obconCameraID" class="form-control custom-select selectpicker obconCameraID">
+                                <option value="">Selecione as Câmeras</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -138,233 +157,54 @@ if(isset($_SESSION['sectionIDCheck'])){
             profileList : '',
             dataSectionCheck : <?=$_dataSectionCheck?>
         };
-        // Setup - add a text input to each footer cell
-        $('#appDatatable tfoot th').each( function () {
-            //var title = $(this).text();
-            $(this).html( '<input type="text" placeholder="Fitro" />' );
-        });
 
-        $.docData.dtTable = $('#appDatatable').DataTable({
-                "autoWidth": false,
-                "paging": true,
-                "pageLength": 10,
-                "dom": '<"dtFloatRight"f><"dtInfoBeta">rt<"dtCenter"i<"dtFloatLeft"B><"dtFloatLeft"><"dtFloatRight"p>>',
-                "ajax":
-                    {
-                        "url": "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appListDashboard",
-                        "xhrFields": { withCredentials: true },
-                        "dataSrc": "appDashboardList",
-                        "dataType": "json",
-                        "headers":
-                            {
-                                "appDatatable":true
-                            },
-                        "data": function(d){ }
-                    },
-                "buttons":
-                    [
-                        {"extend": 'excelHtml5', "text": 'Excel', "className": 'btn btn-sm dt-btn-width btn-success buttons-html5'}
-                    ],
-                "initComplete": function () {
-                    $(".dt-buttons").removeClass("btn-group");
-                    let r = $('#appDatatable tfoot tr');
-                    r.find('th').each(function(){
-                        $(this).css('padding', 8);
-                    });
-                    $('#appDatatable thead').append(r);
-                },
-                "columns":
-                    [
-                        { data:
-                            {
-                                _: function(data)
-                                {
-                                    return "<a href='DashboardConfig/"+data.dashboard_id+"'>"+data.dashboard_desc+"</a>";
-                                },
-                                _sort: "dashboard_desc"
-                            }, "className":"text-left"
-                    },
-                        { data:
-                                {
-                                    _: function (data)
-                                    {
-
-                                        return "<div style='display: inline-flex;' class='flex-item'>"+
-                                            "<i class=\"fa fa-border fa-pencil appEditDesc\" style='cursor: pointer;' data-dashboard_id='"+data.dashboard_id+"' data-dashboard_desc='"+data.dashboard_desc+"'></i>"+
-                                            "</div><div style='display: inline-flex;' class='flex-item'>"+
-                                            "<i class=\"fa fa-border fa-trash appDel\" style='cursor: pointer;' data-dashboard_id='"+data.dashboard_id+"' data-dashboard_desc='"+data.dashboard_desc+"' ></i>"+
-                                            "</div>";
-                                    }
-                                },
-                            "className":"text-center"
-                        }
-                    ],
-                "createdRow": function( row, data, dataIndex )
-                {
-                    $(row).attr("data-dashboard_id",data.dashboard_id);
-                },
-                "columnDefs":
-                    [
-                        {}
-                    ]
-            }
-        );
-        // Apply the search
-        $.docData.dtTable.columns().every( function () {
-            let that = this;
-            console.log(that);
-            $( 'input', this.footer() ).on( 'keyup change', function ()
-            {
-                console.log(that.search()+'-vs-'+this.value);
-                if ( that.search() !== this.value )
-                {
-                    that.search( this.value ).draw();
-                }
-            });
-        });
-
-        $('.filterPage').on( 'click',function () {
-            $('#filterDiv').collapse('toggle');
-            $('#appDatatableFoot').collapse('toggle');
-            $('#trFilters').collapse('toggle');
-        });
-
-        $.docData.dtTable.on("click",".appEditDesc",function(){
-            $("#txtLabel").text('Editar');
-            $("#action").val('PUT');
-            let v_dashboard_id = $(this).attr("data-dashboard_id");
-            let v_dashboard_desc = $(this).attr("data-dashboard_desc");
-            $("#dashboardID").val(v_dashboard_id);
-            $("#dashboardDesc").val(v_dashboard_desc);
-            $("#dashboardModal").modal('show');
-        });
-
-        $(document).on('click','#btnSave',function(){
-            let v_dashboard_id = $("#dashboardID").val();
-            let v_dashboard_desc = $("#dashboardDesc").val();
-            let v_action = $("#action").val();
-            let v_erro = '';
-
-            if(v_dashboard_desc.length<3){
-                v_erro+='-Descrição deve ter min. 3 caracteres.<br>';
-            }
-
-            if(v_erro != ''){
-                toastr["warning"](v_erro, "Atenção!");
-            }else{
-
-                if(v_action==='POST'){
-                    $.ajax({
-                        url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appDashboard",
-                        type: "POST",
-                        dataType: "json",
-                        data:
-                            {
-                                method: 'POST',
-                                dashboardDesc: v_dashboard_desc
-                            },
-                        success: function(d)
+        $('.customerID').on('changed.bs.select', function (e) {
+            let v_customerID = $(e.currentTarget).val();
+            if(v_customerID){
+                $.ajax({
+                    url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appComboInstallation",
+                    type: "POST",
+                    dataType: "json",
+                    data:
                         {
-                            if(d.status === true)
-                            {
-                                toastr["success"]("Dasboard criado com sucesso.", "Success");
-                                $.docData.dtTable.ajax.reload();
-                                $('#dashboardModal').modal('hide');
-                            }
-                            else
-                            {
-                                toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
-                            }
-                        }
-                    });
-                }else if(v_action==='PUT'){
-                    $.ajax({
-                        url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appDashboard",
-                        type: "POST",
-                        dataType: "json",
-                        data:
-                            {
-                                method: 'PUT',
-                                dashboardID: v_dashboard_id,
-                                dashboardDesc: v_dashboard_desc
-                            },
-                        success: function(d)
+                            customerID: v_customerID,
+                            type:''
+                        },
+                    success: function(d)
+                    {
+                        if(d.apiData.status==true)
                         {
-                            if(d.status === true)
-                            {
-                                toastr["success"]("Dasboard atualizado com sucesso.", "Success");
-                                $.docData.dtTable.ajax.reload();
-                                $('#dashboardModal').modal('hide');
-                            }
-                            else
-                            {
-                                toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
-                            }
+                           alert('dados carregados');
+                            console.log(d);
+                        }else{
+                            console.log('Não carrega o combo de clientes');
                         }
-                    });
-                }
+                    }
+                });
             }
 
-
-
         });
 
-        $(document).on('click','.addDashboard',function () {
-            $("#txtLabel").text('Adicionar');
-            $("#action").val('POST');
-            $("#dashboardDesc").val('');
-            $("#dashboardID").val('');
-        });
 
-        $.docData.dtTable.on("click",".appDel",function() {
-            let v_dashboardID = $(this).attr("data-dashboard_id");
-            let v_dashboardDesc = $(this).attr("data-dashboard_desc");
-            bootbox.confirm({
-                message: "Tem certeza que deseja excluir este Dashboard:<br/><h3 class='text-center'>"+v_dashboardDesc+"</h3>",
-                buttons: {
-                    confirm: {
-                        label: 'Sim',
-                        className: 'btn btn-success btn-sm'
-                    },
-                    cancel: {
-                        label: 'Não',
-                        className: 'btn btn-danger btn-sm'
-                    }
-                },
-                callback: function (result) {
-                    if(result===true)
-                    {
-                        $.ajax({
-                            url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appDashboard",
-                            type: "POST",
-                            dataType: "json",
-                            data:
-                                {
-                                    method: "DELETE",
-                                    dashboardID: v_dashboardID
-                                },
-                            success: function(d)
-                            {
-                                if(d.status === true)
-                                {
-                                    toastr["success"]("Dashboard "+v_dashboardDesc+" excluído.", "Success");
-                                    $.docData.dtTable.ajax.reload();
-                                }
-                                else
-                                {
-                                    toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
-                                }
-                            },
-                            error:function ()
-                            {
-                                toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
-                            }
-                        });
-                    }
-                }
-            });
 
-        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     });
 </script>
