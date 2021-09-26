@@ -103,9 +103,18 @@ elseif($v_dataSec == "appListInstallation")
 }
 elseif($v_dataSec == "appListCamera")
 {
-    $v_appData = new appDataList();
-    $v_appList = $v_appData->appCameraList();
+    $v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;
+    $v_data = new appDataList();
+    $v_appList = $v_data->appCameraList($v_appData);
     $v_returnData["appCameraList"] = $v_appList["rsData"];
+    echo json_encode($v_returnData);
+}
+elseif($v_dataSec == "appListDashboardCamera")
+{
+    $v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;
+    $v_data = new appDataList();
+    $v_appList = $v_data->appDashboardCameraList($v_appData);
+    $v_returnData["appDashboardCameraList"] = $v_appList["rsData"];
     echo json_encode($v_returnData);
 }
 elseif($v_dataSec == "appListDashboard")
@@ -3019,6 +3028,7 @@ elseif ($v_dataSec == "appComboInstallation")
     $v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;
     $v_appCombo =  new appCombo();
     $v_comboItem = $v_appCombo->comboInstallation($v_appData);
+    echo json_encode($v_comboItem);
 }
 /* API Test */
 elseif ($v_dataSec == "appApiTest")

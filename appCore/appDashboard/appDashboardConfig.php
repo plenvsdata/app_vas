@@ -66,7 +66,6 @@ if(isset($_SESSION['sectionIDCheck'])){
         <div class="col-6 pr-1">
             <div class="card">
                 <div class="card-body p-1">
-                    <div style="position:absolute;"><button type="button" class="btn btn-sm waves-effect waves-light btn-success addDashboard" data-toggle="modal" data-target="#dashboardModal">Adicionar Dashboard</button></div>
                     <div class="row m-1">
                         <div class="col-md-12 mb-2">
                             <div class="position-relative w-100 "><i class="fa fa-refresh pull-right l-5" aria-hidden="true"></i></div>
@@ -173,7 +172,43 @@ if(isset($_SESSION['sectionIDCheck'])){
                             </table>
                         </div>
                     </div>
-
+                    <div class="row pt-0">
+                        <div id="divCustomer" class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Cliente:</label>
+                                    <select id=customerID" name="customerID" class="form-control custom-select selectpicker customerID">
+                                        <option value="">Selecione Cliente</option>
+                                        <?php foreach ($v_comboCustomer['rsData'] as $key=>$value){ ?>
+                                            <option value="<?=$value['customer_id']?>"><?=$value['customer_nome_fantasia']?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
+                        <div id="divCustomer" class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Instalação:</label>
+                                <select id=installationID" name="installationID" class="form-control custom-select installationID">
+                                    <option value="">Selecione a Instalação</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table id="appDatatableCamera" class="display nowrap table table-hover table-striped table-bordered appDatatableCamera" cellspacing="0" width="100%">
+                            <thead>
+                            <tr>
+                                <th><div class="appCamCheckAll cameraCheckAll text-success fa fa-square-o fa-lg"  style="cursor: pointer;"></div></th>
+                                <th>Cam</th>
+                                <th>Descrição</th>
+                            </tr>
+                            </thead>
+                            <tbody style="text-align: center!important;"></tbody>
+                        </table>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
             </div>
@@ -182,60 +217,6 @@ if(isset($_SESSION['sectionIDCheck'])){
 </div>
 <!-- ============================================================== -->
 <!-- End Container fluid  -->
-<!-- ============================================================== -->
-
-<!-- ============================================================== -->
-<!-- Start Modal Dashboard  -->
-<!-- ============================================================== -->
-<div class="modal fade" id="dashboardModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-centered-90" >
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title"><span id="txtLabel">Editar</span> Dashboard</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <input type="hidden" id="dashboardID">
-                <input type="hidden" id="action">
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div id="divCustomer" class="col-md-4">
-                        <div class="form-group">
-                            <label class="control-label">Cliente:</label>
-                            <select id=customerID" name="customerID" class="form-control custom-select selectpicker customerID">
-                                <option value="">Selecione Cliente</option>
-                                <?php foreach ($v_comboCustomer['rsData'] as $key=>$value){ ?>
-                                    <option value="<?=$value['customer_id']?>"><?=$value['customer_nome_fantasia']?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div id="divCustomer" class="col-md-4">
-                        <div class="form-group">
-                            <label class="control-label">Instalação:</label>
-                            <select id=customerID" name="installationID" class="form-control custom-select selectpicker installationID">
-                                <option value="">Selecione a Instalação</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div id="divCustomer" class="col-md-4">
-                        <div class="form-group">
-                            <label class="control-label">Câmeras:</label>
-                            <select id=obconCameraID" name="obconCameraID" class="form-control custom-select selectpicker obconCameraID">
-                                <option value="">Selecione as Câmeras</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-danger waves-effect" data-dismiss="modal" id="btnCancel">Cancelar</button>
-                    <button type="button" class="btn btn-sm btn-success waves-effect waves-light" id="btnSave">Salvar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- ============================================================== -->
-<!-- End Modal Dashboard  -->
 <!-- ============================================================== -->
 <script src="../../assets/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js" type="text/javascript"></script>
 
@@ -246,7 +227,8 @@ if(isset($_SESSION['sectionIDCheck'])){
         $.docData = {
             dtTable : null,
             profileList : '',
-            dataSectionCheck : <?=$_dataSectionCheck?>
+            dataSectionCheck : <?=$_dataSectionCheck?>,
+            installationID :  null
         };
 
         $('.customerID').on('changed.bs.select', function (e) {
@@ -258,11 +240,26 @@ if(isset($_SESSION['sectionIDCheck'])){
                     dataType: "json",
                     data:
                         {
-                            customerID: v_customerID,
-                            type:''
+                            customerID: v_customerID
                         },
                     success: function(d)
                     {
+                        if(d.rsTotal){
+                            let v_content = '<option value="">Selecione a Instalação</option>';
+                            $.each(d.rsData,function (i,v)
+                            {
+                                v_content += '<option value="'+v.installation_id+'">'+v.ninst+' - '+v.installation_desc+'</option>';
+                            });
+                            console.log(v_content);
+                            $(".installationID").html(v_content);
+                            $(".installationID").val("");
+                            //TODO  { adicionar selecpicker no elemento (".installationID")
+                            //$("#installationID").selectpicker('render').selectpicker('refresh');
+                        }else{
+                            toastr["warning"]("Este cliente não possui dados para instalação", "Atenção!");
+                            $(".installationID").html('<option value="">Selecione a Instalação</option>');
+                        }
+                        /*
                         if(d.apiData.status==true)
                         {
                            alert('dados carregados');
@@ -270,11 +267,86 @@ if(isset($_SESSION['sectionIDCheck'])){
                         }else{
                             console.log('Não carrega o combo de clientes');
                         }
+
+                         */
+                    },
+                    error:function (d)
+                    {
+                         console.log(d);
+                        toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
                     }
                 });
             }
 
         });
+        $('.installationID').on( 'change',function () {
+            alert('entrou');
+            let v_installationID = $(this).val();
+            if(v_installationID){
+                alert('table cam');
+                $.docData.installationID = v_installationID;
+            }
+        });
+
+
+        $.docData.dtTableCamera = $('.appDatatableCamera').DataTable({
+            "autoWidth": false,
+            "paging": true,
+            "select": true,
+            "pageLength": 5,
+            "lengthMenu": [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
+            "dom": '<"dtFloatRight dtPageLength"l><"dtFloatRight"f><"dtInfoBeta">rt<"dtCenter"i<"dtFloatLeft"><"dtFloatRight"p>>',
+            "ajax": {
+                "url": "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appListDashboardCamera",
+                "xhrFields": { withCredentials: true },
+                "dataSrc": "appDashboardCameraList",
+                "dataType": "json",
+                "type":"POST",
+                "headers":
+                    {
+                        "appDatatable":true
+                    },
+                "data": function(d)
+                {
+                    d.dashboardID = '2'
+                }
+            },
+            "initComplete": function () {
+                $(".dt-buttons").removeClass("btn-group");
+            },
+            "order":[[0,'asc']],
+            "columns": [
+                { data:
+                        {
+
+                            display: function (data) {
+                                return '<div class="appEstimateCheck estimateCheck text-success fa fa-square-o fa-lg" style="cursor: pointer;"></div>';
+                            }
+
+                        }, "className":"text-center","width":"8%"
+                },
+                {
+                    data: "cam", "className":"text-left"
+
+                },
+                {
+                    data: "cam_desc", "className":"text-left"
+                }
+            ],
+            "createdRow": function( row, data, dataIndex ) {
+                $(row).attr("data-obcon_camera_id",data.obcon_camera_id);
+
+            },
+            "columnDefs": [
+                {
+                    "targets": 0,
+                    "orderable": false,
+                    "searchable": false
+                }
+            ]
+        });
+
+
 
 
 

@@ -44,9 +44,25 @@ class appDataList
         return $this->dbCon->dbSelect($query);
     }
 
-    public function appCameraList()
+    public function appCameraList($data = NULL)
     {
-        $query = "SELECT obcon_camera_id,installation_id,installation_desc,customer_id,customer_nome_fantasia,cam,cam_desc,ninst,created_at,ok FROM %appDBprefix%_view_obcon_camera  ";
+        $v_installationID = !empty($data['installationID']) ? $data['installationID'] : NULL;
+        $query  = "SELECT obcon_camera_id,installation_id,installation_desc,customer_id,customer_nome_fantasia,cam,cam_desc,ninst,created_at,ok FROM %appDBprefix%_view_obcon_camera  ";
+        if(!is_null($v_installationID))
+        {
+            $query .= " WHERE installation_id = $v_installationID";
+        }
+        return $this->dbCon->dbSelect($query);
+    }
+
+    public function appDashboardCameraList($data = NULL)
+    {
+        $v_dashboardID = !empty($data['dashboardID']) ? $data['dashboardID'] : NULL;
+        $query  = "SELECT dashboard_id,obcon_camera_id,installation_id,installation_desc,customer_id,customer_nome_fantasia,cam,cam_desc,ninst,created_at,ok FROM %appDBprefix%_view_dashboard_camera  ";
+        if(!is_null($v_dashboardID))
+        {
+            $query .= " WHERE dashboard_id = $v_dashboardID";
+        }
         return $this->dbCon->dbSelect($query);
     }
 

@@ -169,7 +169,6 @@ class appInstallation
     public function appCameraData($data = NULL)
     {
         $v_reqMethod = $data['method'];
-
         if($v_reqMethod == "POST")
         {
             $v_customerNomeFantasia = !empty($data['customerNomeFantasia']) ? addslashes(trim($data['customerNomeFantasia'])) : NULL;
@@ -220,19 +219,19 @@ class appInstallation
         }
         elseif ($v_reqMethod == "GET")
         {
-            $v_customerID = !empty($data['customerID']) ? $data['customerID'] : NULL;
+            $v_installationID = !empty($data['installationID']) ? $data['installationID'] : NULL;
             //var_dump($v_customerID);die();
-            if(is_null($v_customerID) || empty($v_customerID))
+            if(empty($v_installationID))
             {
-                $v_return['apiData']['status'] = false;
-                return $v_return;
+                $v_return['status'] = false;
             }
             else
             {
-                $query = "SELECT customer_id,clnt,customer_group_id,customer_group_desc,customer_name,customer_nickname,customer_logo,country_id,more_information,created_at,created_by,user_name,customer_status  FROM %appDBprefix%_view_customer_list WHERE customer_id = $v_customerID AND clnt = '".$_SESSION['userClnt']."'";
+                $query = "SELECT obcon_camera_id,installation_id,installation_desc,ninst,cam,cam_desc,created_at,camera_status  FROM %appDBprefix%_view_obcon_camera WHERE installation_id = '".$v_installationID."' ";
                 $v_return = $this->dbCon->dbSelect($query);
-                return $v_return;
+                $v_return['status'] = true;
             }
+            echo json_encode($v_return);
         }
         elseif ($v_reqMethod == "DELETE")
         {
