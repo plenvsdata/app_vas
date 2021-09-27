@@ -17,10 +17,11 @@ require_once "appUserData.php";
 require_once "PHPMailer/src/Exception.php";
 require_once "PHPMailer/src/PHPMailer.php";
 require_once "PHPMailer/src/SMTP.php";
+require_once "appDataAPI.php";
 require_once "appGetValue.php";
 require_once "appPhoto.php";
 require_once "appCombo.php";
-require_once "appDataList.php";
+//require_once "appDataList.php";
 require_once "appCustomer.php";
 require_once "appInstallation.php";
 /*

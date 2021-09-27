@@ -62,4 +62,8 @@ RewriteRule    ^systemToolsAPI/([A-Za-z0-9-]+)/?$    appSystemTools/appDataAPI.p
 RewriteRule    ^download/([A-Za-z0-9-]+)/?$                      appCore/appDownload.php?pageData=$1    [NC,L]    # Handle requests for "adminPanel"
 RewriteRule    ^download/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/?$      appCore/appDownload.php?pageData=$1&dataValue=$2  [NC,L]
 
+RewriteRule    ^vasDataAPI/([A-Za-z0-9-]+)/?$    appCore/appVasDataAPI.php?dataSec=$1   [NC,L]    # Handle requests for "blockControlData"
+RewriteRule    ^vasDataAPI/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/?$    appCore/appVasDataAPI.php?method=$1&dataSec=$2  [NC,L]    # Handle requests for "blockControlData"
+
+
 RewriteRule    ^404/?$    appSystemPages/appSystemError404.php [NC,L]    # Handle requests for "System Tools"
