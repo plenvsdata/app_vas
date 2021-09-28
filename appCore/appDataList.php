@@ -57,12 +57,13 @@ class appDataList
 
     public function appDashboardCameraList($data = NULL)
     {
-        $v_dashboardID = !empty($data['dashboardID']) ? $data['dashboardID'] : NULL;
+        $v_installationID = !empty($data['installationID']) ? $data['installationID'] : NULL;
         $query  = "SELECT dashboard_id,obcon_camera_id,installation_id,installation_desc,customer_id,customer_nome_fantasia,cam,cam_desc,ninst,created_at,ok FROM %appDBprefix%_view_dashboard_camera  ";
-        if(!is_null($v_dashboardID))
+        if(!is_null($v_installationID))
         {
-            $query .= " WHERE dashboard_id = $v_dashboardID";
+            $query .= " WHERE installation_id = $v_installationID";
         }
+
         return $this->dbCon->dbSelect($query);
     }
 

@@ -18,11 +18,11 @@ use app\System\Lov\appLov;
 use app\System\Customer\appCustomer;
 use app\System\Combo\appCombo;
 use app\System\Installation\appInstallation;
-
+use app\System\Lists\appDataList;
 
 
 use app\System\Product\appProduct;
-use app\System\Lists\appDataList;
+
 use app\System\Photo\appPhoto;
 use app\System\File\appFile;
 use app\System\Relational\appRelationalData;
@@ -80,6 +80,12 @@ elseif ($v_dataSec == "appDashboard")
     $v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;
     $v_data =  new appInstallation();
     $v_appReturn = $v_data->appDashboardData($v_appData);
+}
+elseif ($v_dataSec == "appDashboardCamera")
+{
+    $v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;
+    $v_data =  new appInstallation();
+    $v_appReturn = $v_data->appDashboardCameraData($v_appData);
 }
 elseif ($v_dataSec == "appCamera")
 {

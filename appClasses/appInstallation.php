@@ -403,4 +403,95 @@ class appInstallation
             header("HTTP/1.0 204 No Content");
         }
     }
+
+    public function appDashboardCameraData($data = NULL)
+    {
+        $v_reqMethod = $data['method'];
+
+        if($v_reqMethod == "POST")
+        {
+            $v_dashboardDesc = !empty($data['dashboardDesc']) ? addslashes($data['dashboardDesc']) : NULL;
+            if(is_null($v_dashboardDesc) || strlen($v_dashboardDesc) < 3)
+            {
+                $v_return['status'] = false;
+            }
+            else
+            {
+                $query = "INSERT INTO %appDBprefix%_obcon_dashboard (dashboard_desc) VALUES ('".$v_dashboardDesc."') ";
+                $v_return = $this->dbCon->dbInsert($query);
+                $v_return['status'] = true;
+            }
+            echo json_encode($v_return);
+        }
+        elseif ($v_reqMethod == "PUT")
+        {
+            $v_dashboardID = !empty($data['dashboardID']) ? $data['dashboardID'] : NULL;
+            $v_dashboardDesc = !empty($data['dashboardDesc']) ? addslashes($data['dashboardDesc']) : NULL;
+
+            $query = "UPDATE %appDBprefix%_obcon_dashboard SET dashboard_desc = '".$v_dashboardDesc."'  WHERE  dashboard_id = ".$v_dashboardID;
+            $v_return = $this->dbCon->dbUpdate($query);
+            $v_return['status'] = true;
+            echo json_encode($v_return);
+        }
+        elseif ($v_reqMethod == "STATUS")
+        {
+            $v_customerID = !empty($data['customerID']) ? $data['customerID'] : NULL;
+            $v_customerStatus = !empty($data['customerStatus']) ? $data['customerStatus'] : "0";
+
+            if(is_null($v_customerID)  || empty($v_customerID))
+            {
+                $v_return['status'] = false;
+                echo json_encode($v_return);
+            }
+            else
+            {
+                $query = "UPDATE %appDBprefix%_customer_data SET customer_status = ".$v_customerStatus."  WHERE clnt = '".$_SESSION['userClnt']."' AND customer_id = ".$v_customerID;
+                $v_return = $this->dbCon->dbUpdate($query);
+                $v_return['status'] = true;
+                echo json_encode($v_return);
+            }
+        }
+        elseif ($v_reqMethod == "GET")
+        {
+            $v_customerID = !empty($data['customerID']) ? $data['customerID'] : NULL;
+            //var_dump($v_customerID);die();
+            if(is_null($v_customerID) || empty($v_customerID))
+            {
+                $v_return['apiData']['status'] = false;
+                return $v_return;
+            }
+            else
+            {
+                $query = "SELECT customer_id,clnt,customer_group_id,customer_group_desc,customer_name,customer_nickname,customer_logo,country_id,more_information,created_at,created_by,user_name,customer_status  FROM %appDBprefix%_view_customer_list WHERE customer_id = $v_customerID AND clnt = '".$_SESSION['userClnt']."'";
+                $v_return = $this->dbCon->dbSelect($query);
+                return $v_return;
+            }
+        }
+        elseif ($v_reqMethod == "DELETE")
+        {
+            $v_dashboardID = !empty($data['dashboardID']) ? $data['dashboardID'] : NULL;
+            if(is_null($v_dashboardID) || empty($v_dashboardID))
+            {
+                $v_return['status'] = false;
+                echo json_encode($v_return);
+            }
+            else
+            {
+                $query = "DELETE FROM %appDBprefix%_obcon_dashboard WHERE dashboard_id = $v_dashboardID ";
+                $v_return = $this->dbCon->dbDelete($query);
+
+
+                if($v_return['deleteStatus'] == true) {
+                    $v_return['status'] = true;
+                } else {
+                    $v_return['status'] = false;
+                }
+                echo json_encode($v_return);
+            }
+        }
+        else
+        {
+            header("HTTP/1.0 204 No Content");
+        }
+    }
 }
