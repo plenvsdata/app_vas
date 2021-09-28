@@ -196,6 +196,8 @@ if(isset($_SESSION['sectionIDCheck'])){
                     <div class="row">
                         <div class="col-md-12">
                             <div class="table-responsive">
+                                <input type="hidden" id="camArray" name="camArray" value="">
+                                <div style="position:absolute;"><button type="button" id="saveCam" class="btn btn-sm waves-effect waves-light btn-success">Salvar</button></div>
                                 <table id="appDatatableCamera" class="display nowrap table table-hover table-striped table-bordered appDatatableCamera" cellspacing="0" width="100%">
                             <thead>
                             <tr>
@@ -228,7 +230,8 @@ if(isset($_SESSION['sectionIDCheck'])){
             dtTable : null,
             profileList : '',
             dataSectionCheck : <?=$_dataSectionCheck?>,
-            installationID :  null
+            installationID :  null,
+            dashboardID: '<?=$v_dashboardID?>'
         };
 
         $('.customerID').on('changed.bs.select', function (e) {
@@ -279,15 +282,16 @@ if(isset($_SESSION['sectionIDCheck'])){
             }
 
         });
+
         $('.installationID').on( 'change',function () {
             alert('entrou');
             let v_installationID = $(this).val();
             if(v_installationID){
                 alert('table cam');
                 $.docData.installationID = v_installationID;
+                $.docData.dtTableCamera.ajax.reload();
             }
         });
-
 
         $.docData.dtTableCamera = $('.appDatatableCamera').DataTable({
             "autoWidth": false,
@@ -308,7 +312,8 @@ if(isset($_SESSION['sectionIDCheck'])){
                     },
                 "data": function(d)
                 {
-                    d.dashboardID = '2'
+                    d.installationID = $.docData.installationID,
+                    d.dashboardID = $.docData.dashboardID
                 }
             },
             "initComplete": function () {
@@ -320,7 +325,12 @@ if(isset($_SESSION['sectionIDCheck'])){
                         {
 
                             display: function (data) {
-                                return '<div class="appEstimateCheck estimateCheck text-success fa fa-square-o fa-lg" style="cursor: pointer;"></div>';
+                                if(data.dashboard_id == $.docData.dashboardID){
+                                    return '<div class="appCamCheck camCheck text-success fa fa-check-square fa-lg" style="cursor: pointer;"></div>';
+                                }else{
+                                    return '<div class="appCamCheck camCheck text-success fa fa-square-o fa-lg" style="cursor: pointer;"></div>';
+                                }
+
                             }
 
                         }, "className":"text-center","width":"8%"
@@ -345,6 +355,99 @@ if(isset($_SESSION['sectionIDCheck'])){
                 }
             ]
         });
+
+        $(document).on('click','.appCamCheck',function (){
+            let v_camCheck = $(this).hasClass("fa-check-square");
+            if(v_camCheck)
+            {
+                //deselect item
+                $(this).removeClass("fa-check-square").addClass("fa-square-o");
+                $(".appCamCheckAll").removeClass("fa-check-square").addClass("fa-square-o");
+                let camItemArray = [];
+                $.docData.dtTableCamItem.$('.fa-check-square').each(function(){
+                    camItemArray.push($(this).attr("data-obcon_camera_id"));
+                });
+                /*
+                if(camItemArray.length < 1){
+                    $.docData.estimateCurrency = null;
+                    $.docData.estimateCurrencyCode = null;
+                    $.docData.estimateCurrencyDesc = null;
+                    $.docData.estimateManufacturerID = null;
+                }
+                 */
+            }
+            else
+            {
+                $(this).removeClass("fa-square-o").addClass("fa-check-square");
+            }
+        });
+
+        $(document).on('click','.appCamCheckAll',function (){
+            let v_camCheck = $(this).hasClass("fa-check-square");
+            let rows = $.docData.dtTableCamera.rows({ 'search': 'applied' }).nodes();
+            let currencyIDArray = [];
+            $('.appCamCheck', rows).each(function(){
+                currencyIDArray.push(parseInt($(this).attr("data-currency_id")));
+            });
+            currencyIDArray = $.unique(currencyIDArray);
+            if(v_camCheck)
+            {
+                //deselect all
+                $(this).removeClass("fa-check-square").addClass("fa-square-o");
+                $('.appCamCheck', rows).removeClass("fa-check-square").addClass("fa-square-o");
+            }
+            else
+            {
+                $(this).removeClass("fa-square-o").addClass("fa-check-square");
+                $('.appCamCheck', rows).removeClass('fa-square-o').addClass('fa-check-square');
+
+            }
+        });
+
+        $(document).on('click','#saveCam',function () {
+            //validate required item
+            let camArray = [];
+            $.docData.dtTableCamera.$('.fa-check-square').each(function () {
+                camArray.push($(this).attr("data-obcon_camera_id"));
+            });
+
+            if (camArray.length > 0) {
+                $("#camArray").val(camArray.join(','));
+            } else {
+                toastr["warning"]("Selecione a câmera para Salvar", "Ooops!");
+                return false;
+            }
+
+            let v_camArray = $("#camArray").val();
+
+            $.ajax({
+                url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appDashboardCamera",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    method: "POST",
+                    camArray: v_camArray,
+                    dashboardID: $.docData.dashboardID
+                },
+                success: function (d) {
+                    if (d.status === true)
+                    {
+                        $.docData.dtTableCamera.ajax.reload(v_setTooltip);
+                        toastr.options = {"timeOut": "0","extendedTimeOut": 0,"tapToDismiss": false,"closeButton": true};
+                        toastr["success"]("Estimate created. File Name:<br/>"+d.file_name, "Success");
+                        toastr.options = {"timeOut": "5000","extendedTimeOut": 1000,"tapToDismiss": true,"closeButton": false};
+                    }
+                    else {
+                        toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
+                    }
+                },
+                error: function () {
+                    toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
+                }
+            });
+        });
+
+
 
 
 
