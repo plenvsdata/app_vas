@@ -103,7 +103,7 @@ class appDataAPI
                 $v_fieldData['fieldID'] = $v_sub;
                 $v_fieldData['fieldName'] = "subtipo_desc";
                 $v_subtipoIDData = $v_getValue->appGetValueData($v_fieldData, false, false);
-                $v_subtipoID = $v_subtipoIDData['subtipo_id'];
+                $v_subtipoID = isset($v_subtipoIDData['subtipo_id']) ? $v_subtipoIDData['subtipo_id'] : 1;
                 $query = "INSERT INTO %appDBprefix%_alarme_" . strtolower($origem) . "_data (customer_id,ori,idr,nor,cod,dat,nuc,apl,ins,origem_id,subtipo_id,nsb,sbn,cor,ips,pos,alarme_" . strtolower($origem) . "_completo) VALUES ('" . $v_customerID . "','" . $v_ori . "','" . $v_idr . "'," . $v_nor . ",'" . $v_cod . "','" . $v_dat . "','" . $v_nuc . "','" . $v_apl . "','" . $v_ins . "','" . $v_origemID . "','" . $v_subtipoID . "','" . $v_nsb . "','" . $v_sbn . "','" . $v_cor . "'," . $v_ips . "," . $v_pos . ",'" . addslashes($data) . "')";
 
             } else {
