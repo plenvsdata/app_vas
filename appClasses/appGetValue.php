@@ -50,7 +50,7 @@ class appGetValue
             }
 
             $v_return = $this->dbCon->dbSelect($query);
-            return $v_return['rsData'];
+            return $v_return['rsData'][0];
         }
     }
 

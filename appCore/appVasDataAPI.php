@@ -38,6 +38,31 @@ elseif ($v_dataSec == "checkAppConnection") {
     header('Content-Type: application/json; charset=utf-8');
     echo json_encode($v_returnData);
 }
+elseif ($v_dataSec == "i3pDataReceiver") {
+    $v_appRequest = !empty($_REQUEST) ? $_REQUEST : NULL;
+    $v_customerID = $v_appRequest['customerID'];
+    $v_appData = new appDataAPI();
+
+    if(strpos($v_appRequest['i3pData'],'VIPER')){
+        //echo 'VIPER';
+        $v_apiData = $v_appData->appCustomerAlarme($v_appRequest['i3pData'],'VIPER',$v_customerID);
+    }
+    elseif(strpos($v_appRequest['i3pData'],'ALDIR')){
+        echo 'ALDIR';
+    }
+    elseif(strpos($v_appRequest['i3pData'],'TRAVA')){
+        echo 'TRAVA';
+    }
+    else {
+        //echo 'OBCON';
+        $v_apiData = $v_appData->appCustomerAlarme($v_appRequest['i3pData'],'OBCON',$v_customerID);
+    }
+
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode($v_apiData);
+}
+
+
 else
 {
     header("HTTP/1.0 404 Not Found");
