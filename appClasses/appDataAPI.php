@@ -23,7 +23,7 @@ class appDataAPI
     {
         $v_customerID = !empty($data['customerID']) ? $data['customerID'] : NULL;
 
-        if(is_null($v_customerID) || empty($v_customerID))
+        if(empty($v_customerID) || !isset($data['customerID']) )
         {
             $v_return['customer_status'] = 0;
             return $v_return;
@@ -32,7 +32,7 @@ class appDataAPI
         {
             $query = "SELECT customer_licence_status as customer_status FROM %appDBprefix%_customer_data WHERE customer_id = '".addslashes($v_customerID)."'";
             $v_return = $this->dbCon->dbSelect($query);
-            return $v_return;
+            return $v_return['rsData'][0];
         }
     }
 
@@ -44,14 +44,13 @@ class appDataAPI
         if(strlen($v_customerToken) < 64 || (is_null($v_customerTokenIn) || is_null($v_customerTokenOut)))
         {
             $v_return['customer_status'] = 0;
-            return $v_return;
         }
         else
         {
             $query = "SELECT customer_id, customer_nome_fantasia, customer_licence_status as customer_status FROM %appDBprefix%_customer_data WHERE customer_token = '".addslashes($v_customerToken)."' AND customer_status = 1";
             $v_return = $this->dbCon->dbSelect($query);
-            return $v_return;
         }
+        return $v_return['rsData'][0];
     }
 
 }
