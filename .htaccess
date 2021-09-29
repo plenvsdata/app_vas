@@ -1,5 +1,5 @@
 RewriteEngine On    # Turn on the rewriting engine
-RewriteRule    ^SignIn?$    appCore/login.php?checkIndexAccess=WelcomeToOrganizer$1    [NC,L]    # Handle requests for "adminPanel"
+RewriteRule    ^SignIn?$    appCore/login.php?checkIndexAccess=WelcomeVAS$1    [NC,L]    # Handle requests for "adminPanel"
 RewriteRule    ^RecoverMyPassword?$    appCore/appRecover.php?checkIndexAccess=WelcomeToOrganizer$1    [NC,L]    # Handle requests for "adminPanel"
 RewriteRule    ^RecoverMyPassword/([A-Za-z0-9-]+)/ConfirmationCode?$        appCore/appRecoverCheckCode.php?tokenData=$1  [NC,L]
 RewriteRule    ^SignUp?$    appSignUp/appVasDataSignUp.php?checkIndexAccess=SignUpVasDataSystem$1    [NC,L]

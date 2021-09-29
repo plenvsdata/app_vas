@@ -6,8 +6,8 @@
  * Time: 22:51
  */
 session_start();
-require($_SERVER['DOCUMENT_ROOT'] . "/appClasses/appGlobal.php");
-require($_SERVER['DOCUMENT_ROOT'] . "/appGlobals/appGlobalSettings.php");
+require($_SERVER['DOCUMENT_ROOT'] .$GLOBALS['g_subFolder']. "/appClasses/appGlobal.php");
+require($_SERVER['DOCUMENT_ROOT'] .$GLOBALS['g_subFolder']. "/appGlobals/appGlobalSettings.php");
 
 use app\System\Tools\appSystemTools;
 use app\userAccess\userData\appUserData as appLoginCheck;
