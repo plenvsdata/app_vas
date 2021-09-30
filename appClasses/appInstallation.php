@@ -407,9 +407,11 @@ class appInstallation
     public function appDashboardCameraData($data = NULL)
     {
         $v_reqMethod = $data['method'];
-
+        var_dump($data);die();
         if($v_reqMethod == "POST")
         {
+
+            $v_dashboardDesc = !empty($data['camArray']) ? addslashes($data['camArray']) : NULL;
             $v_dashboardDesc = !empty($data['dashboardDesc']) ? addslashes($data['dashboardDesc']) : NULL;
             if(is_null($v_dashboardDesc) || strlen($v_dashboardDesc) < 3)
             {
@@ -417,6 +419,22 @@ class appInstallation
             }
             else
             {
+
+                //Insert Item for estimate
+                $query = "INSERT INTO %appDBprefix%_estimate_item_data (clnt,estimate_id,item_id,created_by) VALUES ";
+                foreach ($v_estimateItemArray as $itemID){
+                    $query .= "('" . $_SESSION['userClnt'] . "','" . $v_estimateID . "','".$itemID."','".$_SESSION['userID']."'), ";
+
+                    $queryUpdateItemStage = "UPDATE %appDBprefix%_business_opportunity_item_data SET item_stage_id = 8, updated_by = '".$_SESSION['userID']."' WHERE item_id = ".$itemID." AND clnt = '".$_SESSION['userClnt']."'";
+                    $this->dbCon->dbUpdate($queryUpdateItemStage);
+                }
+                $query = rtrim($query,", ");
+                $this->dbCon->dbInsert($query);
+
+
+
+
+
                 $query = "INSERT INTO %appDBprefix%_obcon_dashboard (dashboard_desc) VALUES ('".$v_dashboardDesc."') ";
                 $v_return = $this->dbCon->dbInsert($query);
                 $v_return['status'] = true;

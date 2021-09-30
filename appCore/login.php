@@ -5,7 +5,7 @@
 
     use app\System\Tools\appSystemTools;
 
-    if($_REQUEST['checkIndexAccess']!='WelcomeToOrganizer')
+    if($_REQUEST['checkIndexAccess']!='WelcomeVAS')
     {
         //ToDo
         //Quando link direto, matar todas as sessões antes de redirect

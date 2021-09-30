@@ -364,17 +364,9 @@ if(isset($_SESSION['sectionIDCheck'])){
                 $(this).removeClass("fa-check-square").addClass("fa-square-o");
                 $(".appCamCheckAll").removeClass("fa-check-square").addClass("fa-square-o");
                 let camItemArray = [];
-                $.docData.dtTableCamItem.$('.fa-check-square').each(function(){
+                $.docData.dtTableCamera.$('.fa-check-square').each(function(){
                     camItemArray.push($(this).attr("data-obcon_camera_id"));
                 });
-                /*
-                if(camItemArray.length < 1){
-                    $.docData.estimateCurrency = null;
-                    $.docData.estimateCurrencyCode = null;
-                    $.docData.estimateCurrencyDesc = null;
-                    $.docData.estimateManufacturerID = null;
-                }
-                 */
             }
             else
             {
@@ -408,43 +400,43 @@ if(isset($_SESSION['sectionIDCheck'])){
             //validate required item
             let camArray = [];
             $.docData.dtTableCamera.$('.fa-check-square').each(function () {
-                camArray.push($(this).attr("data-obcon_camera_id"));
+                camArray.push($(this).closest("tr").attr("data-obcon_camera_id"));
             });
 
             if (camArray.length > 0) {
                 $("#camArray").val(camArray.join(','));
+                let v_camArray = $("#camArray").val();
+
+                $.ajax({
+                    url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appDashboardCamera",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        method: "POST",
+                        camArray: v_camArray,
+                        dashboardID: $.docData.dashboardID
+                    },
+                    success: function (d) {
+                        if (d.status === true)
+                        {
+                            $.docData.dtTableCamera.ajax.reload(v_setTooltip);
+                            toastr.options = {"timeOut": "0","extendedTimeOut": 0,"tapToDismiss": false,"closeButton": true};
+                            toastr["success"]("Estimate created. File Name:<br/>"+d.file_name, "Success");
+                            toastr.options = {"timeOut": "5000","extendedTimeOut": 1000,"tapToDismiss": true,"closeButton": false};
+                        }
+                        else {
+                            toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
+                        }
+                    },
+                    error: function () {
+                        toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
+                    }
+                });
             } else {
-                toastr["warning"]("Selecione a câmera para Salvar", "Ooops!");
+                toastr["warning"]("Selecione uma câmera para Salvar", "Ooops!");
                 return false;
             }
 
-            let v_camArray = $("#camArray").val();
-
-            $.ajax({
-                url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appDashboardCamera",
-                type: "POST",
-                dataType: "json",
-                data: {
-                    method: "POST",
-                    camArray: v_camArray,
-                    dashboardID: $.docData.dashboardID
-                },
-                success: function (d) {
-                    if (d.status === true)
-                    {
-                        $.docData.dtTableCamera.ajax.reload(v_setTooltip);
-                        toastr.options = {"timeOut": "0","extendedTimeOut": 0,"tapToDismiss": false,"closeButton": true};
-                        toastr["success"]("Estimate created. File Name:<br/>"+d.file_name, "Success");
-                        toastr.options = {"timeOut": "5000","extendedTimeOut": 1000,"tapToDismiss": true,"closeButton": false};
-                    }
-                    else {
-                        toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
-                    }
-                },
-                error: function () {
-                    toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
-                }
-            });
         });
 
 
