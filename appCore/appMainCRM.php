@@ -31,7 +31,7 @@ $v_pageName = $v_appCrmPage.$v_sec;
 
 $v_pageContent = array_key_exists($v_pageName,$g_appPageData) ? $g_appPageData[$v_pageName] : "appTemplate";
 
-if(!file_exists($GLOBALS['g_appRoot'].$v_pageContent.".php")) {
+if(!file_exists($v_pageContent.".php")) {
     /*
         $v_url = $GLOBALS['g_appRoot'].'/Welcome';
         $v_redirect  = '<script type="text/javascript">';
@@ -39,6 +39,8 @@ if(!file_exists($GLOBALS['g_appRoot'].$v_pageContent.".php")) {
         $v_redirect .= '</script>';
         echo $v_url;
     */
+
+    var_dump($v_pageContent.".php");die();
     $v_pageContent = "appTemplate";
 }
 ?>

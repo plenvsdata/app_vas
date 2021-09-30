@@ -9,7 +9,7 @@
 
 // Environment Settings
 $g_envData = parse_ini_file($_SERVER['DOCUMENT_ROOT']."/__envDataSettings__/__appEnvironmentData__.php");
-$g_appEnv = $g_envData['envSetData'];
+$g_appEnv = $g_envData['envSetData']; 
 $g_appDevIP = $g_envData['devIP'][$g_envData['devIPset']];
 
 // App Global Settings
