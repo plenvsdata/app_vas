@@ -43,15 +43,9 @@ elseif ($v_dataSec == "i3pDataReceiver") {
     $v_customerID = $v_appRequest['customerID'];
     $v_appData = new appDataAPI();
 
-    if(strpos($v_appRequest['i3pData'],'VIPER')){
+    if(strpos($v_appRequest['i3pData'],'#XI3PALERT')){
         //echo 'VIPER';
         $v_apiData = $v_appData->appCustomerAlarme($v_appRequest['i3pData'],'VIPER',$v_customerID);
-    }
-    elseif(strpos($v_appRequest['i3pData'],'ALDIR')){
-        echo 'ALDIR';
-    }
-    elseif(strpos($v_appRequest['i3pData'],'TRAVA')){
-        echo 'TRAVA';
     }
     else {
         //echo 'OBCON';
