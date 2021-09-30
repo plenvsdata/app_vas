@@ -75,7 +75,7 @@
         <div class="login-box card">
                 <div class="card-body">
                     <form class="form-horizontal form-material" id="adminForm" action="appAccessAPI/loginCheck" method="post" >
-                       <a href="javascript:void(0)" class="text-center db"><img src="<?=$GLOBALS['g_appRoot']?>/appImages/sysImages/plenvsDataSystem_logo.svg" style="width: 50%!important;"/></a>
+                       <a href="javascript:void(0)" class="text-center db"><img src="<?=$GLOBALS['g_appRoot']?>/appImages/sysImages/va_system_logo.svg" style="width: 50%!important;"/></a>
                         
                         <div class="form-group m-t-40">
                             <div class="col-xs-12">
@@ -91,16 +91,16 @@
 							<div class="col-md-12">
 								<div class="checkbox checkbox-primary pull-left p-t-0">
 									<input id="rememberMe" name="rememberMe" type="checkbox" value="T" <? if ($v_cookieRememberMe == 'T') { echo 'checked'; } ?> >
-									<label for="rememberMe"> Remember me </label>
+									<label for="rememberMe"> Lembrar</label>
 								</div>
+                                <!--
 								<a href="<?=$GLOBALS['g_appRoot']?>/RecoverMyPassword" id="to-recover" class="text-dark pull-right"><i class="fa fa-lock m-r-5"></i> Forgot Password?</a>
+								-->
 							</div>
                     	</div>
                         <div class="form-group text-center m-t-20">
                             <div class="col-xs-12">
                                 <button class="btn btn-info btn-md btn-block text-uppercase waves-effect waves-light" style="margin-bottom:15px!important;" type="submit">Log In</button>
-                                <br>
-                                <a href="<?=$GLOBALS['g_appRoot']?>/SignUp">Join Us! Sign Up NOW!</a>
                             </div>
                         </div>
 
@@ -108,8 +108,8 @@
 					<form class="form-horizontal" id="recoverform" action="#">
 						<div class="form-group ">
 							<div class="col-xs-12">
-								<h3>Recover Password</h3>
-								<p class="text-muted">Enter your Email and instructions will be sent to you! </p>
+								<h3>Recuperar Senha</h3>
+								<p class="text-muted">Digite seu email de acesso e enviaremos as instruções</p>
 							</div>
 						</div>
 						<div class="form-group ">

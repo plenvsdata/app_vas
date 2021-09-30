@@ -77,6 +77,9 @@ class appDataAPI
                 $v_datReturn = $v_dat;
                 $v_dat = date('Y-m-d H:i:s', strtotime(str_replace('/', '-', $v_dat)));
 
+                //ToDo: remover teste
+                //$v_dat = date('Y-m-d H:i:s');
+
                 $v_nuc = ($v_ori == 'O') ? trim(substr($v_alarme, 37, 3)) : trim(substr($v_alarme, 87, 3));
                 $v_alarmeCamera = $v_nuc;
                 $v_apl = ($v_ori == 'O') ? trim(substr($v_alarme, 40, 10)) : trim(substr($v_alarme, 90, 10));
@@ -122,6 +125,9 @@ class appDataAPI
                 $v_event_date = date('d/m/Y', strtotime(str_replace('_', '-', $v_obconData[2])));
                 $v_event_time = date('H:i:s', strtotime(str_replace('_', ':', $v_obconData[3])));
                 $v_dat = $v_event_date . ' ' . $v_event_time;
+
+                //ToDo: remover teste
+                //$v_dat = date('Y-m-d H:i:s');
 
                 $query = "INSERT INTO %appDBprefix%_alarme_" . strtolower($origem) . "_data (customer_id,clid,ninst,data,hora,cam,tw,sent,numo,tama,alarme_" . strtolower($origem) . "_completo) VALUES ('" . $v_customerID . "','" . $v_clid . "','" . $v_ninst . "','" . $v_data . "','" . $v_hora . "','" . $v_cam . "','" . $v_tw . "','" . $v_sent . "','" . $v_numo . "','" . $v_tama . "','" . addslashes($data) . "')";
             }

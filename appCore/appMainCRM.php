@@ -39,6 +39,8 @@ if(!file_exists($v_pageContent.".php")) {
         $v_redirect .= '</script>';
         echo $v_url;
     */
+
+    var_dump($v_pageContent.".php");die();
     $v_pageContent = "appTemplate";
 }
 ?>

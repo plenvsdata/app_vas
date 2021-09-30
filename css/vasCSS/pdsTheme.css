@@ -160,7 +160,7 @@ a.link:hover, a.link:focus {
 }
 
 .plenvs-logo-full {
-    background-image: url("../../appImages/sysImages/plenvsDataSystemAltType.svg")!important;
+    background-image: url("../../appImages/sysImages/va_system_logo.svg")!important;
     background-position: center!important;
     background-repeat: no-repeat!important;
 }
@@ -175,7 +175,7 @@ a.link:hover, a.link:focus {
 .navbarTopSmallLogo {
     width: 220px!important;
     height: 50px!important;
-    background-image: url("../../appImages/sysImages/plenvsDataSystem_logo.svg");
+    background-image: url("../../appImages/sysImages/va_system_logo.svg");
     background-position: center;
     background-repeat: no-repeat;
     display: block;
