@@ -61,7 +61,13 @@ class appDataAPI
             $v_return['customer_status'] = 0;
         } else {
 
-            if ($origem != "OBCON") {
+            if($origem == 'teste'){
+                $query = "INSERT INTO %appDBprefix%_teste (completo) VALUES ('" . addslashes($data) . "')";
+
+                $v_dat = date('Y-m-d H:i:s');
+                $v_alarmeCamera = '4';
+            }
+            elseif ($origem != "OBCON") {
                 $v_alarme = str_replace('#XI3PALERT', '', $data);
                 $v_ori = substr($v_alarme, 0, 1);
                 $v_idr = substr($v_alarme, 1, 6);
@@ -109,7 +115,8 @@ class appDataAPI
                 $v_subtipoID = isset($v_subtipoIDData['subtipo_id']) ? $v_subtipoIDData['subtipo_id'] : 1;
                 $query = "INSERT INTO %appDBprefix%_alarme_" . strtolower($origem) . "_data (customer_id,ori,idr,nor,cod,dat,nuc,apl,ins,origem_id,subtipo_id,nsb,sbn,cor,ips,pos,alarme_" . strtolower($origem) . "_completo) VALUES ('" . $v_customerID . "','" . $v_ori . "','" . $v_idr . "'," . $v_nor . ",'" . $v_cod . "','" . $v_dat . "','" . $v_nuc . "','" . $v_apl . "','" . $v_ins . "','" . $v_origemID . "','" . $v_subtipoID . "','" . $v_nsb . "','" . $v_sbn . "','" . $v_cor . "'," . $v_ips . "," . $v_pos . ",'" . addslashes($data) . "')";
 
-            } else {
+            } else
+            {
                 $v_obconData = explode(',', $data);
                 $v_clid = $v_obconData[0];
                 $v_ninst = $v_obconData[1];
@@ -138,7 +145,7 @@ class appDataAPI
             $v_return['date_time'] = date("d/m/Y - H:i:s",strtotime($v_dat));
             $v_return['camera'] = $v_alarmeCamera;
             $v_return['origem'] = $origem;
-            return $v_return;
         }
+        return $v_return;
     }
 }

@@ -47,10 +47,15 @@ elseif ($v_dataSec == "i3pDataReceiver") {
         //echo 'VIPER';
         $v_apiData = $v_appData->appCustomerAlarme($v_appRequest['i3pData'],'VIPER',$v_customerID);
     }
+    elseif(strpos($v_appRequest['i3pData'],'#XI3POBCDE')){
+        //echo 'VIPER';
+        $v_apiData = $v_appData->appCustomerAlarme($v_appRequest['i3pData'],'teste',$v_customerID);
+    }
     else {
         //echo 'OBCON';
         $v_apiData = $v_appData->appCustomerAlarme($v_appRequest['i3pData'],'OBCON',$v_customerID);
     }
+
 
     header('Content-Type: application/json; charset=utf-8');
     echo json_encode($v_apiData);
