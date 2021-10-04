@@ -405,7 +405,7 @@ if(isset($_SESSION['sectionIDCheck'])){
 
             if (camArray.length > 0) {
                 $("#camArray").val(camArray.join(','));
-                let v_camArray = $("#camArray").val();
+                let v_camString= $("#camArray").val();
 
                 $.ajax({
                     url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appDashboardCamera",
@@ -413,16 +413,14 @@ if(isset($_SESSION['sectionIDCheck'])){
                     dataType: "json",
                     data: {
                         method: "POST",
-                        camArray: v_camArray,
+                        camString: v_camString,
                         dashboardID: $.docData.dashboardID
                     },
                     success: function (d) {
                         if (d.status === true)
                         {
                             $.docData.dtTableCamera.ajax.reload(v_setTooltip);
-                            toastr.options = {"timeOut": "0","extendedTimeOut": 0,"tapToDismiss": false,"closeButton": true};
-                            toastr["success"]("Estimate created. File Name:<br/>"+d.file_name, "Success");
-                            toastr.options = {"timeOut": "5000","extendedTimeOut": 1000,"tapToDismiss": true,"closeButton": false};
+                            toastr["success"]("Configuração Salva", "Success");
                         }
                         else {
                             toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");

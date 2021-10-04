@@ -407,36 +407,25 @@ class appInstallation
     public function appDashboardCameraData($data = NULL)
     {
         $v_reqMethod = $data['method'];
-        var_dump($data);die();
         if($v_reqMethod == "POST")
         {
+            $v_camString = !empty($data['camString']) ? addslashes($data['camString']) : NULL;
+            $v_dashboardID = !empty($data['dashboardID']) ? addslashes($data['dashboardID']) : NULL;
+            $v_camArray = explode(',', $v_camString);
 
-            $v_dashboardDesc = !empty($data['camArray']) ? addslashes($data['camArray']) : NULL;
-            $v_dashboardDesc = !empty($data['dashboardDesc']) ? addslashes($data['dashboardDesc']) : NULL;
-            if(is_null($v_dashboardDesc) || strlen($v_dashboardDesc) < 3)
+            if(is_null($v_camString) || strlen($v_camString) < 1)
             {
                 $v_return['status'] = false;
             }
             else
             {
-
-                //Insert Item for estimate
-                $query = "INSERT INTO %appDBprefix%_estimate_item_data (clnt,estimate_id,item_id,created_by) VALUES ";
-                foreach ($v_estimateItemArray as $itemID){
-                    $query .= "('" . $_SESSION['userClnt'] . "','" . $v_estimateID . "','".$itemID."','".$_SESSION['userID']."'), ";
-
-                    $queryUpdateItemStage = "UPDATE %appDBprefix%_business_opportunity_item_data SET item_stage_id = 8, updated_by = '".$_SESSION['userID']."' WHERE item_id = ".$itemID." AND clnt = '".$_SESSION['userClnt']."'";
-                    $this->dbCon->dbUpdate($queryUpdateItemStage);
+                $query = "INSERT INTO %appDBprefix%_dashboard_camera (dashboard_id,obcon_camera_id,created_by) VALUES ";
+                foreach ($v_camArray as $obcon_camera_id){
+                    $query .= "('" .$v_dashboardID. "','" . $obcon_camera_id . "','".$_SESSION['userID']."'), ";
                 }
                 $query = rtrim($query,", ");
+
                 $this->dbCon->dbInsert($query);
-
-
-
-
-
-                $query = "INSERT INTO %appDBprefix%_obcon_dashboard (dashboard_desc) VALUES ('".$v_dashboardDesc."') ";
-                $v_return = $this->dbCon->dbInsert($query);
                 $v_return['status'] = true;
             }
             echo json_encode($v_return);
