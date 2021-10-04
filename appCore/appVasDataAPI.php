@@ -52,7 +52,11 @@ elseif ($v_dataSec == "i3pDataReceiver") {
     else {
         $v_origem = 'OBCON';
 
-        $v_apiData = $v_appData->appCustomerAlarme($v_appRequest['i3pData'],$v_origem,$v_customerID);
+        if(substr_count($v_appRequest['i3pData'],',') > 0) {
+            $v_apiData = $v_appData->appCustomerAlarme($v_appRequest['i3pData'],$v_origem,$v_customerID);
+        }else{
+            $v_apiData = $v_appData->appAlarmeProblema($v_appRequest['i3pData']);
+        }
     }
 
     header('Content-Type: application/json; charset=utf-8');
