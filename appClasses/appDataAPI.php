@@ -142,7 +142,7 @@ class appDataAPI
         }
     }
 
-    public function appAlarmeProblema($data = NULL)
+    public function appAlarmeProblema($data = NULL): array
     {
         $query = "INSERT INTO %appDBprefix%_lixo (alarme) VALUES ('" . $data . "')";
         $v_insertData = $this->dbCon->dbInsert($query);
