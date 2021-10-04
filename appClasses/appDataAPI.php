@@ -141,4 +141,17 @@ class appDataAPI
             return $v_return;
         }
     }
+
+    public function appAlarmeProblema($data = NULL)
+    {
+        $query = "INSERT INTO %appDBprefix%_lixo (alarme) VALUES ('" . $data . "')";
+        $v_insertData = $this->dbCon->dbInsert($query);
+            $v_return['status'] = false;
+            $v_return['id'] = $v_insertData['rsInsertID'];
+            $v_return['date_time'] = date("d/m/Y - H:i:s",strtotime($v_dat));
+            $v_return['camera'] = 'desconformidade';
+            $v_return['origem'] = 'desconhecida';
+            return $v_return;
+        }
+    }
 }

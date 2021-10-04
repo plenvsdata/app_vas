@@ -43,18 +43,30 @@ elseif ($v_dataSec == "i3pDataReceiver") {
     $v_customerID = $v_appRequest['customerID'];
     $v_appData = new appDataAPI();
 
-    if(strpos($v_appRequest['i3pData'],'#XI3PALERT')){
-        //echo 'VIPER';
-        $v_apiData = $v_appData->appCustomerAlarme($v_appRequest['i3pData'],'VIPER',$v_customerID);
+    $v_alert = substr($v_appRequest['i3pData'],0,10);
+
+    if($v_alert == '#XI3PALERT'){
+        $v_origem = 'VIPER';
+        $v_apiData = $v_appData->appCustomerAlarme($v_appRequest['i3pData'],$v_origem,$v_customerID);
     }
     else {
-        //echo 'OBCON';
-        $v_apiData = $v_appData->appCustomerAlarme($v_appRequest['i3pData'],'OBCON',$v_customerID);
+        $v_origem = 'OBCON';
+
+        $v_apiData = $v_appData->appCustomerAlarme($v_appRequest['i3pData'],$v_origem,$v_customerID);
     }
 
     header('Content-Type: application/json; charset=utf-8');
+    //echo json_encode($v_origem);
     echo json_encode($v_apiData);
 }
+
+elseif ($v_dataSec == "apiTeste") {
+    $v_apiData[] = date("Y-m-d");
+    header('Content-Type: application/json; charset=utf-8');
+    //echo json_encode($v_origem);
+    echo json_encode($v_apiData);
+}
+
 
 
 else
