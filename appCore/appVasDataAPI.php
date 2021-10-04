@@ -42,12 +42,12 @@ elseif ($v_dataSec == "i3pDataReceiver") {
     $v_appRequest = !empty($_REQUEST) ? $_REQUEST : NULL;
     $v_customerID = $v_appRequest['customerID'];
     $v_appData = new appDataAPI();
-
-    if(strpos($v_appRequest['i3pData'],'#XI3PALERT')){
+    $v_alarmType = substr($v_appRequest['i3pData'],0,10);
+    if($v_alarmType == '#XI3PALERT'){
         //echo 'VIPER';
         $v_apiData = $v_appData->appCustomerAlarme($v_appRequest['i3pData'],'VIPER',$v_customerID);
     }
-    elseif(strpos($v_appRequest['i3pData'],'#XI3POBCDE')){
+    elseif($v_alarmType == '#XI3POBCDE'){
         //echo 'VIPER';
         $v_apiData = $v_appData->appCustomerAlarme($v_appRequest['i3pData'],'teste',$v_customerID);
     }
