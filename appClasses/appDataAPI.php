@@ -152,6 +152,5 @@ class appDataAPI
             $v_return['camera'] = 'desconformidade';
             $v_return['origem'] = 'desconhecida';
             return $v_return;
-        }
     }
 }
