@@ -72,6 +72,9 @@ if(isset($_SESSION['sectionIDCheck'])){
                             <thead>
                             <tr>
                                 <th>Descrição</th>
+                                <th>Cliente</th>
+                                <th>Ninst</th>
+                                <th>Instalação</th>
                                 <th class="text-center org-col-50">Action</th>
                             </tr>
                             </thead>
@@ -79,6 +82,9 @@ if(isset($_SESSION['sectionIDCheck'])){
                             <tfoot id="appDatatableFoot" class="collapse">
                             <tr id="trFilters" class="collapse">
                                 <th>Descrição</th>
+                                <th>Cliente</th>
+                                <th>Ninst</th>
+                                <th>Instalação</th>
                                 <th hidden>Action</th>
                             </tr>
                             </tfoot>
@@ -112,6 +118,27 @@ if(isset($_SESSION['sectionIDCheck'])){
                             <label for="dashboardDesc" class="control-label">Descrição:</label>
                             <input type="text" class="form-control dashboardDesc" id="dashboardDesc" name="dashboardDesc" aria-describedby="dashboardDescHelp">
                             <span id="dashboardDescHelp" class="help-block text-danger">Min 3 caracteres</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div id="divCustomer" class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Cliente:</label>
+                            <select id=customerID" name="customerID" class="form-control custom-select customerID">
+                                <option value="">Selecione o Cliente</option>
+                                <?php foreach ($v_comboCustomer['rsData'] as $key=>$value){ ?>
+                                    <option value="<?=$value['customer_id']?>"><?=$value['customer_nome_fantasia']?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="divCustomer" class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Instalação:</label>
+                            <select id=installationID" name="installationID" class="form-control custom-select installationID">
+                                <option value="">Selecione a Instalação</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -182,14 +209,23 @@ if(isset($_SESSION['sectionIDCheck'])){
                                 },
                                 _sort: "dashboard_desc"
                             }, "className":"text-left"
-                    },
+                        },
+                        {
+                            data: "customer_nome_fantasia", "className":"text-left"
+                        },
+                        {
+                            data: "ninst", "className":"text-left"
+                        },
+                        {
+                            data: "installation_desc", "className":"text-left"
+                        },
                         { data:
                                 {
                                     _: function (data)
                                     {
 
                                         return "<div style='display: inline-flex;' class='flex-item'>"+
-                                            "<i class=\"fa fa-border fa-pencil appEditDesc\" style='cursor: pointer;' data-dashboard_id='"+data.dashboard_id+"' data-dashboard_desc='"+data.dashboard_desc+"'></i>"+
+                                            "<i class=\"fa fa-border fa-pencil appEditDesc\" style='cursor: pointer;' data-dashboard_id='"+data.dashboard_id+"' data-customer_id='"+data.customer_id+"' data-installation_id='"+data.installation_id+"' data-dashboard_desc='"+data.dashboard_desc+"'></i>"+
                                             "</div><div style='display: inline-flex;' class='flex-item'>"+
                                             "<i class=\"fa fa-border fa-trash appDel\" style='cursor: pointer;' data-dashboard_id='"+data.dashboard_id+"' data-dashboard_desc='"+data.dashboard_desc+"' ></i>"+
                                             "</div>";
@@ -233,6 +269,10 @@ if(isset($_SESSION['sectionIDCheck'])){
             $("#action").val('PUT');
             let v_dashboard_id = $(this).attr("data-dashboard_id");
             let v_dashboard_desc = $(this).attr("data-dashboard_desc");
+            let v_customer_id = $(this).attr("data-customer_id");
+            let v_installation_id = $(this).attr("data-installation_id");
+            getComboInstallation(v_customer_id,v_installation_id);
+            $('.customerID').val(v_customer_id);
             $("#dashboardID").val(v_dashboard_id);
             $("#dashboardDesc").val(v_dashboard_desc);
             $("#dashboardModal").modal('show');
@@ -241,6 +281,8 @@ if(isset($_SESSION['sectionIDCheck'])){
         $(document).on('click','#btnSave',function(){
             let v_dashboard_id = $("#dashboardID").val();
             let v_dashboard_desc = $("#dashboardDesc").val();
+            let v_customer_id = $(".customerID").val();
+            let v_installation_id = $(".installationID").val();
             let v_action = $("#action").val();
             let v_erro = '';
 
@@ -248,8 +290,17 @@ if(isset($_SESSION['sectionIDCheck'])){
                 v_erro+='-Descrição deve ter min. 3 caracteres.<br>';
             }
 
+            if(!v_customer_id){
+                v_erro+='-Selecione o cliente.<br>';
+            }
+
+            if(!v_installation_id){
+                v_erro+='-Selecione a instalação.<br>';
+            }
+
             if(v_erro != ''){
                 toastr["warning"](v_erro, "Atenção!");
+                return false;
             }else{
 
                 if(v_action==='POST'){
@@ -260,6 +311,8 @@ if(isset($_SESSION['sectionIDCheck'])){
                         data:
                             {
                                 method: 'POST',
+                                customerID: v_customer_id,
+                                installationID: v_installation_id,
                                 dashboardDesc: v_dashboard_desc
                             },
                         success: function(d)
@@ -313,6 +366,8 @@ if(isset($_SESSION['sectionIDCheck'])){
             $("#action").val('POST');
             $("#dashboardDesc").val('');
             $("#dashboardID").val('');
+            $(".customerID").val('');
+            $(".installationID").html('<option value="">Selecione a Instalação</option>');
         });
 
         $.docData.dtTable.on("click",".appDel",function() {
@@ -364,6 +419,51 @@ if(isset($_SESSION['sectionIDCheck'])){
             });
 
         });
+
+        $('.customerID').on('change', function () {
+            let v_customerID = $(this).val();
+            if(v_customerID){
+                getComboInstallation(v_customerID);
+            }else{
+                $(".installationID").html('<option value="">Selecione a Instalação</option>');
+            }
+        });
+
+        function getComboInstallation(customerID,installationID){
+            $.ajax({
+                    url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appComboInstallation",
+                    type: "POST",
+                    dataType: "json",
+                    data:
+                        {
+                            customerID: customerID
+                        },
+                    success: function(d)
+                    {
+                        if(d.rsTotal){
+                            let v_content = '<option value="">Selecione a Instalação</option>';
+                            $.each(d.rsData,function (i,v)
+                            {
+                                v_content += '<option value="'+v.installation_id+'">'+v.ninst+' - '+v.installation_desc+'</option>';
+                            });
+                            $(".installationID").html(v_content);
+                            if(installationID){
+                                $(".installationID").val(installationID);
+                            }else{
+                                $(".installationID").val('');
+                            }
+
+                        }else{
+                            toastr["warning"]("Este cliente não possui dados para instalação", "Atenção!");
+                            $(".installationID").html('<option value="">Selecione a Instalação</option>');
+                        }
+                    },
+                    error:function (d)
+                    {
+                        toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
+                    }
+                });
+        }
 
     });
 </script>
