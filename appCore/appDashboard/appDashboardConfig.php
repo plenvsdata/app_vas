@@ -5,16 +5,20 @@
  * Date: 31/01/2018
  * Time: 13:13
  */
-use app\System\Lists\appDataList;
 use app\System\Combo\appCombo;
-//use app\System\Lov\appGetValue;
+use app\System\Lists\appDataList;
 
 $v_dashboardID = !empty($_REQUEST['dataValue']) ? $_REQUEST['dataValue'] : null;
-//print $v_dashboardID;
 $v_comboData = new appCombo();
 $v_comboProfile = $v_comboData->comboSystemAccessProfile('array');
 $v_comboCustomer = $v_comboData->comboCustomer('array');
-//print_r($v_comboCustomer);
+$v_data['dashboardID'] = $v_dashboardID;
+$v_listDashboard = new appDataList();
+$v_dashboardList = $v_listDashboard->appDashboardList($v_data);
+$v_dashboardData = $v_dashboardList['rsData'][0];
+
+var_dump($v_dashboardData);
+
 $v_sectionIDCheck = true;
 $_dataSectionCheck = 'true';
 if(isset($_SESSION['sectionIDCheck'])){
@@ -31,7 +35,7 @@ if(isset($_SESSION['sectionIDCheck'])){
     {
         justify-content: space-around;
     }
-    .help-block {display: none;}
+    .help-block {display: none;}-
     .hidden
     {
         display: none!important;
@@ -69,7 +73,7 @@ if(isset($_SESSION['sectionIDCheck'])){
                     <div class="row m-1">
                         <div class="col-md-12 mb-2">
                             <div class="position-relative w-100 "><i class="fa fa-refresh pull-right l-5" aria-hidden="true"></i></div>
-                            <h3>Track & Field - Shopping Villa Lobos</h3>
+                            <h3><?=$v_dashboardData['dashboard_desc']?></h3>
                             <h6>Data do Controle: 23/09/2021</h6>
                             <h6>Horário de Início: 07:11:55</h6>
                         </div>
@@ -172,27 +176,6 @@ if(isset($_SESSION['sectionIDCheck'])){
                             </table>
                         </div>
                     </div>
-                    <div class="row pt-0">
-                        <div id="divCustomer" class="col-md-6">
-                                <div class="form-group">
-                                    <label class="control-label">Cliente:</label>
-                                    <select id=customerID" name="customerID" class="form-control custom-select selectpicker customerID">
-                                        <option value="">Selecione Cliente</option>
-                                        <?php foreach ($v_comboCustomer['rsData'] as $key=>$value){ ?>
-                                            <option value="<?=$value['customer_id']?>"><?=$value['customer_nome_fantasia']?></option>
-                                        <?php } ?>
-                                    </select>
-                                </div>
-                            </div>
-                        <div id="divCustomer" class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Instalação:</label>
-                                <select id=installationID" name="installationID" class="form-control custom-select installationID">
-                                    <option value="">Selecione a Instalação</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="table-responsive">
@@ -230,68 +213,9 @@ if(isset($_SESSION['sectionIDCheck'])){
             dtTable : null,
             profileList : '',
             dataSectionCheck : <?=$_dataSectionCheck?>,
-            installationID :  null,
+            installationID :  '<?=$v_dashboardData['installation_id']?>',
             dashboardID: '<?=$v_dashboardID?>'
         };
-
-        $('.customerID').on('changed.bs.select', function (e) {
-            let v_customerID = $(e.currentTarget).val();
-            if(v_customerID){
-                $.ajax({
-                    url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appComboInstallation",
-                    type: "POST",
-                    dataType: "json",
-                    data:
-                        {
-                            customerID: v_customerID
-                        },
-                    success: function(d)
-                    {
-                        if(d.rsTotal){
-                            let v_content = '<option value="">Selecione a Instalação</option>';
-                            $.each(d.rsData,function (i,v)
-                            {
-                                v_content += '<option value="'+v.installation_id+'">'+v.ninst+' - '+v.installation_desc+'</option>';
-                            });
-                            console.log(v_content);
-                            $(".installationID").html(v_content);
-                            $(".installationID").val("");
-                            //TODO  { adicionar selecpicker no elemento (".installationID")
-                            //$("#installationID").selectpicker('render').selectpicker('refresh');
-                        }else{
-                            toastr["warning"]("Este cliente não possui dados para instalação", "Atenção!");
-                            $(".installationID").html('<option value="">Selecione a Instalação</option>');
-                        }
-                        /*
-                        if(d.apiData.status==true)
-                        {
-                           alert('dados carregados');
-                            console.log(d);
-                        }else{
-                            console.log('Não carrega o combo de clientes');
-                        }
-
-                         */
-                    },
-                    error:function (d)
-                    {
-                         console.log(d);
-                        toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
-                    }
-                });
-            }
-
-        });
-
-        $('.installationID').on( 'change',function () {
-            alert('entrou');
-            let v_installationID = $(this).val();
-            if(v_installationID){
-                alert('table cam');
-                $.docData.installationID = v_installationID;
-                $.docData.dtTableCamera.ajax.reload();
-            }
-        });
 
         $.docData.dtTableCamera = $('.appDatatableCamera').DataTable({
             "autoWidth": false,
@@ -312,8 +236,8 @@ if(isset($_SESSION['sectionIDCheck'])){
                     },
                 "data": function(d)
                 {
-                    d.installationID = $.docData.installationID,
-                    d.dashboardID = $.docData.dashboardID
+                    d.dashboardID = $.docData.dashboardID,
+                    d.installationID = $.docData.installationID
                 }
             },
             "initComplete": function () {
@@ -325,19 +249,18 @@ if(isset($_SESSION['sectionIDCheck'])){
                         {
 
                             display: function (data) {
+                                console.log('resposta='+data.dashboard_id+' - '+$.docData.dashboardID);
                                 if(data.dashboard_id == $.docData.dashboardID){
                                     return '<div class="appCamCheck camCheck text-success fa fa-check-square fa-lg" style="cursor: pointer;"></div>';
                                 }else{
                                     return '<div class="appCamCheck camCheck text-success fa fa-square-o fa-lg" style="cursor: pointer;"></div>';
                                 }
-
                             }
 
                         }, "className":"text-center","width":"8%"
                 },
                 {
                     data: "cam", "className":"text-left"
-
                 },
                 {
                     data: "cam_desc", "className":"text-left"

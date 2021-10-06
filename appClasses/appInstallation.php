@@ -326,7 +326,7 @@ class appInstallation
             }
             else
             {
-                $query = "INSERT INTO %appDBprefix%_obcon_dashboard (dashboard_desc) VALUES ('".$v_dashboardDesc."') ";
+                $query = "INSERT INTO %appDBprefix%_obcon_dashboard (customer_id,installation_id,dashboard_desc) VALUES ('".$data['customerID']."','".$data['installationID']."','".$v_dashboardDesc."') ";
                 $v_return = $this->dbCon->dbInsert($query);
                 $v_return['status'] = true;
             }
