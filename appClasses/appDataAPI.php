@@ -61,9 +61,7 @@ class appDataAPI
         if (is_null($data)) {
             $v_return['customer_status'] = 0;
         } else {
-
-           if ($origem == "VIPER")
-           {
+           if ($origem == "VIPER") {
                 $v_alarme = str_replace('#XI3PALERT', '', $data);
                 $v_ori = substr($v_alarme, 0, 1);
                 $v_idr = substr($v_alarme, 1, 6);
@@ -111,43 +109,37 @@ class appDataAPI
                 $v_subtipoID = isset($v_subtipoIDData['subtipo_id']) ? $v_subtipoIDData['subtipo_id'] : 1;
                 $query = "INSERT INTO %appDBprefix%_alarme_" . strtolower($origem) . "_data (customer_id,ori,idr,nor,cod,dat,nuc,apl,ins,origem_id,subtipo_id,nsb,sbn,cor,ips,pos,alarme_" . strtolower($origem) . "_completo) VALUES ('" . $v_customerID . "','" . $v_ori . "','" . $v_idr . "'," . $v_nor . ",'" . $v_cod . "','" . $v_dat . "','" . $v_nuc . "','" . $v_apl . "','" . $v_ins . "','" . $v_origemID . "','" . $v_subtipoID . "','" . $v_nsb . "','" . $v_sbn . "','" . $v_cor . "'," . $v_ips . "," . $v_pos . ",'" . addslashes($data) . "')";
 
-            } elseif($origem == "OBCON")
-            {
-                $v_alarme = str_replace('#XI3POBCDEPC', '', $data);
-                $v_ori = substr($v_alarme, 0, 1);
-                $v_idr = substr($v_alarme, 1, 6);
-                $v_nor = ($v_ori == 'O') ? NULL : substr($v_alarme, 7, 50);
+            }
+           elseif($origem == "OBCON") {
+               $queryValue = array();
+               $v_alarme = str_replace('#XI3POBCDEPC', '', $data);
+               $v_integradora = trim(substr($v_alarme, 0, 3));
+               $v_ninst = substr($v_alarme, 3,4);
+               $v_clid = substr($v_alarme, 7, 6);
+               $v_gloid = trim(substr($v_alarme, 13, 4));
+               $v_data_str = substr($v_alarme, 17, 8);
+               $v_data = substr($v_data_str,4,4).'-'.substr($v_data_str,2,2).'-'.substr($v_data_str,0,2);
+               $v_hora_str = substr($v_alarme, 25, 6);
+               $v_hora = substr($v_hora_str, 0,2).':'.substr($v_hora_str, 2,2).':'.substr($v_hora_str, 4,2);
+               $v_dat = date('Y-m-d H:i:s', strtotime($v_data.' '.$v_hora));
+               $v_reg = (int)trim(substr($v_alarme, 31, 3));
+               $v_regLength = $v_reg * 8;
+               $v_regData = substr($v_alarme, 34, $v_regLength);
+               $v_regDataArray = str_split($v_regData,8);
 
-                return var_dump($data);die();
+               foreach($v_regDataArray as $k=>$v){
+                   $v_cam = trim(substr($v, 0, 2));
+                   $v_tw = substr($v, 2, 1);
+                   $v_sent = substr($v, 3, 1);
+                   $v_numo = trim(substr($v, 4, 3));
+                   $v_tama = trim(substr($v, 7, 1));
+                   $v_camArray[] = $v_cam;
+                   $queryValue[] = "('" . $v_customerID . "','" . $v_integradora . "','" . $v_ninst . "','" . $v_clid . "','" . $v_gloid . "','" . $v_data . "','" . $v_hora . "','" . $v_cam . "','" . $v_tw . "','" . $v_sent . "','" . $v_numo . "','" . $v_tama . "','" . addslashes($data) . "')";
+               }
+               $queryValue = implode(',',$queryValue);
+               $query = "INSERT INTO %appDBprefix%_alarme_" . strtolower($origem) . "_data (customer_id,integradora,ninst,clid,gloid,data,hora,cam,tw,sent,numo,tama,alarme_" . strtolower($origem) . "_completo) VALUES ".$queryValue;
+               $v_alarmeCamera = implode(',',array_unique($v_camArray));
 
-
-
-
-
-
-
-
-
-                $v_obconData = explode(',', $data);
-                $v_clid = $v_obconData[0];
-                $v_ninst = $v_obconData[1];
-                $v_data = date('Y-m-d', strtotime(str_replace('_', '-', $v_obconData[2])));;
-                $v_hora = date('H:i:s', strtotime(str_replace('_', ':', $v_obconData[3])));
-                $v_cam = $v_obconData[4];
-                $v_alarmeCamera = $v_cam;
-                $v_tw = $v_obconData[5];
-                $v_sent = $v_obconData[6];
-                $v_numo = $v_obconData[7];
-                $v_tama = $v_obconData[8];
-
-                $v_event_date = date('d/m/Y', strtotime(str_replace('_', '-', $v_obconData[2])));
-                $v_event_time = date('H:i:s', strtotime(str_replace('_', ':', $v_obconData[3])));
-                $v_dat = $v_event_date . ' ' . $v_event_time;
-
-                //ToDo: remover teste
-                //$v_dat = date('Y-m-d H:i:s');
-
-                $query = "INSERT INTO %appDBprefix%_alarme_" . strtolower($origem) . "_data (customer_id,clid,ninst,data,hora,cam,tw,sent,numo,tama,alarme_" . strtolower($origem) . "_completo) VALUES ('" . $v_customerID . "','" . $v_clid . "','" . $v_ninst . "','" . $v_data . "','" . $v_hora . "','" . $v_cam . "','" . $v_tw . "','" . $v_sent . "','" . $v_numo . "','" . $v_tama . "','" . addslashes($data) . "')";
             }else{
                $query = "INSERT INTO %appDBprefix%_lixo (alarme) VALUES ('" . $data . "')";
                $v_dat = date("d/m/Y - H:i:s");
@@ -162,18 +154,5 @@ class appDataAPI
             $v_return['origem'] = $origem;
         }
         return $v_return;
-    }
-
-    public function appAlarmeProblema($data = NULL): array
-    {
-        $query = "INSERT INTO %appDBprefix%_lixo (alarme) VALUES ('" . $data . "')";
-        $v_insertData = $this->dbCon->dbInsert($query);
-        $v_dat = date('Y-m-d H:i:s');
-            $v_return['status'] = false;
-            $v_return['id'] = $v_insertData['rsInsertID'];
-            $v_return['date_time'] = date("d/m/Y - H:i:s",strtotime($v_dat));
-            $v_return['camera'] = 'desconformidade';
-            $v_return['origem'] = 'desconhecida';
-            return $v_return;
     }
 }

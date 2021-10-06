@@ -40,6 +40,7 @@ elseif ($v_dataSec == "checkAppConnection") {
 }
 elseif ($v_dataSec == "i3pDataReceiver") {
     $v_appRequest = !empty($_REQUEST) ? $_REQUEST : NULL;
+
     $v_customerID = $v_appRequest['customerID'];
     $v_appData = new appDataAPI();
 
