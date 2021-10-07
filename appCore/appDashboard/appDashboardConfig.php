@@ -73,9 +73,8 @@ if(isset($_SESSION['sectionIDCheck'])){
                     <div class="row m-1">
                         <div class="col-md-12 mb-2">
                             <div class="position-absolute w-100" style="right: 0px!important;"><i class="fa fa-refresh pull-right r-5" aria-hidden="true" style="cursor: pointer!important;"></i></div>
-                            <h3><?=$v_dashboardData['dashboard_desc']?></h3>
-                            <h6>Data do Controle: 05/10/2021</h6>
-                            <h6>Horário de Início: 07:11:55</h6>
+                            <h4><?=$v_dashboardData['dashboard_desc']?></h4>
+                            <h6>Data do Controle: 05/10/2021 - Horário de Início: 07:11:55</h6>
                         </div>
                         <div class="col-4 p-1">
                             <div class="col-12 dashboardPanel shadow" style="border-radius: 10px!important;">
@@ -172,10 +171,13 @@ if(isset($_SESSION['sectionIDCheck'])){
                             <a class="nav-link dashboardNavPanel active" id="obconReport-tab" data-toggle="tab" href="#obconReport" role="tab" aria-controls="obconReport" aria-selected="true">Consolidação</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link dashboardNavPanel" id="dashboardConfig-tab" data-toggle="tab" href="#dashboardConfig" role="tab" aria-controls="dashboardConfig" aria-selected="true">Configuração</a>
+                            <a class="nav-link dashboardNavPanel" id="obconChart-tab" data-toggle="tab" href="#obconChart" role="tab" aria-controls="obconChart" aria-selected="true">Gráficos</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link dashboardNavPanel" id="obconChart-tab" data-toggle="tab" href="#obconChart" role="tab" aria-controls="obconChart" aria-selected="true">Gráficos</a>
+                            <a class="nav-link dashboardNavPanel" id="dashboardInformation-tab" data-toggle="tab" href="#dashboardInfo" role="tab" aria-controls="dashboardInfo" aria-selected="true">Informações</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link dashboardNavPanel" id="dashboardConfig-tab" data-toggle="tab" href="#dashboardConfig" role="tab" aria-controls="dashboardConfig" aria-selected="true">Configuração</a>
                         </li>
                     </ul>
                 </div>
@@ -218,6 +220,12 @@ if(isset($_SESSION['sectionIDCheck'])){
                                 </div>
                             </div>
                         </div>
+                        <div class="tab-pane fade" id="obconChart" role="tabpanel" aria-labelledby="chart-tab">
+                            gráficos
+                        </div>
+                        <div class="tab-pane fade" id="dashboardInfo" role="tabpanel" aria-labelledby="chart-tab">
+                            Informações
+                        </div>
                         <div class="tab-pane fade" id="dashboardConfig" role="tabpanel" aria-labelledby="config-tab">
                             <div class="row">
                                 <div class="col-md-12">
@@ -237,9 +245,6 @@ if(isset($_SESSION['sectionIDCheck'])){
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="tab-pane fade" id="obconChart" role="tabpanel" aria-labelledby="chart-tab">
-                            gráficos
                         </div>
                     </div>
                 </div>
