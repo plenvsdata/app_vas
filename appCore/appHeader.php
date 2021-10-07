@@ -72,19 +72,6 @@ else {
                 <form class="app-search">
                     <input type="text" class="form-control" placeholder="Search & enter"> <a class="srh-btn"><i class="ti-close"></i></a> </form>
             </li>
-            <!-- ============================================================== -->
-            <!-- Language -->
-            <!-- ============================================================== -->
-
-            <!--
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="flag-icon flag-icon-us"></i></a>
-                <div class="dropdown-menu dropdown-menu-right scale-up"> <a class="dropdown-item" href="#"><i class="flag-icon flag-icon-in"></i> India</a> <a class="dropdown-item" href="#"><i class="flag-icon flag-icon-fr"></i> French</a> <a class="dropdown-item" href="#"><i class="flag-icon flag-icon-cn"></i> China</a> <a class="dropdown-item" href="#"><i class="flag-icon flag-icon-de"></i> Dutch</a> </div>
-            </li>
-            -->
-            <!-- ============================================================== -->
-            <!-- Profile -->
-            <!-- ============================================================== -->
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><div id="profilePic" class="profile-pic"></div></a>
                 <div class="dropdown-menu dropdown-menu-right scale-up">
@@ -102,14 +89,6 @@ else {
                         <li role="separator" class="divider"></li>
                         <li><a href="<?=$GLOBALS['g_appRoot']?>/MeuPerfil"><i class="ti-user"></i> Meu Perfil</a></li>
                         <li role="separator" class="divider"></li>
-                        <!--
-
-                        <li><a href="#"><i class="ti-wallet"></i> My Balance</a></li>
-                        <li><a href="#"><i class="ti-email"></i> Inbox</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#"><i class="ti-settings"></i> Account Setting</a></li>
-                        <li role="separator" class="divider"></li>
-                        -->
                         <li><a href="<?=$GLOBALS['g_appRoot']?>/appAccessAPI/appQuit"><i class="fa fa-power-off"></i> Sair</a></li>
                     </ul>
                 </div>

@@ -9585,3 +9585,11 @@ input[type=checkbox]:not(:disabled).tabbed:focus ~ .lever:after, input[type=chec
     user-select: none; /* Non-prefixed version, currently
                                  supported by Chrome and Opera */
 }
+
+.dashboardPanel {
+    background-color: #f1f1f1;
+    border-radius: 10px!important;
+    border: 2px solid #0b0b0b;
+    padding-top: 15px!important;
+    padding-bottom: 15px!important;
+}

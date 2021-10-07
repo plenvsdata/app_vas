@@ -72,22 +72,28 @@ if(isset($_SESSION['sectionIDCheck'])){
                 <div class="card-body p-1">
                     <div class="row m-1">
                         <div class="col-md-12 mb-2">
-                            <div class="position-relative w-100 "><i class="fa fa-refresh pull-right l-5" aria-hidden="true"></i></div>
+                            <div class="position-absolute w-100" style="right: 0px!important;"><i class="fa fa-refresh pull-right r-5" aria-hidden="true" style="cursor: pointer!important;"></i></div>
                             <h3><?=$v_dashboardData['dashboard_desc']?></h3>
-                            <h6>Data do Controle: 23/09/2021</h6>
+                            <h6>Data do Controle: 05/10/2021</h6>
                             <h6>Horário de Início: 07:11:55</h6>
                         </div>
-                        <div class="col-4 bg-info p-2">
-                            <h4 class="text-white">Contagem Atual</h4>
-                            <h2 class="w-100 text-center text-white">666 Pessoas</h2>
+                        <div class="col-4 p-1">
+                            <div class="col-12 dashboardPanel shadow" style="border-radius: 10px!important;">
+                                <h6 class="text-black-50">Contagem Atual</h6>
+                                <h2 class="w-100 text-center text-black">88888</h2>
+                            </div>
                         </div>
-                        <div class="col-4 bg-primary p-2">
-                            <h4 class="text-white">Entraram</h4>
-                            <h2 class="w-100 text-center text-white">999 Pessoas</h2>
+                        <div class="col-4 p-1">
+                            <div class="col-12 dashboardPanel shadow" style="border-radius: 10px!important;">
+                                <h6 class="text-black-50">Entradas</h6>
+                                <h2 class="w-100 text-center text-black">88888</h2>
+                            </div>
                         </div>
-                        <div class="col-4 bg-success p-2">
-                            <h4 class="text-white">Sairam</h4>
-                            <h2 class="w-100 text-center text-white">333 Pessoas</h2>
+                        <div class="col-4 p-1">
+                            <div class="col-12 dashboardPanel shadow" style="border-radius: 10px!important;">
+                                <h6 class="text-black-50">Saídas</h6>
+                                <h2 class="w-100 text-center text-black">88888</h2>
+                            </div>
                         </div>
                     </div>
                     <div class="row pt-2">
@@ -117,6 +123,40 @@ if(isset($_SESSION['sectionIDCheck'])){
                                         <td>Camera 88</td>
                                         <td>Entrada</td>
                                     </tr>
+                                    <tr>
+                                        <td>23/09/2021 - 15:23:45</td>
+                                        <td>Camera 88</td>
+                                        <td>Entrada</td>
+                                    </tr>
+                                    <tr>
+                                        <td>23/09/2021 - 15:23:45</td>
+                                        <td>Camera 88</td>
+                                        <td>Entrada</td>
+                                    </tr>
+                                    <tr>
+                                        <td>23/09/2021 - 15:23:45</td>
+                                        <td>Camera 88</td>
+                                        <td>Entrada</td>
+                                    </tr>
+                                    <tr>
+                                        <td>23/09/2021 - 15:23:45</td>
+                                        <td>Camera 88</td>
+                                        <td>Entrada</td>
+                                    </tr><tr>
+                                        <td>23/09/2021 - 15:23:45</td>
+                                        <td>Camera 88</td>
+                                        <td>Entrada</td>
+                                    </tr>
+                                    <tr>
+                                        <td>23/09/2021 - 15:23:45</td>
+                                        <td>Camera 88</td>
+                                        <td>Entrada</td>
+                                    </tr>
+                                    <tr>
+                                        <td>23/09/2021 - 15:23:45</td>
+                                        <td>Camera 88</td>
+                                        <td>Entrada</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -127,74 +167,81 @@ if(isset($_SESSION['sectionIDCheck'])){
         <div class="col-6 pl-1">
             <div class="card text-center">
                 <div class="card-header">
-                    <ul class="nav nav-tabs card-header-tabs">
+                    <ul class="nav nav-tabs card-header-tabs" id="dashboardTabList" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" href="#">Consolidação</a>
+                            <a class="nav-link dashboardNavPanel active" id="obconReport-tab" data-toggle="tab" href="#obconReport" role="tab" aria-controls="obconReport" aria-selected="true">Consolidação</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Configuração</a>
+                            <a class="nav-link dashboardNavPanel" id="dashboardConfig-tab" data-toggle="tab" href="#dashboardConfig" role="tab" aria-controls="dashboardConfig" aria-selected="true">Configuração</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Gráficos</a>
+                            <a class="nav-link dashboardNavPanel" id="obconChart-tab" data-toggle="tab" href="#obconChart" role="tab" aria-controls="obconChart" aria-selected="true">Gráficos</a>
                         </li>
                     </ul>
                 </div>
                 <div class="card-body">
-
-                    <div class="row pt-0">
-                        <div class="col-12 p-4">
-                            <h6 class="text-left">Últimos Dias</h6>
-                            <table class="table table-striped w-100">
-                                <thead class="thead-dark">
-                                <tr>
-                                    <th>Data</th>
-                                    <th>Entradas</th>
-                                    <th>Saídas</th>
-                                    <th>Total de Pessoas</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>22/09/2021</td>
-                                    <td class="text-right text-monospace">500</td>
-                                    <td class="text-right text-monospace">400</td>
-                                    <td class="text-right text-monospace">500</td>
-                                </tr>
-                                <tr>
-                                    <td>21/09/2021</td>
-                                    <td class="text-right text-monospace">500</td>
-                                    <td class="text-right text-monospace">400</td>
-                                    <td class="text-right text-monospace">500</td>
-                                </tr>
-                                <tr>
-                                    <td>20/09/2021</td>
-                                    <td class="text-right text-monospace">500</td>
-                                    <td class="text-right text-monospace">400</td>
-                                    <td class="text-right text-monospace">500</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="table-responsive">
-                                <input type="hidden" id="camArray" name="camArray" value="">
-                                <div style="position:absolute;"><button type="button" id="saveCam" class="btn btn-sm waves-effect waves-light btn-success">Salvar</button></div>
-                                <table id="appDatatableCamera" class="display nowrap table table-hover table-striped table-bordered appDatatableCamera" cellspacing="0" width="100%">
-                            <thead>
-                            <tr>
-                                <th><div class="appCamCheckAll cameraCheckAll text-success fa fa-square-o fa-lg"  style="cursor: pointer;"></div></th>
-                                <th>Cam</th>
-                                <th>Descrição</th>
-                            </tr>
-                            </thead>
-                            <tbody style="text-align: center!important;"></tbody>
-                        </table>
+                    <div class="tab-content" id="dashboardContent">
+                        <div class="tab-pane fade show active" id="obconReport" role="tabpanel" aria-labelledby="obcon-tab">
+                            <div class="row pt-0">
+                                <div class="col-12 p-4">
+                                    <h6 class="text-left">Últimos Dias</h6>
+                                    <table class="table table-striped w-100">
+                                        <thead class="thead-dark">
+                                        <tr>
+                                            <th>Data</th>
+                                            <th>Entradas</th>
+                                            <th>Saídas</th>
+                                            <th>Total de Pessoas</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>22/09/2021</td>
+                                            <td class="text-right text-monospace">500</td>
+                                            <td class="text-right text-monospace">400</td>
+                                            <td class="text-right text-monospace">500</td>
+                                        </tr>
+                                        <tr>
+                                            <td>21/09/2021</td>
+                                            <td class="text-right text-monospace">500</td>
+                                            <td class="text-right text-monospace">400</td>
+                                            <td class="text-right text-monospace">500</td>
+                                        </tr>
+                                        <tr>
+                                            <td>20/09/2021</td>
+                                            <td class="text-right text-monospace">500</td>
+                                            <td class="text-right text-monospace">400</td>
+                                            <td class="text-right text-monospace">500</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
+                        <div class="tab-pane fade" id="dashboardConfig" role="tabpanel" aria-labelledby="config-tab">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="table-responsive">
+                                        <input type="hidden" id="camArray" name="camArray" value="">
+                                        <div style="position:absolute;"><button type="button" id="saveCam" class="btn btn-sm waves-effect waves-light btn-success">Salvar</button></div>
+                                        <table id="appDatatableCamera" class="display nowrap table table-hover table-striped table-bordered appDatatableCamera" cellspacing="0" width="100%">
+                                            <thead>
+                                            <tr>
+                                                <th><div class="appCamCheckAll cameraCheckAll text-success fa fa-square-o fa-lg"  style="cursor: pointer;"></div></th>
+                                                <th>Cam</th>
+                                                <th>Descrição</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody style="text-align: center!important;"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="obconChart" role="tabpanel" aria-labelledby="chart-tab">
+                            gráficos
+                        </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -357,33 +404,7 @@ if(isset($_SESSION['sectionIDCheck'])){
                 toastr["warning"]("Selecione uma câmera para Salvar", "Ooops!");
                 return false;
             }
-
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     });
 </script>

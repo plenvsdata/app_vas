@@ -40,8 +40,13 @@ elseif ($v_dataSec == "checkAppConnection") {
 }
 elseif ($v_dataSec == "i3pDataReceiver") {
     $v_appRequest = !empty($_REQUEST) ? $_REQUEST : NULL;
+    $v_customerID = $v_appRequest['customerID'] ?? NULL;
 
-    $v_customerID = $v_appRequest['customerID'];
+    if($v_customerID == NULL){
+        header("HTTP/1.0 404 Not Found");
+        die();
+    }
+
     $v_appData = new appDataAPI();
 
     $v_alarmType = substr($v_appRequest['i3pData'],0,10);
