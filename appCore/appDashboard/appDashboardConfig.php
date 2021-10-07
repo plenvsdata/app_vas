@@ -17,7 +17,7 @@ $v_listDashboard = new appDataList();
 $v_dashboardList = $v_listDashboard->appDashboardList($v_data);
 $v_dashboardData = $v_dashboardList['rsData'][0];
 
-var_dump($v_dashboardData);
+//var_dump($v_dashboardData);
 
 $v_sectionIDCheck = true;
 $_dataSectionCheck = 'true';
@@ -74,30 +74,30 @@ if(isset($_SESSION['sectionIDCheck'])){
                         <div class="col-md-12 mb-2">
                             <div class="position-absolute w-100" style="right: 0px!important;"><i class="fa fa-refresh pull-right r-5" aria-hidden="true" style="cursor: pointer!important;"></i></div>
                             <h4><?=$v_dashboardData['dashboard_desc']?></h4>
-                            <h6>Data do Controle: 05/10/2021 - Horário de Início: 07:11:55</h6>
+                            <h6>Data do Controle: 07/10/2021 - Horário de Início: 00:00:00</h6>
                         </div>
                         <div class="col-4 p-1">
                             <div class="col-12 dashboardPanel shadow" style="border-radius: 10px!important;">
                                 <h6 class="text-black-50">Contagem Atual</h6>
-                                <h2 class="w-100 text-center text-black">88888</h2>
+                                <h2 class="w-100 text-center text-black">3</h2>
                             </div>
                         </div>
                         <div class="col-4 p-1">
                             <div class="col-12 dashboardPanel shadow" style="border-radius: 10px!important;">
                                 <h6 class="text-black-50">Entradas</h6>
-                                <h2 class="w-100 text-center text-black">88888</h2>
+                                <h2 class="w-100 text-center text-black">7</h2>
                             </div>
                         </div>
                         <div class="col-4 p-1">
                             <div class="col-12 dashboardPanel shadow" style="border-radius: 10px!important;">
                                 <h6 class="text-black-50">Saídas</h6>
-                                <h2 class="w-100 text-center text-black">88888</h2>
+                                <h2 class="w-100 text-center text-black">4</h2>
                             </div>
                         </div>
                     </div>
                     <div class="row pt-2">
                         <div class="col-12 p-4">
-                            <h6>Últimos Eventos</h6>
+                            <h6>Últimos 10 Eventos</h6>
                             <table class="table table-striped w-100">
                                 <thead class="thead-dark">
                                     <tr>
@@ -108,54 +108,53 @@ if(isset($_SESSION['sectionIDCheck'])){
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>23/09/2021 - 13:23:45</td>
-                                        <td>Camera 88</td>
+                                        <td>2021-10-07 - 08:48:48</td>
+                                        <td>Câmera 3</td>
                                         <td>Entrada</td>
                                     </tr>
                                     <tr>
-                                        <td>23/09/2021 - 13:33:45</td>
-                                        <td>Camera 66</td>
+                                        <td>2021-10-07 - 07:11:49</td>
+                                        <td>Câmera 2</td>
+                                        <td>Entrada</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2021-10-07 - 06:27:09</td>
+                                        <td>Câmera 3</td>
                                         <td>Saída</td>
                                     </tr>
                                     <tr>
-                                        <td>23/09/2021 - 15:23:45</td>
-                                        <td>Camera 88</td>
+                                        <td>2021-10-07 - 06:07:42</td>
+                                        <td>Câmera 2</td>
+                                        <td>Saída</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2021-10-07 - 05:34:51</td>
+                                        <td>Câmera 1</td>
+                                        <td>Saída</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2021-10-07 - 03:37:46</td>
+                                        <td>Câmera 2</td>
                                         <td>Entrada</td>
                                     </tr>
                                     <tr>
-                                        <td>23/09/2021 - 15:23:45</td>
-                                        <td>Camera 88</td>
-                                        <td>Entrada</td>
-                                    </tr>
-                                    <tr>
-                                        <td>23/09/2021 - 15:23:45</td>
-                                        <td>Camera 88</td>
-                                        <td>Entrada</td>
-                                    </tr>
-                                    <tr>
-                                        <td>23/09/2021 - 15:23:45</td>
-                                        <td>Camera 88</td>
-                                        <td>Entrada</td>
-                                    </tr>
-                                    <tr>
-                                        <td>23/09/2021 - 15:23:45</td>
-                                        <td>Camera 88</td>
+                                        <td>2021-10-07 - 02:51:59</td>
+                                        <td>Câmera 1</td>
                                         <td>Entrada</td>
                                     </tr><tr>
-                                        <td>23/09/2021 - 15:23:45</td>
-                                        <td>Camera 88</td>
+                                        <td>2021-10-07 - 02:26:09</td>
+                                        <td>Câmera 2</td>
+                                        <td>Saída</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2021-10-07 - 02:14:51</td>
+                                        <td>Câmera 3</td>
                                         <td>Entrada</td>
                                     </tr>
                                     <tr>
-                                        <td>23/09/2021 - 15:23:45</td>
-                                        <td>Camera 88</td>
-                                        <td>Entrada</td>
-                                    </tr>
-                                    <tr>
-                                        <td>23/09/2021 - 15:23:45</td>
-                                        <td>Camera 88</td>
-                                        <td>Entrada</td>
-                                    </tr>
+                                        <td>2021-10-07 - 02:08:02</td>
+                                        <td>Câmera 1</td>
+                                        <td>Entrada</td>                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -224,7 +223,33 @@ if(isset($_SESSION['sectionIDCheck'])){
                             gráficos
                         </div>
                         <div class="tab-pane fade" id="dashboardInfo" role="tabpanel" aria-labelledby="chart-tab">
-                            Informações
+                            <div class="row">
+                                <div class="col-12">
+                                    <h6 class="text-left">Informações do Dashboard</h6>
+                                    <table class="table table-striped w-100">
+                                        <thead class="thead-dark">
+                                        <tr>
+                                            <th style="width: 40%!important;">Parâmetro</th>
+                                            <th>Valor</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td class="text-right text-monospace">Cliente:</td>
+                                            <td class="text-right text-monospace"><?=$v_dashboardData['customer_nome_fantasia']?></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right text-monospace">I3P (ninst):</td>
+                                            <td class="text-right text-monospace"><?=$v_dashboardData['ninst']?></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right text-monospace">Instalação:</td>
+                                            <td class="text-right text-monospace"><?=$v_dashboardData['ninst']?></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                         <div class="tab-pane fade" id="dashboardConfig" role="tabpanel" aria-labelledby="config-tab">
                             <div class="row">
