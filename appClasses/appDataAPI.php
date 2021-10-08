@@ -56,7 +56,6 @@ class appDataAPI
 
     public function appCustomerAlarme($data = NULL,$origem,$customerID)
     {
-
         $v_customerID = $customerID;
         if (is_null($data)) {
             $v_return['customer_status'] = 0;
@@ -128,6 +127,7 @@ class appDataAPI
                $v_regDataArray = str_split($v_regData,8);
 
                foreach($v_regDataArray as $k=>$v){
+
                    $v_cam = trim(substr($v, 0, 2));
                    $v_tw = substr($v, 2, 1);
                    $v_sent = substr($v, 3, 1);
@@ -135,12 +135,22 @@ class appDataAPI
                    $v_tama = trim(substr($v, 7, 1));
                    $v_camArray[] = $v_cam;
                    $queryValue[] = "('" . $v_customerID . "','" . $v_integradora . "','" . $v_ninst . "','" . $v_clid . "','" . $v_gloid . "','" . $v_data . "','" . $v_hora . "','" . $v_cam . "','" . $v_tw . "','" . $v_sent . "','" . $v_numo . "','" . $v_tama . "','" . addslashes($data) . "')";
+
+                   $v_dashboardCheck['ninst'] = $v_ninst;
+                   $v_dashboardCheck['sent'] = $v_sent;
+                   $v_checkCounter = $this->appObconCounter($v_dashboardCheck,$v_customerID);
                }
+
+
+
+
+
                $queryValue = implode(',',$queryValue);
                $query = "INSERT INTO %appDBprefix%_alarme_" . strtolower($origem) . "_data (customer_id,integradora,ninst,clid,gloid,data,hora,cam,tw,sent,numo,tama,alarme_" . strtolower($origem) . "_completo) VALUES ".$queryValue;
                $v_alarmeCamera = implode(',',array_unique($v_camArray));
 
-            }else{
+            }
+           else{
                $query = "INSERT INTO %appDBprefix%_lixo (alarme) VALUES ('" . $data . "')";
                $v_dat = date("d/m/Y - H:i:s");
                $v_alarmeCamera = 'desconformidade';
@@ -154,5 +164,28 @@ class appDataAPI
             $v_return['origem'] = $origem;
         }
         return $v_return;
+    }
+
+    public function appObconCounter($data,$customerID,$dasboardAccess = false) {
+        $v_ninst = $data['ninst'];
+        $v_customerID = $customerID;
+        $v_sent = $data['sent'];
+
+        $v_getValue = new appGetValue();
+        $v_fieldData['table'] = "view_obcon_dashboard";
+        $v_fieldData['field'] = "dashboard_id";
+        $v_fieldData['fieldID'][] = $v_ninst;
+        $v_fieldData['fieldID'][] = $v_customerID;
+        $v_fieldData['fieldName'][] = "ninst";
+        $v_fieldData['fieldName'][] = "customer_id";
+        $v_dashboardIDData = $v_getValue->appGetValueData($v_fieldData, false, false);
+        $v_dashboardID = $v_dashboardIDData['dashboard_id'] ?? null;
+
+        IF(is_null($v_dashboardID)) {
+            echo 'Cria nova linha Counter';
+        }else{
+            echo 'v_dashboardID = '.$v_dashboardID;;
+        }
+        die();
     }
 }

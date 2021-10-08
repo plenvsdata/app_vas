@@ -9593,3 +9593,29 @@ input[type=checkbox]:not(:disabled).tabbed:focus ~ .lever:after, input[type=chec
     padding-top: 15px!important;
     padding-bottom: 15px!important;
 }
+
+.reportCustomerCol {
+    min-width: 230px!important;
+    max-width: 230px!important;
+    width: 230px!important;
+}
+.reportCustomerAPL {
+    min-width: 80px!important;
+    max-width: 80px!important;
+    width: 80px!important;
+}
+.reportCustomer80px {
+    min-width: 80px!important;
+    max-width: 80px!important;
+    width: 80px!important;
+}
+.reportCustomerData {
+    min-width: 90px!important;
+    max-width: 90px!important;
+    width: 90px!important;
+}
+.reportCustomerHora {
+    min-width: 90px!important;
+    max-width: 90px!important;
+    width: 90px!important;
+}

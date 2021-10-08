@@ -50,7 +50,12 @@ class appGetValue
             }
 
             $v_return = $this->dbCon->dbSelect($query);
-            return $v_return['rsData'][0];
+
+            if($v_return['rsTotal'] < 1){
+                return false;
+            } else {
+                return $v_return['rsData'][0];
+            }
         }
     }
 
