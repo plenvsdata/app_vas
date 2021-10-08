@@ -182,9 +182,12 @@ class appDataAPI
         $v_dashboardID = $v_dashboardIDData['dashboard_id'] ?? null;
 
         IF(is_null($v_dashboardID)) {
-            echo 'Cria nova linha Counter';
+            echo 'Cria nova linha Counter e já insere o dado novo';
+            //$query = "INSERT INTO...";
         }else{
-            echo 'v_dashboardID = '.$v_dashboardID;;
+            echo 'atualiza counter';
+            echo 'v_dashboardID = '.$v_dashboardID;
+
         }
         die();
     }
