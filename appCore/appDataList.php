@@ -67,6 +67,17 @@ class appDataList
         return $this->dbCon->dbSelect($query);
     }
 
+    public function appDashboardLastEventList($data = NULL)
+    {
+        $v_dashboardID = !empty($data['dashboardID']) ? $data['dashboardID'] : NULL;
+        $query  = "SELECT dashboard_id,obcon_camera_id,installation_id,installation_desc,customer_id,customer_nome_fantasia,cam,cam_desc,ninst,created_at,ok FROM %appDBprefix%_view_dashboard_camera  ";
+        if(!is_null($v_installationID))
+        {
+            $query .= " WHERE installation_id = '".$v_installationID."' AND ( dashboard_id = '".$v_dashboardID."' OR ISNULL( dashboard_id ))";
+        }
+        return $this->dbCon->dbSelect($query);
+    }
+
     public function appDashboardList($data = NULL)
     {
         $v_dashboardID = !empty($data['dashboardID']) ? $data['dashboardID'] : NULL;

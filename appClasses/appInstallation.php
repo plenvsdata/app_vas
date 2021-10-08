@@ -419,6 +419,10 @@ class appInstallation
             }
             else
             {
+                //clean last config
+                $queryClean = "UPDATE %appDBprefix%_dashboard_camera SET enable = 0,updated_by = '".$_SESSION['userID']."'  WHERE  dashboard_id = '".$v_dashboardID."' AND enable = 1";
+                $this->dbCon->dbUpdate($queryClean);
+
                 $query = "INSERT INTO %appDBprefix%_dashboard_camera (dashboard_id,obcon_camera_id,created_by) VALUES ";
                 foreach ($v_camArray as $obcon_camera_id){
                     $query .= "('" .$v_dashboardID. "','" . $obcon_camera_id . "','".$_SESSION['userID']."'), ";

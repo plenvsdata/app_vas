@@ -73,7 +73,7 @@ $v_apiData = new appUserControl();
                 if($v_apiData->checkFeaturePermission(4)){
                 ?>
                 <li><a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
-                                class="fa fa-lg fa-list"></i><span
+                                class="fa fa-lg fa-calculator"></i><span
                                 class="hide-menu">Obcon</span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="<?=$GLOBALS['g_appRoot']?>/Obcon/Dashboard">Dashboard</a></li>

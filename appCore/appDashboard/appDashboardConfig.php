@@ -17,7 +17,7 @@ $v_listDashboard = new appDataList();
 $v_dashboardList = $v_listDashboard->appDashboardList($v_data);
 $v_dashboardData = $v_dashboardList['rsData'][0];
 
-var_dump($v_dashboardData);
+//var_dump($v_dashboardData);
 
 $v_sectionIDCheck = true;
 $_dataSectionCheck = 'true';
@@ -98,6 +98,21 @@ if(isset($_SESSION['sectionIDCheck'])){
                     <div class="row pt-2">
                         <div class="col-12 p-4">
                             <h6>Últimos Eventos</h6>
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table id="appDatatableLastEvent" class="display nowrap table table-hover table-striped table-bordered appDatatableLastEvent" cellspacing="0" width="100%">
+                                        <thead>
+                                        <tr>
+                                            <th>Data e Hora</th>
+                                            <th>Câmera</th>
+                                            <th>Evento</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody style="text-align: center!important;"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!--
                             <table class="table table-striped w-100">
                                 <thead class="thead-dark">
                                     <tr>
@@ -158,6 +173,7 @@ if(isset($_SESSION['sectionIDCheck'])){
                                     </tr>
                                 </tbody>
                             </table>
+                            -->
                         </div>
                     </div>
                 </div>
@@ -266,7 +282,7 @@ if(isset($_SESSION['sectionIDCheck'])){
             profileList : '',
             dataSectionCheck : <?=$_dataSectionCheck?>,
             installationID :  '<?=$v_dashboardData['installation_id']?>',
-            dashboardID: '<?=$v_dashboardID?>'
+            dashboardID: '<?=$v_dashboardID?>',
         };
 
         $.docData.dtTableCamera = $('.appDatatableCamera').DataTable({
@@ -290,6 +306,67 @@ if(isset($_SESSION['sectionIDCheck'])){
                 {
                     d.dashboardID = $.docData.dashboardID,
                     d.installationID = $.docData.installationID
+                }
+            },
+            "initComplete": function () {
+                $(".dt-buttons").removeClass("btn-group");
+            },
+            "order":[[0,'asc']],
+            "columns": [
+                { data:
+                        {
+
+                            display: function (data) {
+                                console.log('resposta='+data.dashboard_id+' - '+$.docData.dashboardID);
+                                if(data.dashboard_id == $.docData.dashboardID){
+                                    return '<div class="appCamCheck camCheck text-success fa fa-check-square fa-lg" style="cursor: pointer;"></div>';
+                                }else{
+                                    return '<div class="appCamCheck camCheck text-success fa fa-square-o fa-lg" style="cursor: pointer;"></div>';
+                                }
+                            }
+
+                        }, "className":"text-center","width":"8%"
+                },
+                {
+                    data: "cam", "className":"text-left"
+                },
+                {
+                    data: "cam_desc", "className":"text-left"
+                }
+            ],
+            "createdRow": function( row, data, dataIndex ) {
+                $(row).attr("data-obcon_camera_id",data.obcon_camera_id);
+
+            },
+            "columnDefs": [
+                {
+                    "targets": 0,
+                    "orderable": false,
+                    "searchable": false
+                }
+            ]
+        });
+
+        $.docData.dtTableLastEvent = $('.appDatatableLastEvent').DataTable({
+            "autoWidth": false,
+            "paging": true,
+            "select": true,
+            "pageLength": 5,
+            "lengthMenu": [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
+            "dom": '<"dtFloatRight dtPageLength"l><"dtFloatRight"f><"dtInfoBeta">rt<"dtCenter"i<"dtFloatLeft"><"dtFloatRight"p>>',
+            "ajax": {
+                "url": "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appListDashboardLastEvent",
+                "xhrFields": { withCredentials: true },
+                "dataSrc": "appDashboardLastEventList",
+                "dataType": "json",
+                "type":"POST",
+                "headers":
+                    {
+                        "appDatatable":true
+                    },
+                "data": function(d)
+                {
+                    d.dashboardID = $.docData.dashboardID
                 }
             },
             "initComplete": function () {
