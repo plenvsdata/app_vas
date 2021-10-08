@@ -128,11 +128,11 @@ if(isset($_SESSION['sectionIDCheck'])){
                         <table id="appDatatable" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                             <thead>
                             <tr>
-                                <th>Clid</th>
+                                <th class="text-center reportCustomerData">Data</th>
+                                <th class="text-center reportCustomerHora">Hora</th>
+                                <th class="text-center reportCustomer80px">Clid</th>
                                 <th>Cliente</th>
                                 <th>NINST</th>
-                                <th>Data</th>
-                                <th>Hora</th>
                                 <th>CAM</th>
                                 <th>TW</th>
                                 <th>SENT</th>
@@ -143,11 +143,11 @@ if(isset($_SESSION['sectionIDCheck'])){
                             <tbody class="text-center"></tbody>
                             <tfoot id="appDatatableFoot" class="collapse">
                             <tr id="trFilters" class="collapse">
+                                <th>Data</th>
+                                <th>Hora</th>
                                 <th>Clid</th>
                                 <th>Cliente</th>
                                 <th>NINST</th>
-                                <th>Data</th>
-                                <th>Hora</th>
                                 <th>CAM</th>
                                 <th>TW</th>
                                 <th>SENT</th>
@@ -236,11 +236,11 @@ if(isset($_SESSION['sectionIDCheck'])){
                 },
                 "columns":
                     [
-                        { data: "clid", "className":"text-right text-monospace" },
-                        { data: "customer_nome_fantasia", "className":"text-left text-monospace" },
+                        { data: "data_br", "className":"text-left text-monospace reportCustomerData" },
+                        { data: "hora", "className":"text-right text-monospace reportCustomerHora" },
+                        { data: "clid", "className":"text-right text-monospace reportCustomer80px" },
+                        { data: "customer_nome_fantasia", "className":"text-left text-monospace reportCustomerCol" },
                         { data: "ninst", "className":"text-right text-monospace" },
-                        { data: "data_br", "className":"text-left text-monospace" },
-                        { data: "hora", "className":"text-right text-monospace" },
                         { data: "cam", "className":"text-right text-monospace" },
                         { data: "tw", "className":"text-right text-monospace" },
                         { data: "sent", "className":"text-left text-monospace" },

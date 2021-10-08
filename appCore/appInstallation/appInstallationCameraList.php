@@ -70,19 +70,19 @@ if(isset($_SESSION['sectionIDCheck'])){
                         <table id="appDatatable" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                             <thead>
                             <tr>
-                                <th>Cliente</th>
-                                <th>Ninst</th>
+                                <th class="text-center" style="width: 100px!important;">Ninst</th>
+                                <th class="text-center" style="width: 250px!important;">Cliente</th>
                                 <th>Instalação</th>
-                                <th>Cam</th>
-                                <th>Cam Desc</th>
+                                <th class="text-center" style="width: 80px!important;">Cam</th>
+                                <th class="text-center" style="width: 250px!important;">Cam Desc</th>
                                 <th class="text-center org-col-50">Action</th>
                             </tr>
                             </thead>
                             <tbody style="text-align: center!important;"></tbody>
                             <tfoot id="appDatatableFoot" class="collapse">
                             <tr id="trFilters" class="collapse">
-                                <th>Cliente</th>
                                 <th>Ninst</th>
+                                <th>Cliente</th>
                                 <th>Instalação</th>
                                 <th>Cam</th>
                                 <th>Cam Desc</th>
@@ -198,8 +198,8 @@ if(isset($_SESSION['sectionIDCheck'])){
                 },
                 "columns":
                     [
-                        { data: "customer_nome_fantasia", "className":"text-left" },
                         { data: "ninst", "className":"text-right" },
+                        { data: "customer_nome_fantasia", "className":"text-left" },
                         { data: "installation_desc", "className":"text-left" },
                         { data: "cam", "className":"text-right" },
                         { data: "cam_desc", "className":"text-left" },

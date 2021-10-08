@@ -70,8 +70,8 @@ if(isset($_SESSION['sectionIDCheck'])){
                         <table id="appDatatable" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                             <thead>
                             <tr>
+                                <th class="text-center" style="width: 100px!important;">Ninst</th>
                                 <th>Cliente</th>
-                                <th>Ninst</th>
                                 <th>Descrição</th>
                                 <th class="text-center org-col-50">Action</th>
                             </tr>
@@ -79,8 +79,8 @@ if(isset($_SESSION['sectionIDCheck'])){
                             <tbody style="text-align: center!important;"></tbody>
                             <tfoot id="appDatatableFoot" class="collapse">
                             <tr id="trFilters" class="collapse">
-                                <th>Cliente</th>
                                 <th>Ninst</th>
+                                <th>Cliente</th>
                                 <th>Descrição</th>
                                 <th hidden>Action</th>
                             </tr>
@@ -194,8 +194,8 @@ if(isset($_SESSION['sectionIDCheck'])){
                 },
                 "columns":
                     [
-                        { data: "customer_nome_fantasia", "className":"text-left" },
                         { data: "ninst", "className":"text-right" },
+                        { data: "customer_nome_fantasia", "className":"text-left" },
                         { data: "installation_desc", "className":"text-left" },
                         { data:
                                 {

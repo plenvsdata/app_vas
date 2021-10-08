@@ -128,14 +128,14 @@ if(isset($_SESSION['sectionIDCheck'])){
                         <table id="appDatatable" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                             <thead>
                             <tr>
-                                <th>Cliente</th>
+                                <th class="text-center" style="width: 220px!important;">Cliente</th>
                                 <th>ORI</th>
                                 <th>IDR</th>
                                 <th>NOR</th>
-                                <th>COD</th>
+                                <th class="text-center" style="width: 60px!important;">COD</th>
                                 <th>Data</th>
                                 <th>NUC</th>
-                                <th>APL</th>
+                                <th class="text-center" style="width: 80px!important;">APL</th>
                                 <th>INS</th>
                                 <th>Origem</th>
                                 <th>Subtipo</th>
@@ -257,14 +257,14 @@ if(isset($_SESSION['sectionIDCheck'])){
                 },
                 "columns":
                     [
-                        { data: "customer_nome_fantasia", "className":"text-left text-monospace" },
+                        { data: "customer_nome_fantasia", "className":"text-left text-monospace reportCustomerCol" },
                         { data: "ori", "className":"text-center text-monospace" },
                         { data: "idr", "className":"text-right text-monospace" },
                         { data: "nor", "className":"text-left text-monospace" },
                         { data: "cod", "className":"text-right text-monospace" },
                         { data: "data_br", "className":"text-right text-monospace" },
                         { data: "nuc", "className":"text-right text-monospace" },
-                        { data: "apl", "className":"text-left text-monospace" },
+                        { data: "apl", "className":"text-left text-monospace reportCustomer80px" },
                         { data: "ins", "className":"text-right text-monospace" },
                         { data: "origem_desc", "className":"text-left text-monospace" },
                         { data: "subtipo_desc", "className":"text-left text-monospace" },
