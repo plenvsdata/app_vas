@@ -376,11 +376,10 @@ if(isset($_SESSION['sectionIDCheck'])){
 
         $.docData.dtTableLastEvent = $('.appDatatableLastEvent').DataTable({
             "autoWidth": false,
-            "paging": true,
+            "paging": false,
             "select": true,
-            "pageLength": 5,
-            "lengthMenu": [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
-            "dom": '<"dtFloatRight dtPageLength"l><"dtFloatRight"f><"dtInfoBeta">rt<"dtCenter"i<"dtFloatLeft"><"dtFloatRight"p>>',
+            "pageLength": 10,
+            "dom": '<"dtFloatRight dtPageLength"l><"dtFloatRight"f><"dtInfoBeta">rt<"dtCenter"<"dtFloatLeft"><"dtFloatRight"p>>',
             "ajax": {
                 "url": "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appListDashboardLastEvent",
                 "xhrFields": { withCredentials: true },
@@ -403,34 +402,22 @@ if(isset($_SESSION['sectionIDCheck'])){
             "columns": [
                 { data:
                         {
-
                             display: function (data) {
-                                console.log('resposta='+data.dashboard_id+' - '+$.docData.dashboardID);
-                                if(data.dashboard_id == $.docData.dashboardID){
-                                    return '<div class="appCamCheck camCheck text-success fa fa-check-square fa-lg" style="cursor: pointer;"></div>';
-                                }else{
-                                    return '<div class="appCamCheck camCheck text-success fa fa-square-o fa-lg" style="cursor: pointer;"></div>';
-                                }
+                                 return '<div>'+data.data_br+' '+data.hora+'</div>';
                             }
-
-                        }, "className":"text-center","width":"8%"
+                        }, "className":"text-center"
                 },
                 {
-                    data: "cam", "className":"text-left"
+                    data: "cam", "className":"text-right"
                 },
                 {
-                    data: "cam_desc", "className":"text-left"
+                    data: "sent_desc", "className":"text-left"
                 }
             ],
             "createdRow": function( row, data, dataIndex ) {
-                $(row).attr("data-obcon_camera_id",data.obcon_camera_id);
-
             },
             "columnDefs": [
                 {
-                    "targets": 0,
-                    "orderable": false,
-                    "searchable": false
                 }
             ]
         });

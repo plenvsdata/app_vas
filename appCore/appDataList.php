@@ -70,11 +70,8 @@ class appDataList
     public function appDashboardLastEventList($data = NULL)
     {
         $v_dashboardID = !empty($data['dashboardID']) ? $data['dashboardID'] : NULL;
-        $query  = "SELECT dashboard_id,obcon_camera_id,installation_id,installation_desc,customer_id,customer_nome_fantasia,cam,cam_desc,ninst,created_at,ok FROM %appDBprefix%_view_dashboard_camera  ";
-        if(!is_null($v_installationID))
-        {
-            $query .= " WHERE installation_id = '".$v_installationID."' AND ( dashboard_id = '".$v_dashboardID."' OR ISNULL( dashboard_id ))";
-        }
+        $query  = "SELECT alarme_obcon_id,data,data_br,hora,cam,cam_desc,sent_desc FROM %appDBprefix%_view_report_obcon_data  ";
+        $query .= " WHERE dashboard_id = '".$v_dashboardID."' ORDER BY data DESC,hora DESC LIMIT 10";
         return $this->dbCon->dbSelect($query);
     }
 

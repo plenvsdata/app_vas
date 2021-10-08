@@ -123,6 +123,16 @@ elseif($v_dataSec == "appListDashboardCamera")
     $v_returnData["appDashboardCameraList"] = $v_appList["rsData"];
     echo json_encode($v_returnData);
 }
+elseif($v_dataSec == "appListDashboardLastEvent")
+{
+    $v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;
+    $v_data = new appDataList();
+    $v_appList = $v_data->appDashboardLastEventList($v_appData);
+    $v_returnData["appDashboardLastEventList"] = $v_appList["rsData"];
+    echo json_encode($v_returnData);
+}
+
+
 elseif($v_dataSec == "appListDashboard")
 {
     $v_appData = new appDataList();
