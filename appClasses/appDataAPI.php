@@ -138,6 +138,8 @@ class appDataAPI
 
                    $v_dashboardCheck['ninst'] = $v_ninst;
                    $v_dashboardCheck['sent'] = $v_sent;
+                   $v_dashboardCheck['cam'] = $v_cam;
+
                    $v_checkCounter = $this->appObconCounter($v_dashboardCheck,$v_customerID);
                }
 
@@ -167,24 +169,28 @@ class appDataAPI
     }
 
     public function appObconCounter($data,$customerID,$dasboardAccess = false) {
-        $v_ninst = $data['ninst'];
         $v_customerID = $customerID;
+        $v_ninst = $data['ninst'];
+        $v_cam = $data['cam'];
         $v_sent = $data['sent'];
 
         $v_getValue = new appGetValue();
-        $v_fieldData['table'] = "view_obcon_dashboard";
+        $v_fieldData['table'] = "view_dashboard_camera";
         $v_fieldData['field'] = "dashboard_id";
-        $v_fieldData['fieldID'][] = $v_ninst;
         $v_fieldData['fieldID'][] = $v_customerID;
-        $v_fieldData['fieldName'][] = "ninst";
+        $v_fieldData['fieldID'][] = $v_ninst;
+        $v_fieldData['fieldID'][] = $v_cam;
         $v_fieldData['fieldName'][] = "customer_id";
+        $v_fieldData['fieldName'][] = "ninst";
+        $v_fieldData['fieldName'][] = "cam";
+
         $v_dashboardIDData = $v_getValue->appGetValueData($v_fieldData, false, false);
         $v_dashboardID = $v_dashboardIDData['dashboard_id'] ?? null;
 
         IF(is_null($v_dashboardID)) {
-            echo 'Cria nova linha Counter';
+            echo 'Cria nova linha Counter - Dashboard não existe';
         }else{
-            echo 'v_dashboardID = '.$v_dashboardID;;
+            echo 'v_dashboardID = '.$v_dashboardID;
         }
         die();
     }
