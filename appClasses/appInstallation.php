@@ -423,6 +423,15 @@ class appInstallation
                 $queryClean = "UPDATE %appDBprefix%_dashboard_camera SET enable = 0,updated_by = '".$_SESSION['userID']."'  WHERE  dashboard_id = '".$v_dashboardID."' AND enable = 1";
                 $this->dbCon->dbUpdate($queryClean);
 
+                //clean Count
+                $queryCount = "UPDATE %appDBprefix%_dashboard_obcon_count SET current = 0  WHERE  dashboard_id = '".$v_dashboardID."' ";
+                $this->dbCon->dbUpdate($queryCount);
+
+                //create new count
+                $querySetCount = "INSERT INTO %appDBprefix%_dashboard_obcon_count (dashboard_id,count_data,count_hora,entrada,saida,total_atual,current,camera_enable_array,created_by) VALUES ";
+                $querySetCount .= "('" .$v_dashboardID. "','" . date("Y-m-d") . "','" . date("H:i:s") . "',0,0,0,1,'".$v_camString."','".$_SESSION['userID']."') ";
+                $this->dbCon->dbInsert($querySetCount);
+
                 $query = "INSERT INTO %appDBprefix%_dashboard_camera (dashboard_id,obcon_camera_id,created_by) VALUES ";
                 foreach ($v_camArray as $obcon_camera_id){
                     $query .= "('" .$v_dashboardID. "','" . $obcon_camera_id . "','".$_SESSION['userID']."'), ";
