@@ -190,7 +190,10 @@ class appDataAPI
         IF(is_null($v_dashboardID)) {
             echo 'Cria nova linha Counter - Dashboard não existe';
         }else{
+            echo 'atualiza counter';
             echo 'v_dashboardID = '.$v_dashboardID;
+            echo 'Cria nova linha Counter e já insere o dado novo';
+            //$query = "INSERT INTO...";
         }
         die();
     }
