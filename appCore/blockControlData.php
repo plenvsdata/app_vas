@@ -131,6 +131,14 @@ elseif($v_dataSec == "appListDashboardLastEvent")
     $v_returnData["appDashboardLastEventList"] = $v_appList["rsData"];
     echo json_encode($v_returnData);
 }
+elseif($v_dataSec == "appListDashboardLastDays")
+{
+    $v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;
+    $v_data = new appDataList();
+    $v_appList = $v_data->appDashboardLastDaysList($v_appData);
+    $v_returnData["appDashboardLastDaysList"] = $v_appList["rsData"];
+    echo json_encode($v_returnData);
+}
 
 
 elseif($v_dataSec == "appListDashboard")

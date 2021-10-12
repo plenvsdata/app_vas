@@ -71,7 +71,14 @@ class appDataList
     {
         $v_dashboardID = !empty($data['dashboardID']) ? $data['dashboardID'] : NULL;
         $query  = "SELECT alarme_obcon_id,data,data_br,hora,cam,cam_desc,sent_desc FROM %appDBprefix%_view_report_obcon_data  ";
-        $query .= " WHERE dashboard_id = '".$v_dashboardID."' ORDER BY data DESC,hora DESC LIMIT 10";
+        $query .= " WHERE dashboard_id = '".$v_dashboardID."' AND data = '".date('Y-m-d')."' ORDER BY data DESC,hora DESC LIMIT 10";
+        return $this->dbCon->dbSelect($query);
+    }
+    public function appDashboardLastDaysList($data = NULL)
+    {
+        $v_dashboardID = !empty($data['dashboardID']) ? $data['dashboardID'] : NULL;
+        $query  = "SELECT count_data,data_br,entrada,saida,total_atual FROM %appDBprefix%_view_dashboard_obcon_count_by_day  ";
+        $query .= " WHERE dashboard_id = '".$v_dashboardID."' ORDER BY count_data DESC";
         return $this->dbCon->dbSelect($query);
     }
 

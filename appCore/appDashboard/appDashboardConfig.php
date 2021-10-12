@@ -13,6 +13,11 @@ $v_comboData = new appCombo();
 $v_comboProfile = $v_comboData->comboSystemAccessProfile('array');
 $v_comboCustomer = $v_comboData->comboCustomer('array');
 $v_data['dashboardID'] = $v_dashboardID;
+
+//$query = "SELECT dashboard_count_id,dashboard_id,count_data,count_hora,entrada,saida,total_atual,current,camera_enable_array,created_at,created_by,updated_at,ok FROM %appDBprefix%_dashboard_obcon_count WHERE dashboard_id = '".$v_dashboardID."' AND current = 1 ";
+//$v_countData = $this->dbCon->dbSelect($query);
+
+
 $v_listDashboard = new appDataList();
 $v_dashboardList = $v_listDashboard->appDashboardList($v_data);
 $v_dashboardData = $v_dashboardList['rsData'][0];
@@ -204,6 +209,18 @@ if(isset($_SESSION['sectionIDCheck'])){
                             <div class="row pt-0">
                                 <div class="col-12 p-4">
                                     <h6 class="text-left">Últimos Dias</h6>
+                                    <table id="appDatatableLastDays" class="display nowrap table table-hover table-striped table-bordered appDatatableLastDays" cellspacing="0" width="100%">
+                                        <thead>
+                                        <tr>
+                                            <th>Data</th>
+                                            <th>Entradas</th>
+                                            <th>Saídas</th>
+                                            <th>Total</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody style="text-align: center!important;"></tbody>
+                                    </table>
+                                    <!--
                                     <table class="table table-striped w-100">
                                         <thead class="thead-dark">
                                         <tr>
@@ -234,6 +251,7 @@ if(isset($_SESSION['sectionIDCheck'])){
                                         </tr>
                                         </tbody>
                                     </table>
+                                    -->
                                 </div>
                             </div>
                         </div>
@@ -413,6 +431,51 @@ if(isset($_SESSION['sectionIDCheck'])){
                 {
                     data: "sent_desc", "className":"text-left"
                 }
+            ],
+            "createdRow": function( row, data, dataIndex ) {
+            },
+            "columnDefs": [
+                {
+                }
+            ]
+        });
+
+        $.docData.dtTableLastDays = $('.appDatatableLastDays').DataTable({
+            "autoWidth": false,
+            "paging": false,
+            "select": true,
+            "pageLength": 10,
+            "dom": '<"dtFloatRight dtPageLength"l><"dtFloatRight"f><"dtInfoBeta">rt<"dtCenter"<"dtFloatLeft"><"dtFloatRight"p>>',
+            "ajax": {
+                "url": "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appListDashboardLastDays",
+                "xhrFields": { withCredentials: true },
+                "dataSrc": "appDashboardLastDaysList",
+                "dataType": "json",
+                "type":"POST",
+                "headers":
+                    {
+                        "appDatatable":true
+                    },
+                "data": function(d)
+                {
+                    d.dashboardID = $.docData.dashboardID
+                }
+            },
+            "initComplete": function () {
+                $(".dt-buttons").removeClass("btn-group");
+            },
+            "order":[[0,'asc']],
+            "columns": [
+                { data:
+                        {
+                            display: function (data) {
+                                return '<div>'+data.data_br+'</div>';
+                            }
+                        }, "className":"text-center"
+                },
+                { data: "entrada", "className":"text-right"},
+                { data: "saida", "className":"text-right"},
+                { data: "total_atual", "className":"text-right"},
             ],
             "createdRow": function( row, data, dataIndex ) {
             },
