@@ -311,12 +311,14 @@ elseif ($v_dataSec == "appUserPhoto")
     }
 
 }
-elseif ($v_dataSec == "appCustomerGroup")
+
+elseif ($v_dataSec == "appObconCounter")
 {
-    $v_appData = !empty($_REQUEST['appFormData']) ? $_REQUEST['appFormData'] : NULL;
-    $v_type = !empty($_REQUEST['type']) ? $_REQUEST['type'] : NULL;
-    $v_customerGroup =  new appCustomer();
-    $v_customerGroupData = $v_customerGroup->appCustomerGroupData($v_appData,$v_type);
+    $v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;
+
+    $v_obcon =  new appInstallation();
+    $v_obconData = $v_obcon->appObconCounter($v_appData);
+    echo json_encode($v_obconData);
 }
 elseif ($v_dataSec == "appCustomer")
 {

@@ -514,4 +514,34 @@ class appInstallation
             header("HTTP/1.0 204 No Content");
         }
     }
+
+    public function appObconCounter($data = NULL){
+        $v_reqMethod = $data['method'];
+        if ($v_reqMethod == "GET"){
+            $v_dashboardID = !empty($data['dashboardID']) ? $data['dashboardID'] : NULL;
+            if(is_null($v_dashboardID) || empty($v_dashboardID))
+            {
+                $v_return = false;
+            }
+            else
+            {
+                $query = "SELECT dashboard_count_id,dashboard_id,count_data,count_hora,entrada,saida,total_atual,current,camera_enable_array,created_at,created_by,updated_at,ok FROM %appDBprefix%_dashboard_obcon_count WHERE dashboard_id = '".$v_dashboardID."' AND current = 1 ";
+                $v_rs = $this->dbCon->dbSelect($query);
+                if($v_rs['rsTotal'] > 0){
+                    $v_return = $v_rs['rsData'][0];
+                }else{
+                    $v_return = false;
+                }
+            }
+            return $v_return;
+        }
+        else
+        {
+            header("HTTP/1.0 204 No Content");
+        }
+
+    }
+
+
+
 }

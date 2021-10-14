@@ -165,60 +165,94 @@ class appDataAPI
     }
 
     public function appObconCounter($data,$customerID,$dasboardAccess = false) {
-        $v_customerID = $customerID;
-        $v_ninst = $data['ninst'];
-        $v_cam = $data['cam'];
-        $v_sent = $data['sent'];
 
-        $v_getValue = new appGetValue();
-        $v_fieldData['table'] = "view_dashboard_camera";
-        $v_fieldData['field'] = "dashboard_id";
-        $v_fieldData['fieldID'][] = $v_customerID;
-        $v_fieldData['fieldID'][] = $v_ninst;
-        $v_fieldData['fieldID'][] = $v_cam;
-        $v_fieldData['fieldName'][] = "customer_id";
-        $v_fieldData['fieldName'][] = "ninst";
-        $v_fieldData['fieldName'][] = "cam";
+        if($dasboardAccess){//page
+            $v_dashboardID = $data['dashboardID'];
+           $v_count = $this->getCurrentObconCounter($v_dashboardID);
+           if($v_count){
+               if($v_count['count_data'] != date('Y-m-d')){
+                   $this->falseCurrentObconCounter($v_dashboardID);
+                   // cria o novo contador com data de hoje zerado
+                   $querySetCount = "INSERT INTO %appDBprefix%_dashboard_obcon_count (dashboard_id,count_data,count_hora,entrada,saida,total_atual,current,camera_enable_array,created_by) VALUES ";
+                   $querySetCount .= "('" .$v_dashboardID. "','" . date("Y-m-d") . "','00:00:00',0,0,0,1,'".$v_count['camera_enable_array']."','".$v_count['created_by']."') ";
+                   $this->dbCon->dbInsert($querySetCount);
+               }
+           }
+        }else{//bridge
+            $v_customerID = $customerID;
+            $v_ninst = $data['ninst'];
+            $v_cam = $data['cam'];
+            $v_sent = $data['sent'];
 
-        $v_dashboardIDData = $v_getValue->appGetValueData($v_fieldData, false, false);
-        $v_dashboardID = $v_dashboardIDData['dashboard_id'] ?? null;
+            $v_getValue = new appGetValue();
+            $v_fieldData['table'] = "view_dashboard_camera";
+            $v_fieldData['field'] = "dashboard_id";
+            $v_fieldData['fieldID'][] = $v_customerID;
+            $v_fieldData['fieldID'][] = $v_ninst;
+            $v_fieldData['fieldID'][] = $v_cam;
+            $v_fieldData['fieldName'][] = "customer_id";
+            $v_fieldData['fieldName'][] = "ninst";
+            $v_fieldData['fieldName'][] = "cam";
 
-        if($v_dashboardID){
-            $query = "SELECT dashboard_count_id,dashboard_id,count_data,count_hora,entrada,saida,total_atual,current,camera_enable_array,created_at,created_by,updated_at,ok FROM %appDBprefix%_dashboard_obcon_count WHERE dashboard_id = '".$v_dashboardID."' AND current = 1 ";
-            $v_countData = $this->dbCon->dbSelect($query);
-            //copia dados do current contador
-            if($v_countData['rsTotal'] > 0){
-                $v_count = $v_countData['rsData'][0];
-                //Existe contagem para hoje?
-                if($v_count['count_data'] == date('Y-m-d')){
-                    //sim - Atualiza contagem
-                    if($v_sent == 'E'){
-                        $query = "UPDATE %appDBprefix%_dashboard_obcon_count SET entrada = (entrada+1), total_atual = (total_atual+1) WHERE dashboard_count_id = '".$v_count['dashboard_count_id']."' ";
+            $v_dashboardIDData = $v_getValue->appGetValueData($v_fieldData, false, false);
+            $v_dashboardID = $v_dashboardIDData['dashboard_id'] ?? null;
+
+            if($v_dashboardID){
+                $query = "SELECT dashboard_count_id,dashboard_id,count_data,count_hora,entrada,saida,total_atual,current,camera_enable_array,created_at,created_by,updated_at,ok FROM %appDBprefix%_dashboard_obcon_count WHERE dashboard_id = '".$v_dashboardID."' AND current = 1 ";
+                $v_countData = $this->dbCon->dbSelect($query);
+
+                //copia dados do atual contador
+                $v_count = $this->getCurrentObconCounter($v_dashboardID);
+
+                if($v_count){
+                    //Existe contagem para hoje?
+                    if($v_count['count_data'] == date('Y-m-d')){
+                        //sim - Atualiza contagem
+                        if($v_sent == 'E'){
+                            $query = "UPDATE %appDBprefix%_dashboard_obcon_count SET entrada = (entrada+1), total_atual = (total_atual+1) WHERE dashboard_count_id = '".$v_count['dashboard_count_id']."' ";
+                        }else{
+                            $query = "UPDATE %appDBprefix%_dashboard_obcon_count SET saida = (saida+1), total_atual = (total_atual-1) WHERE dashboard_count_id = '".$v_count['dashboard_count_id']."' ";
+                        }
+                        $this->dbCon->dbUpdate($query);
+
                     }else{
-                        $query = "UPDATE %appDBprefix%_dashboard_obcon_count SET saida = (saida+1), total_atual = (total_atual-1) WHERE dashboard_count_id = '".$v_count['dashboard_count_id']."' ";
-                    }
-                    $this->dbCon->dbUpdate($query);
+                        //não -  atualiza current 0
+                        $this->falseCurrentObconCounter($v_dashboardID);
 
-                }else{
-                    //não -  atualiza current 0
-                    $query = "UPDATE %appDBprefix%_dashboard_obcon_count SET current = 0 WHERE dashboard_id = '".$v_dashboardID."' ";
-                    $this->dbCon->dbUpdate($query);
-
-                    // cria o novo contador com data de hoje zerado
-                    $querySetCount = "INSERT INTO %appDBprefix%_dashboard_obcon_count (dashboard_id,count_data,count_hora,entrada,saida,total_atual,current,camera_enable_array,created_by) VALUES ";
-                    $querySetCount .= "('" .$v_dashboardID. "','" . date("Y-m-d") . "','" . date("H:i:s") . "',0,0,0,1,'".$v_count['camera_enable_array']."','".$v_count['created_by']."') ";
-                    $resultSetCount =  $this->dbCon->dbInsert($querySetCount);
-                    $v_dashboardCountID = $resultSetCount['rsInsertID'];
-                    // Atualiza contagem
-                    if($v_sent == 'E'){
-                        $query = "UPDATE %appDBprefix%_dashboard_obcon_count SET entrada = (entrada+1), total_atual = (total_atual+1) WHERE dashboard_count_id = '".$v_dashboardCountID."' ";
-                    }else{
-                        $query = "UPDATE %appDBprefix%_dashboard_obcon_count SET saida = (saida+1), total_atual = (total_atual-1) WHERE dashboard_count_id = '".$v_dashboardCountID."' ";
+                        // cria o novo contador com data de hoje zerado
+                        $querySetCount = "INSERT INTO %appDBprefix%_dashboard_obcon_count (dashboard_id,count_data,count_hora,entrada,saida,total_atual,current,camera_enable_array,created_by) VALUES ";
+                        $querySetCount .= "('" .$v_dashboardID. "','" . date("Y-m-d") . "','" . date("H:i:s") . "',0,0,0,1,'".$v_count['camera_enable_array']."','".$v_count['created_by']."') ";
+                        $resultSetCount =  $this->dbCon->dbInsert($querySetCount);
+                        $v_dashboardCountID = $resultSetCount['rsInsertID'];
+                        // Atualiza contagem
+                        if($v_sent == 'E'){
+                            $query = "UPDATE %appDBprefix%_dashboard_obcon_count SET entrada = (entrada+1), total_atual = (total_atual+1) WHERE dashboard_count_id = '".$v_dashboardCountID."' ";
+                        }else{
+                            $query = "UPDATE %appDBprefix%_dashboard_obcon_count SET saida = (saida+1), total_atual = (total_atual-1) WHERE dashboard_count_id = '".$v_dashboardCountID."' ";
+                        }
+                        $this->dbCon->dbUpdate($query);
                     }
-                    $this->dbCon->dbUpdate($query);
+
                 }
-
             }
         }
     }
+
+    public function getCurrentObconCounter($dashboardID){
+        $query = "SELECT dashboard_count_id,dashboard_id,count_data,count_hora,entrada,saida,total_atual,current,camera_enable_array,created_at,created_by,updated_at,ok FROM %appDBprefix%_dashboard_obcon_count WHERE dashboard_id = '".$dashboardID."' AND current = 1 ";
+        $v_countData = $this->dbCon->dbSelect($query);
+
+        if($v_countData['rsTotal'] > 0){
+            $v_return = $v_countData['rsData'][0];
+        }else{
+            $v_return = false;
+        }
+        return $v_return;
+    }
+
+    private function falseCurrentObconCounter($dashboardID){
+        $query = "UPDATE %appDBprefix%_dashboard_obcon_count SET current = 0 WHERE dashboard_id = '".$dashboardID."' ";
+        $this->dbCon->dbUpdate($query);
+    }
+
 }

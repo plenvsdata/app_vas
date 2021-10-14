@@ -7,6 +7,7 @@
  */
 use app\System\Combo\appCombo;
 use app\System\Lists\appDataList;
+use  app\System\API\appDataAPI;
 
 $v_dashboardID = !empty($_REQUEST['dataValue']) ? $_REQUEST['dataValue'] : null;
 $v_comboData = new appCombo();
@@ -14,15 +15,12 @@ $v_comboProfile = $v_comboData->comboSystemAccessProfile('array');
 $v_comboCustomer = $v_comboData->comboCustomer('array');
 $v_data['dashboardID'] = $v_dashboardID;
 
-//$query = "SELECT dashboard_count_id,dashboard_id,count_data,count_hora,entrada,saida,total_atual,current,camera_enable_array,created_at,created_by,updated_at,ok FROM %appDBprefix%_dashboard_obcon_count WHERE dashboard_id = '".$v_dashboardID."' AND current = 1 ";
-//$v_countData = $this->dbCon->dbSelect($query);
-
+$v_checkCounterData = new appDataAPI();
+$v_checkCounter = $v_checkCounterData->appObconCounter($v_data,false,true);
 
 $v_listDashboard = new appDataList();
 $v_dashboardList = $v_listDashboard->appDashboardList($v_data);
 $v_dashboardData = $v_dashboardList['rsData'][0];
-
-//var_dump($v_dashboardData);
 
 $v_sectionIDCheck = true;
 $_dataSectionCheck = 'true';
@@ -77,26 +75,26 @@ if(isset($_SESSION['sectionIDCheck'])){
                 <div class="card-body p-1">
                     <div class="row m-1">
                         <div class="col-md-12 mb-2">
-                            <div class="position-absolute w-100" style="right: 0px!important;"><i class="fa fa-refresh pull-right r-5" aria-hidden="true" style="cursor: pointer!important;"></i></div>
+                            <div class="position-absolute w-100 hide" style="right: 0px!important;"><i class="fa fa-refresh pull-right r-5" aria-hidden="true" style="cursor: pointer!important;"></i></div>
                             <h4><?=$v_dashboardData['dashboard_desc']?></h4>
-                            <h6>Data do Controle: 07/10/2021 - Horário de Início: 00:00:00</h6>
-                        </div>
-                        <div class="col-4 p-1">
-                            <div class="col-12 dashboardPanel shadow" style="border-radius: 10px!important;">
-                                <h6 class="text-black-50">Contagem Atual</h6>
-                                <h2 class="w-100 text-center text-black">3</h2>
-                            </div>
+                            <h6>Data do Controle: <span id="controleData"></span> - Horário de Início: <span id="controleHora"></span></h6>
                         </div>
                         <div class="col-4 p-1">
                             <div class="col-12 dashboardPanel shadow" style="border-radius: 10px!important;">
                                 <h6 class="text-black-50">Entradas</h6>
-                                <h2 class="w-100 text-center text-black">7</h2>
+                                <h2 class="w-100 text-center text-black" id="countEntrada">0</h2>
                             </div>
                         </div>
                         <div class="col-4 p-1">
                             <div class="col-12 dashboardPanel shadow" style="border-radius: 10px!important;">
                                 <h6 class="text-black-50">Saídas</h6>
-                                <h2 class="w-100 text-center text-black">4</h2>
+                                <h2 class="w-100 text-center text-black" id="countSaida">0</h2>
+                            </div>
+                        </div>
+                        <div class="col-4 p-1">
+                            <div class="col-12 dashboardPanel shadow" style="border-radius: 10px!important;">
+                                <h6 class="text-black-50">Contagem Atual</h6>
+                                <h2 class="w-100 text-center text-black" id="countTotal">0</h2>
                             </div>
                         </div>
                     </div>
@@ -564,6 +562,43 @@ if(isset($_SESSION['sectionIDCheck'])){
                 return false;
             }
         });
+
+        function setControleData(){
+            $.ajax({
+                url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appObconCounter",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    method: "GET",
+                    dashboardID: $.docData.dashboardID
+                },
+                success: function (d) {
+                    if (d)
+                    {
+                        $("#controleData").html(d.count_data);
+                        $("#controleHora").html(d.count_hora);
+                        $("#countEntrada").html(d.entrada);
+                        $("#countSaida").html(d.saida);
+                        $("#countTotal").html(d.total_atual);
+                    }
+                    else {
+                        toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
+                    }
+                },
+                error: function () {
+                    toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
+                }
+            });
+        }
+
+        setControleData();
+
+
+        setInterval(function(){
+            setControleData();
+            $.docData.dtTableLastEvent.ajax.reload(v_setTooltip);
+            $.docData.dtTableLastDays.ajax.reload(v_setTooltip);
+        }, 30000);
 
     });
 </script>
