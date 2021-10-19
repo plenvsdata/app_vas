@@ -525,7 +525,7 @@ class appInstallation
             }
             else
             {
-                $query = "SELECT dashboard_count_id,dashboard_id,count_data,count_hora,entrada,saida,total_atual,current,camera_enable_array,created_at,created_by,updated_at,ok FROM %appDBprefix%_dashboard_obcon_count WHERE dashboard_id = '".$v_dashboardID."' AND current = 1 ";
+                $query = "SELECT dashboard_count_id,dashboard_id,count_data,date_format(count_data,'%d/%m/%Y') AS data_br,count_hora,entrada,saida,total_atual,current,camera_enable_array,created_at,created_by,updated_at,ok FROM %appDBprefix%_dashboard_obcon_count WHERE dashboard_id = '".$v_dashboardID."' AND current = 1 ";
                 $v_rs = $this->dbCon->dbSelect($query);
                 if($v_rs['rsTotal'] > 0){
                     $v_return = $v_rs['rsData'][0];

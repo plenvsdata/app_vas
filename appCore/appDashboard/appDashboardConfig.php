@@ -395,12 +395,14 @@ if(isset($_SESSION['sectionIDCheck'])){
             "paging": false,
             "select": true,
             "pageLength": 10,
-            "dom": '<"dtFloatRight dtPageLength"l><"dtFloatRight"f><"dtInfoBeta">rt<"dtCenter"<"dtFloatLeft"><"dtFloatRight"p>>',
+            //"dom": '<"dtFloatRight dtPageLength"l><"dtFloatRight"f><"dtInfoBeta">rt<"dtCenter"<"dtFloatLeft"><"dtFloatRight"p>>',
+            "dom": '<"dtFloatRight"f><"dtInfoBeta">rt',
             "ajax": {
                 "url": "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appListDashboardLastEvent",
                 "xhrFields": { withCredentials: true },
                 "dataSrc": "appDashboardLastEventList",
                 "dataType": "json",
+
                 "type":"POST",
                 "headers":
                     {
@@ -421,13 +423,13 @@ if(isset($_SESSION['sectionIDCheck'])){
                             display: function (data) {
                                  return '<div>'+data.data_br+' '+data.hora+'</div>';
                             }
-                        }, "className":"text-center"
+                        }, "className":"text-center text-monospace"
                 },
                 {
-                    data: "cam", "className":"text-right"
+                    data: "cam", "className":"text-right text-monospace"
                 },
                 {
-                    data: "sent_desc", "className":"text-left"
+                    data: "sent_desc", "className":"text-left text-monospace"
                 }
             ],
             "createdRow": function( row, data, dataIndex ) {
@@ -440,7 +442,7 @@ if(isset($_SESSION['sectionIDCheck'])){
 
         $.docData.dtTableLastDays = $('.appDatatableLastDays').DataTable({
             "autoWidth": false,
-            "paging": false,
+            "paging": true,
             "select": true,
             "pageLength": 10,
             "dom": '<"dtFloatRight dtPageLength"l><"dtFloatRight"f><"dtInfoBeta">rt<"dtCenter"<"dtFloatLeft"><"dtFloatRight"p>>',
@@ -469,11 +471,11 @@ if(isset($_SESSION['sectionIDCheck'])){
                             display: function (data) {
                                 return '<div>'+data.data_br+'</div>';
                             }
-                        }, "className":"text-center"
+                        }, "className":"text-center text-monospace"
                 },
-                { data: "entrada", "className":"text-right"},
-                { data: "saida", "className":"text-right"},
-                { data: "total_atual", "className":"text-right"},
+                { data: "entrada", "className":"text-right text-monospace"},
+                { data: "saida", "className":"text-right text-monospace"},
+                { data: "total_atual", "className":"text-right text-monospace"},
             ],
             "createdRow": function( row, data, dataIndex ) {
             },
@@ -575,24 +577,21 @@ if(isset($_SESSION['sectionIDCheck'])){
                 success: function (d) {
                     if (d)
                     {
-                        $("#controleData").html(d.count_data);
+                        $("#controleData").html(d.data_br);
                         $("#controleHora").html(d.count_hora);
                         $("#countEntrada").html(d.entrada);
                         $("#countSaida").html(d.saida);
                         $("#countTotal").html(d.total_atual);
                     }
-                    else {
-                        toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
-                    }
                 },
                 error: function () {
-                    toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
+                    //toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
+                    console.log('Ocorreu algum erro.');
                 }
             });
         }
 
         setControleData();
-
 
         setInterval(function(){
             setControleData();

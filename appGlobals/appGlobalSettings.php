@@ -23,6 +23,7 @@ $g_locale = $_SESSION['instanceLocale'] ?? 'pt_BR';
 $g_userCurrencyCode = $_SESSION['userCurrencyCode'] ?? 'USD';
 $g_currencySymbol = $_SESSION['instanceCurrencySymbol'] ?? '$';
 $g_localeJS = isset($_SESSION['instanceLocale']) ? str_replace('_','-',$_SESSION['instanceLocale']) : 'en-US';
+date_default_timezone_set('America/Sao_Paulo');
 
 $g_currencyID = $_SESSION['currencyID'] ?? 3;//default BR
 $g_userLocaleCountryID = $_SESSION['userLocaleCountryID'] ?? 3;//default BR

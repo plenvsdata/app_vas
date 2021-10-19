@@ -119,6 +119,7 @@ elseif($v_dataSec == "appListDashboardCamera")
 {
     $v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;
     $v_data = new appDataList();
+    var_dump($v_appData);die();
     $v_appList = $v_data->appDashboardCameraList($v_appData);
     $v_returnData["appDashboardCameraList"] = $v_appList["rsData"];
     echo json_encode($v_returnData);
@@ -157,15 +158,17 @@ elseif($v_dataSec == "appDashboardConfig")
 }
 elseif($v_dataSec == "appListAlarmeViper")
 {
+    $v_appRequest = !empty($_REQUEST) ? $_REQUEST : NULL;
     $v_appData = new appDataList();
-    $v_appViperList = $v_appData->appAlarmeViperList();
+    $v_appViperList = $v_appData->appAlarmeViperList($v_appRequest);
     $v_returnData["appViperList"] = $v_appViperList["rsData"];
     echo json_encode($v_returnData);
 }
 elseif($v_dataSec == "appListAlarmeObcon")
 {
+    $v_appRequest = !empty($_REQUEST) ? $_REQUEST : NULL;
     $v_appData = new appDataList();
-    $v_appObconList = $v_appData->appAlarmeObconList();
+    $v_appObconList = $v_appData->appAlarmeObconList($v_appRequest);
     $v_returnData["appObconList"] = $v_appObconList["rsData"];
     echo json_encode($v_returnData);
 }

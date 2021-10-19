@@ -14,6 +14,11 @@ if(isset($_SESSION['sectionIDCheck'])){
         $_SESSION['sectionIDCheck'] = true;
     }
 }
+
+$v_dateEnd = date('Y-m-d');
+$v_timestamp1 = strtotime($v_dateEnd);
+$v_timestamp2 = strtotime('-7 day', $v_timestamp1);
+$v_dateStart = date('Y-m-d',$v_timestamp2);
 ?>
 
 <script src='https://api.mapbox.com/mapbox-gl-js/v0.47.0/mapbox-gl.js'></script>
@@ -123,7 +128,14 @@ if(isset($_SESSION['sectionIDCheck'])){
         <div class="col-12">
             <div class="card" id="mainCard">
                 <div class="card-body">
-                    <!-- Nav tabs -->
+                    <div>
+                        <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; width: 230px; border: 1px solid #ccc;white-space: nowrap!important;">
+                            <input type="hidden" name="dateStart" id="dateStart" value="<?=$v_dateStart?>">
+                            <input type="hidden" name="dateEnd" id="dateEnd" value="<?=$v_dateEnd?>">
+                            <i class="fa fa-calendar"></i>&nbsp;
+                            <span></span> <i class="fa fa-caret-down"></i>
+                        </div>
+                    </div>
                     <div class="table-responsive">
                         <table id="appDatatable" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                             <thead>
@@ -189,11 +201,17 @@ if(isset($_SESSION['sectionIDCheck'])){
         customerDtTable : null,
         countryChangeState : false,
         stateChangeState : false,
-        dataSectionCheck : <?=$_dataSectionCheck?>
+        dataSectionCheck : <?=$_dataSectionCheck?>,
+        dataStart: '<?=$v_dateStart?>',
+        dataEnd: '<?=$v_dateEnd?>'
     };
 
     function showMap() {
         $('.mapDiv').fadeOut(500);
+    }
+
+    function cb(start, end) {
+        $('#reportrange span').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
     }
 
     $(document).ready(function() {
@@ -221,7 +239,10 @@ if(isset($_SESSION['sectionIDCheck'])){
                             {
                                 "appDatatable":true
                             },
-                        "data": function(d){ }
+                        "data": function(d){
+                            d.dataStart = $.docData.dataStart,
+                            d.dataEnd = $.docData.dataEnd
+                        }
                     },
                 "buttons":
                     [
@@ -298,12 +319,76 @@ if(isset($_SESSION['sectionIDCheck'])){
             });
         });
 
-
         $('.filterPage').on( 'click',function () {
             $('#filterDiv').collapse('toggle');
             $('#appDatatableFoot').collapse('toggle');
             $('#trFilters').collapse('toggle');
         });
+
+        $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
+            $('#dateStart').val(picker.startDate.format('YYYY-MM-DD'));
+            $('#dateEnd').val(picker.endDate.format('YYYY-MM-DD'));
+            $.docData.dataStart = $('#dateStart').val();
+            $.docData.dataEnd = $('#dateEnd').val();
+            $.docData.dtTable.ajax.reload(v_setTooltip);
+        });
+
+        $('#reportrange').on('show.daterangepicker', function(ev, picker) {
+            //var v_rangePosition = parseInt($.reportData.dateRangePosition.top) + parseInt($.reportData.dateRangeHeight)-2;
+            //console.log($.this.dateRangePosition.top);
+            //$('.daterangepicker').css('top',v_rangePosition+'px');
+        });
+
+        let start = moment('<?=$v_dateStart?>');
+        let end = moment();
+
+        $('#reportrange').daterangepicker({
+            "locale": {
+                "format": "DD/MM/YYYY",
+                "separator": " - ",
+                "applyLabel": "Aplicar",
+                "cancelLabel": "Cancelar",
+                "customRangeLabel": "Período",
+                "daysOfWeek": [
+                    "D",
+                    "S",
+                    "T",
+                    "Q",
+                    "Q",
+                    "S",
+                    "S"
+                ],
+                "monthNames": [
+                    "Janeiro",
+                    "Fevereiro",
+                    "Março",
+                    "Abril",
+                    "Maio",
+                    "Junho",
+                    "Julho",
+                    "Agosto",
+                    "Setembro",
+                    "Outubro",
+                    "Novembro",
+                    "Dezembro"
+                ],
+                "firstDay": 1
+            },
+            cancelClass: "btn-danger",
+            startDate: start,
+            endDate: end,
+            minDate:"01-10-2021",
+            maxDate: moment(),
+            ranges: {
+                'Hoje': [moment(), moment()],
+                'Ontem': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Últimos 7 Dias': [moment().subtract(6, 'days'), moment()],
+                'Últimos 30 Dias': [moment().subtract(29, 'days'), moment()],
+                'Este Mês': [moment().startOf('month'), moment().endOf('month')],
+                'Último Mês': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            }
+        }, cb);
+        cb(start, end);
     });
 </script>
 
