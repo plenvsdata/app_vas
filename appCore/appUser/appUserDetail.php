@@ -174,7 +174,7 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
         </div>
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/Welcome">Home</a></li>
+                <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/MeuPerfil">Home</a></li>
                 <li class="breadcrumb-item">Configurações</li>
                 <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/System/Users">Usuários</a></li>
                 <li class="breadcrumb-item active">Detalhes do Usuário</li>
@@ -241,7 +241,7 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
                         <div class="tab-pane active" id="profile" role="tabpanel">
                             <div class="card-body">
                                 <div class="row m-t-30">
-                                    <div class="col-md-3 col-xs-12 b-r">
+                                    <div class="col-md-6 col-xs-12 b-r">
                                         <strong class="userNameTitle">Nome completo
                                             <small>
                                                 <i class="fa fa-pencil iconColor editUserNameTitle" data-title_id="<?=$v_userInfo['user_id']?>" aria-hidden="true"></i>
@@ -250,7 +250,7 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
                                         <br>
                                         <p class="text-muted userNameData"><?=$v_userInfo['user_name']?></p>
                                     </div>
-                                    <div class="col-md-3 col-xs-12 b-r">
+                                    <div class="col-md-6 col-xs-12 b-r">
                                         <strong class="nicknameTitle">Conhecido por
                                             <small>
                                                 <i class="fa fa-pencil iconColor editNicknameTitle" data-title_id="<?=$v_userInfo['user_id']?>" aria-hidden="true"></i>
@@ -658,7 +658,7 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
 
                             if(v_newPwd != v_rePwd)
                             {
-                                toastr["warning"]("A Nova Senha and Confirme a Senha devem ser iguais.", "Atenção!");
+                                toastr["warning"]("A Nova Senha e Confirme a Senha devem ser iguais.", "Atenção!");
                                 $(".newPwdDiv").addClass('has-danger');
                                 v_erroNewPwd = true;
                             }else if(!v_newPwd.match(lowerCaseLetters) || !v_newPwd.match(upperCaseLetters) || !v_newPwd.match(numbers) || !v_newPwd.match(specialChars) || v_newPwd.length<8){

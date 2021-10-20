@@ -153,7 +153,7 @@ if(!empty($v_userInfo['user_avatar']) && ($v_userInfo['user_avatar']!='default_a
                 <? if($_SESSION['firstAccess']==1){?>
                     <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/MeuPerfil">Meu Perfil</a></li>
                 <? }else{?>
-                    <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/Welcome">Home</a></li>
+                    <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/MeuPerfil">Home</a></li>
                     <li class="breadcrumb-item active">Meu Perfil</li>
                 <?}?>
 

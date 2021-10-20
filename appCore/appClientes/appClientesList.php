@@ -104,7 +104,7 @@ if(isset($_SESSION['sectionIDCheck'])){
     </div>
     <div class="col-md-7 align-self-center">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/Welcome">Home</a></li>
+            <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/MeuPerfil">Home</a></li>
             <li class="breadcrumb-item">CRM</li>
             <li class="breadcrumb-item active"><?=$v_appCrmPage?></li>
         </ol>
@@ -127,7 +127,7 @@ if(isset($_SESSION['sectionIDCheck'])){
                                 <th>Telefone</th>
                                 <th>Email</th>
                                 <th>CNPJ</th>
-                                <th class="text-center org-col-50">Action</th>
+                                <th class="text-center org-col-50">Ação</th>
                             </tr>
                             </thead>
                             <tbody class="text-center"></tbody>
@@ -190,6 +190,20 @@ if(isset($_SESSION['sectionIDCheck'])){
                                 <span id="customerCnpjHelp" class="help-block">Min 3 characters</span>
                             </div>
                         </div>
+                        <div class="divToken col-md-6">
+                                <div class="form-group">
+                                    <label for="tokenIn" class="control-label">Token In:</label>
+                                    <input type="text" id="customerTokenIn" value="" class="form-control" disabled>
+                                </div>
+                            </div>
+                        <div class="divToken col-md-6">
+                                <div class="form-group">
+                                    <label for="tokenOut" class="control-label">Token Out:</label>
+                                    <input type="text" id="customerTokenOut"  value="" class="form-control" disabled>
+                                </div>
+                            </div>
+
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-sm btn-danger waves-effect" data-dismiss="modal">Cancelar</button>
@@ -376,7 +390,7 @@ if(isset($_SESSION['sectionIDCheck'])){
                                         let v_options = '';
 
                                         v_options = "<div style='display: inline-flex;' class='flex-item'>"+
-                                            "<i class=\"fa fa-border fa-pencil appCustomerEdit\" style='cursor: pointer;' data-customer_id='"+data.customer_id+"' data-customer_nome_fantasia='"+data.customer_nome_fantasia+"' data-customer_razao_social='"+data.customer_razao_social+"' data-customer_email='"+data.customer_email+"' data-customer_phone='"+data.customer_phone+"' data-customer_cnpj='"+data.customer_cnpj+"'></i>"+
+                                            "<i class=\"fa fa-border fa-pencil appCustomerEdit\" style='cursor: pointer;' data-customer_id='"+data.customer_id+"' data-customer_nome_fantasia='"+data.customer_nome_fantasia+"' data-customer_razao_social='"+data.customer_razao_social+"' data-customer_token_in='"+data.customer_token_in+"' data-customer_token_out='"+data.customer_token_out+"' data-customer_email='"+data.customer_email+"' data-customer_phone='"+data.customer_phone+"' data-customer_cnpj='"+data.customer_cnpj+"'></i>"+
                                             "</div>";
 
 
@@ -509,19 +523,25 @@ if(isset($_SESSION['sectionIDCheck'])){
             let v_customerEmail = $(this).attr("data-customer_email");
             let v_customerPhone = $(this).attr("data-customer_phone");
             let v_customerCnpj = $(this).attr("data-customer_cnpj");
+            let v_customerTokenIn = $(this).attr("data-customer_token_in");
+            let v_customerTokenOut = $(this).attr("data-customer_token_out");
             $("#customerID").val(v_customerID);
             $("#customerNomeFantasia").val(v_customerFantasia);
             $("#customerRazaoSocial").val(v_customerRazao);
             $("#customerEmail").val(v_customerEmail);
             $("#customerPhone").val(v_customerPhone);
             $("#customerCnpj").val(v_customerCnpj);
+            $("#customerTokenIn").val(v_customerTokenIn);
+            $("#customerTokenOut").val(v_customerTokenOut);
             $("#txtLabel").text('Editar');
+            $('.divToken').show();
             $("#newCustomerModal").modal('show');
         });
     });
 
     function cleanCustomer(){
         $('#addNewCustomer').trigger("reset");
+        $('.divToken').hide();
     }
 </script>
 

@@ -82,7 +82,7 @@ $v_localeJS = str_replace('_','-',$_SESSION['userLocale']);
     </div>
     <div class="col-md-7 align-self-center">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/Welcome">Home</a></li>
+            <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/MeuPerfil">Home</a></li>
             <li class="breadcrumb-item">System Settings</li>
             <li class="breadcrumb-item active"><?=$v_appCrmPage?></li>
         </ol>

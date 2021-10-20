@@ -22,7 +22,6 @@ if(isset($_SESSION['sectionIDCheck'])){
         $_SESSION['sectionIDCheck'] = true;
     }
 }
-
 ?>
 <style>
     .flex-item
@@ -48,13 +47,13 @@ if(isset($_SESSION['sectionIDCheck'])){
 </style>
 <div class="row page-titles basicContent">
     <div class="col-md-5 align-self-center">
-        <h3 class="text-themecolor"><?=$v_appCrmPage?></h3>
+        <h3 class="text-themecolor">Usuários</h3>
     </div>
     <div class="col-md-7 align-self-center">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/Welcome">Home</a></li>
+            <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/MeuPerfil">Home</a></li>
             <li class="breadcrumb-item">Configurações</li>
-            <li class="breadcrumb-item active"><?=$v_appCrmPage?></li>
+            <li class="breadcrumb-item active">Usuários</li>
         </ol>
     </div>
 </div>
@@ -71,12 +70,11 @@ if(isset($_SESSION['sectionIDCheck'])){
                         <table id="appDatatable" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                             <thead>
                             <tr>
-                                <th>User</th>
+                                <th>Usuário</th>
                                 <th>Email</th>
-                                <th>Phone</th>
+                                <th>Telefone</th>
                                 <th>Cliente</th>
-                                <th>Status</th>
-                                <th>Action</th>
+                                <th>Ação</th>
                             </tr>
                             </thead>
                             <tbody style="text-align: center!important;"></tbody>
@@ -103,28 +101,43 @@ if(isset($_SESSION['sectionIDCheck'])){
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-5">
+                    <div class="col-md-6">
                         <div class="form-group has-feedback divUserName">
                             <label for="userName" class="control-label">Nome completo:</label>
                             <input type="text" class="form-control userName" id="userName" name="userName" aria-describedby="userNameHelp">
                             <span id="userNameHelp" class="help-block text-danger">Min 3 characters</span>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-6">
                         <div class="form-group has-feedback divUserNickname">
                             <label for="userNickname" class="control-label">Conhecido por:</label>
                             <input type="text" class="form-control userNickname" id="userNickname" name="userNickname" aria-describedby="userNicknameHelp">
                             <span id="userNicknameHelp" class="help-block text-danger">Min 3 caracteres</span>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
                         <div class="form-group has-feedback divUserEmail">
                             <label for="userEmail" class="control-label">Email:</label>
                             <input type="text" class="form-control userEmail" required id="userEmail" name="userEmail" aria-describedby="userEmailHelp">
                             <span id="userEmailHelp" class="help-block text-danger">Min 3 caracteres</span>
                         </div>
                     </div>
-
+                    <div class="col-md-3">
+                        <div class="form-group has-feedback divNewPwd">
+                            <label for="newPwd" class="control-label">Senha:</label>
+                            <input type="password" class="form-control newPwd" id="newPwd" name="newPwd" aria-describedby="newPwdHelp">
+                            <span id="newPwdHelp" class="help-block text-danger">Min 3 characters</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group has-feedback divRePwd">
+                            <label for="rePwd" class="control-label">Confirme a Senha:</label>
+                            <input type="password" class="form-control rePwd" id="rePwd" name="rePwd" aria-describedby="rePwdHelp">
+                            <span id="rePwdHelp" class="help-block text-danger">Min 3 characters</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-3">
@@ -176,7 +189,8 @@ if(isset($_SESSION['sectionIDCheck'])){
         $.docData = {
             dtTable : null,
             profileList : '',
-            dataSectionCheck : <?=$_dataSectionCheck?>
+            dataSectionCheck : <?=$_dataSectionCheck?>,
+            currentUserID : '<?=$_SESSION['userID']?>'
         };
 
         if($.docData.dataSectionCheck === false){
@@ -295,40 +309,18 @@ if(isset($_SESSION['sectionIDCheck'])){
                         },
                         { data:
                                 {
-                                    sort: "user_status",
                                     _: function (data)
                                     {
-                                        if(data.user_status === "1"){
-                                            return "<button type='button' data-user_id='"+data.user_id+"' data-user_status='2' class='btn waves-effect waves-light btn-xs btn-"+data.status_class+" appUserStatus' style='width:100%!important;'>"+data.status_desc+"</button>";
-                                        }else if (data.user_status === "2") {
-                                            return "<button type='button' data-user_id='"+data.user_id+"' data-user_status='1' class='btn waves-effect waves-light btn-xs btn-"+data.status_class+" appUserStatus' style='width:100%!important;'>"+data.status_desc+"</button>";
-                                        }
-                                        else if(data.user_status === "3"){
-                                            return "<button type='button' data-user_id='"+data.user_id+"'  class='btn waves-effect waves-light btn-xs btn-"+data.status_class+" appUserInvite' style='width:100%!important;'>"+data.status_desc+"</button>";
-                                        }
-                                        else if(data.user_status === "4"){
-                                            return "<button type='button' data-user_id='"+data.user_id+"'  class='btn waves-effect waves-light btn-xs btn-"+data.status_class+" appUserInvite' style='width:100%!important;'>"+data.status_desc+"</button>";
-                                        }else if(data.user_status === "6"){
-                                            return "<button type='button' data-user_id='"+data.user_id+"'  class='btn waves-effect waves-light btn-xs btn-"+data.status_class+" appUserConfig'  style='width:100%!important;'>"+data.status_desc+"</button>";
-                                        }else{
-                                            return "<button type='button' data-user_id='"+data.user_id+"'  class='btn waves-effect waves-light btn-xs btn-"+data.status_class+" ' style='width:100%!important;'>"+data.status_desc+"</button>";
-                                        }
-                                    }
-                                },
-                            "className":"text-center" },
-                        { data:
-                                {
-                                    _: function (data)
-                                    {
-                                        if(data.owner==1)
+                                        let v_options;
+                                        if(data.owner==1 || $.docData.currentUserID == data.user_id)
                                         {
-                                            var v_options = "<div style='width:100%!important; display: inline-flex;' class='flex-item'>"+
-                                                "<i class=\"fa fa-border fa-star\" style='cursor: pointer;' data-user_id='"+data.user_id+"' data-user_name='"+data.user_name+"' data-toggle='tooltip' data-placement='top'  data-original-title='"+data.user_name+"'></i>"+
+                                            v_options = "<div style='width:100%!important; display: inline-flex;' class='flex-item'>"+
+                                                "<i class=\"fa fa-border fa-star\" data-user_id='"+data.user_id+"' data-user_name='"+data.user_name+"' data-toggle='tooltip' data-placement='top'  data-original-title='"+data.user_name+"'></i>"+
                                                 "</div>";
                                         }else
                                         {
-                                            var v_options = "<div style='width:100%!important; display: inline-flex;' class='flex-item'>"+
-                                                "<i class=\"fa fa-border fa-trash appUserDel\" style='cursor: pointer;' data-user_status_del='"+data.user_status+"' data-user_id='"+data.user_id+"' data-user_name='"+data.user_name+"'></i>"+
+                                             v_options = "<div style='width:100%!important; display: inline-flex;' class='flex-item'>"+
+                                                "<i class=\"fa fa-border fa-trash appUserDel\" style='cursor: pointer;' data-user_id='"+data.user_id+"' data-user_name='"+data.user_name+"'></i>"+
                                                 "</div>";
                                         }
 
@@ -398,119 +390,33 @@ if(isset($_SESSION['sectionIDCheck'])){
         });
 
         $.docData.dtTable.on("click",".appUserDel",function() {
-            var v_userID = $(this).attr("data-user_id");
-            var v_userName = $(this).attr("data-user_name");
-            var v_userStatus = $(this).attr("data-user_status_del");
+            let v_userID = $(this).attr("data-user_id");
+            let v_userName = $(this).attr("data-user_name");
 
-            $.ajax({
-                url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appComboOwner",
-                type: "POST",
-                dataType: "json",
-                data:
-                    {
-                        userID: v_userID,
+            bootbox.confirm({
+                message: "Tem certeza que deseja excluir este Usuário?<br/><h3 class='text-center'>"+v_userName+"</h3>",
+                buttons: {
+                    confirm: {
+                        label: 'Sim',
+                        className: 'btn btn-success btn-sm'
                     },
-                success: function(e)
-                {
-                    $.ajax({
-                        url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appOpportunity",
-                        type: "POST",
-                        dataType: "json",
-                        data:
-                            {
-                                method: "OWNER",
-                                ownerID: v_userID
-                            },
-                        success: function(d)
-                        {
-                            if(d === true)
-                            {
-
-                                bootbox.prompt({
-                                    title: "Are you sure you want to delete this user:<br/><h3 class='text-center'>"+v_userName+"</h3><div style='color: #ef5350;' class='text-center'>Please identify to whom shall we merge all information attributed to:</div>",
-                                    inputType: 'select',
-                                    inputOptions: e,
-                                    className:'teste_class',
-                                    buttons: {
-                                        confirm: {
-                                            label: 'Yes',
-                                            className: 'btn btn-success btn-sm'
-                                        },
-                                        cancel: {
-                                            label: 'No',
-                                            className: 'btn btn-danger btn-sm'
-                                        }
-                                    },
-                                    callback: function (result) {
-                                        if(result){
-                                            $.ajax({
-                                                url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appOpportunity",
-                                                type: "POST",
-                                                dataType: "json",
-                                                data:
-                                                    {
-                                                        method: "OWNER_TRANSFER",
-                                                        ownerIDCurrent: v_userID,
-                                                        ownerIDNew: result
-                                                    },
-                                                success: function(d)
-                                                {
-                                                    console.log(d.status);
-                                                    if(d.status === true){
-                                                        console.log('transfer ok');
-                                                        delUser(v_userID,v_userStatus,v_userName);
-                                                    }else{
-                                                        toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                                                    }
-
-
-                                                },
-                                                error:function ()
-                                                {
-                                                    toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                                                }
-                                            });
-
-                                        }
-
-                                    }
-                                });
-
-                            }
-                            else
-                            {
-                                bootbox.confirm({
-                                    message: "Are you sure you want to delete this user:<br/><h3 class='text-center'>"+v_userName+"</h3>",
-                                    buttons: {
-                                        confirm: {
-                                            label: 'Yes',
-                                            className: 'btn btn-success btn-sm'
-                                        },
-                                        cancel: {
-                                            label: 'No',
-                                            className: 'btn btn-danger btn-sm'
-                                        }
-                                    },
-                                    callback: function (result) {
-                                        if(result===true)
-                                        {
-                                            delUser(v_userID,v_userStatus,v_userName);
-                                        }
-                                    }
-                                });
-                            }
-                        },
-                        error:function ()
-                        {
-                            toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
-                        }
-                    });
+                    cancel: {
+                        label: 'Não',
+                        className: 'btn btn-danger btn-sm'
+                    }
+                },
+                callback: function (result) {
+                    if(result===true)
+                    {
+                        delUser(v_userID,v_userName);
+                    }
                 }
             });
 
+
         });
 
-        function delUser(userID,userStatus,userName){
+        function delUser(userID,userName){
 
             $.ajax({
                 url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appUserAccess",
@@ -518,28 +424,25 @@ if(isset($_SESSION['sectionIDCheck'])){
                 dataType: "json",
                 data:
                     {
-                        appFormData:{
                             method: "DELETE",
-                            userID: userID,
-                            userStatus: userStatus
-                        }
+                            userID: userID
 
                     },
                 success: function(d)
                 {
                     if(d.status === true)
                     {
-                        toastr["success"]("User "+userName+" deleted.", "Success");
+                        toastr["success"]("Usuário "+userName+" excluído.", "Success");
                         $.docData.dtTable.ajax.reload();
                     }
                     else
                     {
-                        toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
+                        toastr["error"]("Ocorreu um erro. Tente novamente.", "Erro!");
                     }
                 },
                 error:function ()
                 {
-                    toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
+                    toastr["error"]("Ocorreu um erro. Tente novamente.", "Erro!");
                 }
             });
 
@@ -623,6 +526,15 @@ if(isset($_SESSION['sectionIDCheck'])){
             let v_userPhone = $("#userPhone").val();
             let v_profileID = parseInt($(".profileID option:selected").val());
             let v_customerID = parseInt($(".customerID option:selected").val());
+            let v_newPwd = $("#newPwd").val();
+            let v_rePwd = $("#rePwd").val();
+            // Validate PWD
+            let lowerCaseLetters = /[a-z]/g;
+            let upperCaseLetters = /[A-Z]/g;
+            let numbers = /[0-9]/g;
+            let specialChars = /[!@#$%&*?]/g;
+
+
             let v_erro = '';
 
             if(v_userName.length<5){
@@ -633,6 +545,12 @@ if(isset($_SESSION['sectionIDCheck'])){
             }
             if(v_userPhone.length<14){
                 v_erro+='-Telefone deve ter min. 14 caracteres.<br>';
+            }
+            if(v_newPwd != v_rePwd)
+            {
+                v_erro+='A Senha e Confirme a Senha devem ser iguais.<br>';
+            }else if(!v_newPwd.match(lowerCaseLetters) || !v_newPwd.match(upperCaseLetters) || !v_newPwd.match(numbers) || !v_newPwd.match(specialChars) || v_newPwd.length<8) {
+                v_erro+='A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número, um char. especial e 8 ou mais caracteres.<br>';
             }
 
             if(v_erro != ''){
@@ -651,7 +569,8 @@ if(isset($_SESSION['sectionIDCheck'])){
                             userPhone: v_userPhone,
                             userEmail: v_userEmail,
                             profileID: v_profileID,
-                            customerID: v_customerID
+                            customerID: v_customerID,
+                            userPwd:v_newPwd
                         },
                     success: function(d)
                     {
@@ -680,6 +599,21 @@ if(isset($_SESSION['sectionIDCheck'])){
                 $('#divCustomer').show();
             }else{
                 $('#divCustomer').hide();
+            }
+        });
+
+        $(document).on('keypress',"#newPwd",function(e)
+        {
+            let v_key = e.keyCode;
+            if (v_key === 32){
+                e.preventDefault();
+            }
+        });
+        $(document).on('keypress',"#rePwd",function(e)
+        {
+            let v_key = e.keyCode;
+            if (v_key === 32){
+                e.preventDefault();
             }
         });
 

@@ -28,7 +28,7 @@ $v_userMainPage = ($_REQUEST['pageData']!="Default") ? $_REQUEST['pageData'] : "
 
 if(!file_exists($v_userMainPage.".php"))
 {
-    $v_url = $GLOBALS['g_appRoot'].'/Welcome';
+    $v_url = $GLOBALS['g_appRoot'].'/MeuPerfil';
     $v_redirect  = '<script type="text/javascript">';
     $v_redirect .= 'window.location = "' . $vURL . '"';
     $v_redirect .= '</script>';

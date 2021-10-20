@@ -52,7 +52,7 @@ if(isset($_SESSION['sectionIDCheck'])){
     </div>
     <div class="col-md-7 align-self-center">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/Welcome">Home</a></li>
+            <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/MeuPerfil">Home</a></li>
             <li class="breadcrumb-item">Obcon</li>
             <li class="breadcrumb-item active">Dashboard</li>
         </ol>
@@ -75,7 +75,7 @@ if(isset($_SESSION['sectionIDCheck'])){
                                 <th>Cliente</th>
                                 <th>Ninst</th>
                                 <th>Instalação</th>
-                                <th class="text-center org-col-50">Action</th>
+                                <th class="text-center org-col-50">Ação</th>
                             </tr>
                             </thead>
                             <tbody style="text-align: center!important;"></tbody>
@@ -85,7 +85,7 @@ if(isset($_SESSION['sectionIDCheck'])){
                                 <th>Cliente</th>
                                 <th>Ninst</th>
                                 <th>Instalação</th>
-                                <th hidden>Action</th>
+                                <th hidden>Ação</th>
                             </tr>
                             </tfoot>
                         </table>
@@ -247,10 +247,8 @@ if(isset($_SESSION['sectionIDCheck'])){
         // Apply the search
         $.docData.dtTable.columns().every( function () {
             let that = this;
-            console.log(that);
             $( 'input', this.footer() ).on( 'keyup change', function ()
             {
-                console.log(that.search()+'-vs-'+this.value);
                 if ( that.search() !== this.value )
                 {
                     that.search( this.value ).draw();

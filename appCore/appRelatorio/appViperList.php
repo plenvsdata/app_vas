@@ -115,7 +115,7 @@ $v_dateStart = date('Y-m-d',$v_timestamp2);
     </div>
     <div class="col-md-7 align-self-center">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/Welcome">Home</a></li>
+            <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/MeuPerfil">Home</a></li>
             <li class="breadcrumb-item">Relatório</li>
             <li class="breadcrumb-item active"><?=$v_appCrmPage?></li>
         </ol>
@@ -311,10 +311,9 @@ $v_dateStart = date('Y-m-d',$v_timestamp2);
             let that = this;
             $( 'input', this.footer() ).on( 'keyup change', function ()
             {
-                //console.log(that.search()+'-vs-'+this.value);
                 if ( that.search() !== this.value )
                 {
-                    that.search( this.value ).draw();
+                    that.search( this.value ? '^'+this.value+'$' : '', true, false ).draw();
                 }
             });
         });

@@ -119,7 +119,6 @@ elseif($v_dataSec == "appListDashboardCamera")
 {
     $v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;
     $v_data = new appDataList();
-    var_dump($v_appData);die();
     $v_appList = $v_data->appDashboardCameraList($v_appData);
     $v_returnData["appDashboardCameraList"] = $v_appList["rsData"];
     echo json_encode($v_returnData);

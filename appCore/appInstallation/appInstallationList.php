@@ -52,7 +52,7 @@ if(isset($_SESSION['sectionIDCheck'])){
     </div>
     <div class="col-md-7 align-self-center">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/Welcome">Home</a></li>
+            <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/MeuPerfil">Home</a></li>
             <li class="breadcrumb-item">Configurações</li>
             <li class="breadcrumb-item active">Instalações Obcon</li>
         </ol>
@@ -73,7 +73,7 @@ if(isset($_SESSION['sectionIDCheck'])){
                                 <th class="text-center" style="width: 100px!important;">Ninst</th>
                                 <th>Cliente</th>
                                 <th>Descrição</th>
-                                <th class="text-center org-col-50">Action</th>
+                                <th class="text-center org-col-50">Ação</th>
                             </tr>
                             </thead>
                             <tbody style="text-align: center!important;"></tbody>
@@ -82,7 +82,7 @@ if(isset($_SESSION['sectionIDCheck'])){
                                 <th>Ninst</th>
                                 <th>Cliente</th>
                                 <th>Descrição</th>
-                                <th hidden>Action</th>
+                                <th hidden>Ação</th>
                             </tr>
                             </tfoot>
                         </table>

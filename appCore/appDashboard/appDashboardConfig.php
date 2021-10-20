@@ -59,7 +59,7 @@ if(isset($_SESSION['sectionIDCheck'])){
     </div>
     <div class="col-md-7 align-self-center">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/Welcome">Home</a></li>
+            <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/MeuPerfil">Home</a></li>
             <li class="breadcrumb-item">Obcon</li>
             <li class="breadcrumb-item active">Dashboard</li>
         </ol>
@@ -360,7 +360,6 @@ if(isset($_SESSION['sectionIDCheck'])){
                         {
 
                             display: function (data) {
-                                console.log('resposta='+data.dashboard_id+' - '+$.docData.dashboardID);
                                 if(data.dashboard_id == $.docData.dashboardID){
                                     return '<div class="appCamCheck camCheck text-success fa fa-check-square fa-lg" style="cursor: pointer;"></div>';
                                 }else{
