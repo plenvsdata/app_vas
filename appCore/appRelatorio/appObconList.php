@@ -190,14 +190,12 @@ $v_dateStart = date('Y-m-d',$v_timestamp2);
         dataEnd: '<?=$v_dateEnd?>',
     };
 
+
     $(document).ready(function() {
 
-        // Setup - add a text input to each footer cell
-        $('#appDatatable tfoot th').each( function () {
-            //var title = $(this).text();
-            $(this).html( '<input type="text" placeholder="Fitro" />' );
-        });
-
+        /*$.extend($.fn.dataTable.defaults, {
+            language: { url: "https://cdn.datatables.net/plug-ins/1.10.20/i18n/Portuguese-Brasil.json" }
+        });*/
         $.docData.dtTable = $('#appDatatable').DataTable(
             {
                 "autoWidth": false,
@@ -275,6 +273,12 @@ $v_dateStart = date('Y-m-d',$v_timestamp2);
                     ]
             }
         );
+
+        // Setup - add a text input to each footer cell
+        $('#appDatatable tfoot th').each( function () {
+            //var title = $(this).text();
+            $(this).html( '<input type="text" placeholder="Fitro" />' );
+        });
 
         // Apply the search
         $.docData.dtTable.columns().every( function () {

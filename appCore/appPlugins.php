@@ -76,16 +76,6 @@
         $('[data-toggle="tooltip"]').tooltip();
     };
     $.globalData = {
-        /*
-        locale : '<?=$g_user_locale?>',
-        moment : '<?=$g_user_moment?>',
-        localeJS : '<?=$g_user_localeJS?>',
-        currencyID : '<?=$g_currencyID?>',
-        userLocaleCountryID : '<?=$g_userLocaleCountryID?>',
-        instanceLocaleJS: '<?=$g_localeJS?>',
-        userCurrencyCodeJS: '<?=$g_userCurrencyCode?>',
-        userCurrencySymbolJS: '<?=$g_currencySymbol?>',
-        */
         loadScript : function(url,callback) {
             console.log(url);
             console.log(callback);
@@ -96,30 +86,7 @@
                         eval(callback+';');
                     }
                 });
-        },/*
-        userLocaleCountryID: '<?=isset($_SESSION['userLocaleCountryID']) ? $_SESSION['userLocaleCountryID'] : '2'?>',
-        userCountryID: '<?=isset($_SESSION['geoInfo']['country_id']) ? $_SESSION['geoInfo']['country_id'] : '1'?>',
-        userStateID: '<?=isset($_SESSION['geoInfo']['state_id']) ? $_SESSION['geoInfo']['state_id'] : '1'?>',
-        userCityID: '<?=isset($_SESSION['geoInfo']['city_id']) ? $_SESSION['geoInfo']['city_id'] : '1'?>',
-        userGeoInfo: <?=isset($_SESSION['geoInfo']) ? json_encode($_SESSION['geoInfo']) : 'null'?>,
-        instanceFirsAccess: <? if(isset($_SESSION['instanceFirstAccess']) && $_SESSION['instanceFirstAccess'] == true){ ?>true<? }else{ ?>false<? } ?>,
-        userWelcomeScreen: <? if(isset($_SESSION['userWelcomeScreen']) && $_SESSION['userWelcomeScreen'] == true){ ?>true<? }else{ ?>false<? } ?>,
-        userHomePosition: <?=isset($_SESSION['userHomePosition']) ? json_encode($_SESSION['userHomePosition']) : 'null'?>,
-        userCurrentPosition: null,
-        getUserLocation: function(){ // Atualiza userCurrentPosition
-
-
-            if (navigator.geolocation) {
-               navigator.geolocation.getCurrentPosition(showPosition);
-            } else {
-                let v_teste = "Geolocation is not supported by this browser.";
-            }
-
-            function showPosition(position) {
-                //console.log('show position:',position.coords.latitude+' - '+position.coords.longitude);
-                $.globalData.userCurrentPosition = [position.coords.latitude,position.coords.longitude];
-            }
-        },*/
+        },
         checkActivity: function(){
 
             $.ajax({

@@ -24,6 +24,8 @@ require_once "appCombo.php";
 require_once "appDataList.php";
 require_once "appCustomer.php";
 require_once "appInstallation.php";
+require_once "appReport.php";
+require_once "appChart.php";
 /*
 require_once "appDBErrorCodes.php";
 
@@ -53,7 +55,7 @@ require_once "appUpdateValue.php";
 require_once "appWebsite.php";
 require_once "appPrice.php";
 require_once "appChart.php";
-require_once "appReport.php";
+
 require_once "appClientSignUp.php";
 require_once "appDataImport.php";
 

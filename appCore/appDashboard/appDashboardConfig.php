@@ -116,68 +116,6 @@ if(isset($_SESSION['sectionIDCheck'])){
                                     </table>
                                 </div>
                             </div>
-                            <!--
-                            <h6>Últimos 10 Eventos</h6>
-                            <table class="table table-striped w-100">
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th>Data e Hora</th>
-                                        <th>Câmera</th>
-                                        <th>Evento</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>2021-10-07 - 08:48:48</td>
-                                        <td>Câmera 3</td>
-                                        <td>Entrada</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2021-10-07 - 07:11:49</td>
-                                        <td>Câmera 2</td>
-                                        <td>Entrada</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2021-10-07 - 06:27:09</td>
-                                        <td>Câmera 3</td>
-                                        <td>Saída</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2021-10-07 - 06:07:42</td>
-                                        <td>Câmera 2</td>
-                                        <td>Saída</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2021-10-07 - 05:34:51</td>
-                                        <td>Câmera 1</td>
-                                        <td>Saída</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2021-10-07 - 03:37:46</td>
-                                        <td>Câmera 2</td>
-                                        <td>Entrada</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2021-10-07 - 02:51:59</td>
-                                        <td>Câmera 1</td>
-                                        <td>Entrada</td>
-                                    </tr><tr>
-                                        <td>2021-10-07 - 02:26:09</td>
-                                        <td>Câmera 2</td>
-                                        <td>Saída</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2021-10-07 - 02:14:51</td>
-                                        <td>Câmera 3</td>
-                                        <td>Entrada</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2021-10-07 - 02:08:02</td>
-                                        <td>Câmera 1</td>
-                                        <td>Entrada</td>                                    </tr>
-                                </tbody>
-                            </table>
-                            -->
                         </div>
                     </div>
                 </div>
@@ -218,43 +156,11 @@ if(isset($_SESSION['sectionIDCheck'])){
                                         </thead>
                                         <tbody style="text-align: center!important;"></tbody>
                                     </table>
-                                    <!--
-                                    <table class="table table-striped w-100">
-                                        <thead class="thead-dark">
-                                        <tr>
-                                            <th>Data</th>
-                                            <th>Entradas</th>
-                                            <th>Saídas</th>
-                                            <th>Total de Pessoas</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td>22/09/2021</td>
-                                            <td class="text-right text-monospace">500</td>
-                                            <td class="text-right text-monospace">400</td>
-                                            <td class="text-right text-monospace">500</td>
-                                        </tr>
-                                        <tr>
-                                            <td>21/09/2021</td>
-                                            <td class="text-right text-monospace">500</td>
-                                            <td class="text-right text-monospace">400</td>
-                                            <td class="text-right text-monospace">500</td>
-                                        </tr>
-                                        <tr>
-                                            <td>20/09/2021</td>
-                                            <td class="text-right text-monospace">500</td>
-                                            <td class="text-right text-monospace">400</td>
-                                            <td class="text-right text-monospace">500</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                    -->
                                 </div>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="obconChart" role="tabpanel" aria-labelledby="chart-tab">
-                            gráficos
+                            <div style="" id="chart_div"></div>
                         </div>
                         <div class="tab-pane fade" id="dashboardInfo" role="tabpanel" aria-labelledby="chart-tab">
                             <div class="row">
@@ -315,8 +221,52 @@ if(isset($_SESSION['sectionIDCheck'])){
 <!-- End Container fluid  -->
 <!-- ============================================================== -->
 <script src="../../assets/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js" type="text/javascript"></script>
-
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
+
+    // Load the Visualization API and the corechart package.
+    google.charts.load('current', {'packages':['corechart','bar']});
+
+    // Set a callback to run when the Google Visualization API is loaded.
+    google.charts.setOnLoadCallback(drawChart);
+
+    // Callback that creates and populates a data table,
+    // instantiates the pie chart, passes in the data and
+    // draws it.
+    function drawChart() {
+
+        // Create the data table.
+        let data = new google.visualization.DataTable();
+        data.addColumn('timeofday', 'Time of Day');
+        data.addColumn('number', 'Entradas');
+        data.addColumn('number', 'Saídas');
+
+        data.addRows([
+            [{v: [8, 0, 0], f: '8:00'}, 1, 0],
+            [{v: [9, 0, 0], f: '9:00'}, 2, 0],
+            [{v: [10, 0, 0], f:'10:00'}, 4, 1],
+            [{v: [11, 0, 0], f: '11:00'}, 5, 2],
+            [{v: [12, 0, 0], f: '12:00'}, 5, 4],
+            [{v: [13, 0, 0], f: '13:00'}, 8, 3],
+            [{v: [14, 0, 0], f: '14:00'}, 6, 5],
+            [{v: [15, 0, 0], f: '15:00'}, 12, 5],
+            [{v: [16, 0, 0], f: '16:00'}, 9, 7.5],
+            [{v: [17, 0, 0], f: '17:00'}, 5, 10],
+        ]);
+
+        let options = {
+            title: 'Evolução Entrada e Saída',
+            width: 500,
+            chartArea: {  width: "70%", height: "70%" },
+            hAxis: {
+                format: 'H:mm'
+            }
+        };
+
+        // Instantiate and draw our chart, passing in some options.
+        let chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+    }
 
     $(document).ready(function() {
 
@@ -564,6 +514,8 @@ if(isset($_SESSION['sectionIDCheck'])){
             }
         });
 
+        getChart1Data();
+
         function setControleData(){
             $.ajax({
                 url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appObconCounter",
@@ -589,6 +541,26 @@ if(isset($_SESSION['sectionIDCheck'])){
                 }
             });
         }
+
+        function getChart1Data(){
+            $.ajax({
+                url: "<?=$GLOBALS['g_appRoot']?>/appBIDataAPI/appChartObconEntradaSaida",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    method: "GET",
+                    dashboardID: $.docData.dashboardID
+                },
+                success: function (d) {
+                    console.log(d);
+                },
+                error: function () {
+                    //toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
+                    console.log('Ocorreu algum erro.');
+                }
+            });
+        }
+
 
         setControleData();
 
