@@ -31,6 +31,7 @@ if(isset($_SESSION['sectionIDCheck'])){
         $_SESSION['sectionIDCheck'] = true;
     }
 }
+$v_today = date("Y-m-d");
 
 ?>
 <style>
@@ -70,7 +71,7 @@ if(isset($_SESSION['sectionIDCheck'])){
 <!-- ============================================================== -->
 <div class="container-fluid basicContent">
     <div class="row">
-        <div class="col-6 pr-1">
+        <div class="col-5 pr-1">
             <div class="card">
                 <div class="card-body p-1">
                     <div class="row m-1">
@@ -121,7 +122,7 @@ if(isset($_SESSION['sectionIDCheck'])){
                 </div>
             </div>
         </div>
-        <div class="col-6 pl-1">
+        <div class="col-7 pl-1">
             <div class="card text-center">
                 <div class="card-header">
                     <ul class="nav nav-tabs card-header-tabs" id="dashboardTabList" role="tablist">
@@ -224,49 +225,7 @@ if(isset($_SESSION['sectionIDCheck'])){
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
 
-    // Load the Visualization API and the corechart package.
-    google.charts.load('current', {'packages':['corechart','bar']});
 
-    // Set a callback to run when the Google Visualization API is loaded.
-    google.charts.setOnLoadCallback(drawChart);
-
-    // Callback that creates and populates a data table,
-    // instantiates the pie chart, passes in the data and
-    // draws it.
-    function drawChart() {
-
-        // Create the data table.
-        let data = new google.visualization.DataTable();
-        data.addColumn('timeofday', 'Time of Day');
-        data.addColumn('number', 'Entradas');
-        data.addColumn('number', 'Saídas');
-
-        data.addRows([
-            [{v: [8, 0, 0], f: '8:00'}, 1, 0],
-            [{v: [9, 0, 0], f: '9:00'}, 2, 0],
-            [{v: [10, 0, 0], f:'10:00'}, 4, 1],
-            [{v: [11, 0, 0], f: '11:00'}, 5, 2],
-            [{v: [12, 0, 0], f: '12:00'}, 5, 4],
-            [{v: [13, 0, 0], f: '13:00'}, 8, 3],
-            [{v: [14, 0, 0], f: '14:00'}, 6, 5],
-            [{v: [15, 0, 0], f: '15:00'}, 12, 5],
-            [{v: [16, 0, 0], f: '16:00'}, 9, 7.5],
-            [{v: [17, 0, 0], f: '17:00'}, 5, 10],
-        ]);
-
-        let options = {
-            title: 'Evolução Entrada e Saída',
-            width: 500,
-            chartArea: {  width: "70%", height: "70%" },
-            hAxis: {
-                format: 'H:mm'
-            }
-        };
-
-        // Instantiate and draw our chart, passing in some options.
-        let chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-    }
 
     $(document).ready(function() {
 
@@ -276,6 +235,8 @@ if(isset($_SESSION['sectionIDCheck'])){
             dataSectionCheck : <?=$_dataSectionCheck?>,
             installationID :  '<?=$v_dashboardData['installation_id']?>',
             dashboardID: '<?=$v_dashboardID?>',
+            chart1Data: null,
+            dateChart1: '<?=$v_today?>'
         };
 
         $.docData.dtTableCamera = $('.appDatatableCamera').DataTable({
@@ -516,59 +477,101 @@ if(isset($_SESSION['sectionIDCheck'])){
 
         getChart1Data();
 
-        function setControleData(){
-            $.ajax({
-                url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appObconCounter",
-                type: "POST",
-                dataType: "json",
-                data: {
-                    method: "GET",
-                    dashboardID: $.docData.dashboardID
-                },
-                success: function (d) {
-                    if (d)
-                    {
-                        $("#controleData").html(d.data_br);
-                        $("#controleHora").html(d.count_hora);
-                        $("#countEntrada").html(d.entrada);
-                        $("#countSaida").html(d.saida);
-                        $("#countTotal").html(d.total_atual);
-                    }
-                },
-                error: function () {
-                    //toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
-                    console.log('Ocorreu algum erro.');
-                }
-            });
-        }
-
-        function getChart1Data(){
-            $.ajax({
-                url: "<?=$GLOBALS['g_appRoot']?>/appBIDataAPI/appChartObconEntradaSaida",
-                type: "POST",
-                dataType: "json",
-                data: {
-                    method: "GET",
-                    dashboardID: $.docData.dashboardID
-                },
-                success: function (d) {
-                    console.log(d);
-                },
-                error: function () {
-                    //toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
-                    console.log('Ocorreu algum erro.');
-                }
-            });
-        }
-
-
         setControleData();
 
         setInterval(function(){
             setControleData();
+            getChart1Data();
             $.docData.dtTableLastEvent.ajax.reload(v_setTooltip);
             $.docData.dtTableLastDays.ajax.reload(v_setTooltip);
         }, 30000);
 
     });
+
+    function setControleData(){
+        $.ajax({
+            url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appObconCounter",
+            type: "POST",
+            dataType: "json",
+            data: {
+                method: "GET",
+                dashboardID: $.docData.dashboardID
+            },
+            success: function (d) {
+                if (d)
+                {
+                    $("#controleData").html(d.data_br);
+                    $("#controleHora").html(d.count_hora);
+                    $("#countEntrada").html(d.entrada);
+                    $("#countSaida").html(d.saida);
+                    $("#countTotal").html(d.total_atual);
+                }
+            },
+            error: function () {
+                //toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
+                console.log('Ocorreu algum erro.');
+            }
+        });
+    }
+
+    function getChart1Data(){
+        $.ajax({
+            url: "<?=$GLOBALS['g_appRoot']?>/appBIDataAPI/appChartObconEntradaSaida",
+            type: "POST",
+            dataType: "json",
+            data: {
+                dashboardID: $.docData.dashboardID,
+                date: $.docData.dateChart1
+            },
+            success: function (d) {
+                $.docData.chart1Data = d;
+                // Load the Visualization API and the corechart package.
+                google.charts.load('current', {'packages':['corechart','bar']});
+
+                // Set a callback to run when the Google Visualization API is loaded.
+                console.log('setOnLoadCallback');
+                google.charts.setOnLoadCallback(drawChart);
+                console.log('entrou');
+                // Callback that creates and populates a data table,
+                // instantiates the pie chart, passes in the data and
+                // draws it.
+
+            },
+            error: function () {
+                //toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
+                console.log('Ocorreu algum erro.');
+            }
+        });
+    }
+
+    function drawChart() {
+        // Create the data table.
+        let data = new google.visualization.DataTable();
+        data.addColumn('timeofday', 'Time of Day');
+        data.addColumn('number', 'Entradas');
+        data.addColumn('number', 'Saídas');
+        console.log('drawChart');
+        console.log($.docData.chart1Data);
+        data.addRows($.docData.chart1Data);
+
+        let options = {
+            title: 'Evolução Entrada e Saída Hoje',
+            width: 500,
+            chartArea: {  width: "70%", height: "70%" },
+            hAxis: {
+                format: 'H:mm',
+                viewWindow: {
+                    min: [-1, 30, 0],
+                    max: [23, 30, 0]
+                }
+            }
+        };
+
+        // Instantiate and draw our chart, passing in some options.
+        let chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+    }
+
+
+
 </script>

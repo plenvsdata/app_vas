@@ -125,7 +125,7 @@ if(isset($_SESSION['sectionIDCheck'])){
                     <div id="divCustomer" class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Cliente:</label>
-                            <select id=customerID" name="customerID" class="form-control custom-select customerID">
+                            <select id=customerID" name="customerID" class="form-control customerID">
                                 <option value="">Selecione o Cliente</option>
                                 <?php foreach ($v_comboCustomer['rsData'] as $key=>$value){ ?>
                                     <option value="<?=$value['customer_id']?>"><?=$value['customer_nome_fantasia']?></option>
@@ -136,7 +136,7 @@ if(isset($_SESSION['sectionIDCheck'])){
                     <div id="divCustomer" class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Instalação:</label>
-                            <select id=installationID" name="installationID" class="form-control custom-select installationID">
+                            <select id=installationID" name="installationID" class="form-control installationID">
                                 <option value="">Selecione a Instalação</option>
                             </select>
                         </div>
