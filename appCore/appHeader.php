@@ -12,6 +12,8 @@ if(isset($_SESSION['userAvatar']) && $_SESSION['userAvatar'] != 'default_avatar.
 else {
     $v_avatarInfo = $GLOBALS['g_appRoot'].'/appImages/defaultImages/default_avatar.png';
 }
+use app\userAccess\appUserControl;
+$v_apiData = new appUserControl();
 ?>
 <style>
     #profilePic{
@@ -87,7 +89,14 @@ else {
                             </div>
                         </li>
                         <li role="separator" class="divider"></li>
+                        <?php
+                            //FeatureID = 6 - Meu Perfil
+                            if($v_apiData->checkFeaturePermission(6)){
+                        ?>
                         <li><a href="<?=$GLOBALS['g_appRoot']?>/MeuPerfil"><i class="ti-user"></i> Meu Perfil</a></li>
+                        <?php
+                            }
+                        ?>
                         <li role="separator" class="divider"></li>
                         <li><a href="<?=$GLOBALS['g_appRoot']?>/appAccessAPI/appQuit"><i class="fa fa-power-off"></i> Sair</a></li>
                     </ul>

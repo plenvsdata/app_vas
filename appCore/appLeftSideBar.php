@@ -20,67 +20,103 @@ $v_apiData = new appUserControl();
         <nav class="sidebar-nav NavleftSideBarTop">
             <ul id="sidebarnav">
                 <?php
-                if($v_apiData->checkFeaturePermission(3)){
+                    //FeatureID = 1 - CRM
+                    if($v_apiData->checkFeaturePermission(1)){
                 ?>
-                <!-- TODO: implement this feature
-                <li class="nav-devider leftSideBarTopDivider"></li>
-                <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="fa fa-lg fa-bolt" style="text-align:center!important;"></i><span class="hide-menu">Quick Access</span></a>
+                <li>
+                    <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="fa fa-lg fa-vcard-o"></i><span class="hide-menu">CRM</span></a>
                     <ul aria-expanded="false" class="collapse">
-                        <li>
-                            <a href="javascript:void(0)" id="opportunityWizardLink" class="opportunityWizardLink">Opportunity Wizard</a>
-                        </li>
-                    </ul>
-                </li>
-                -->
-                <?php }
-                if($v_apiData->checkFeaturePermission(1)){
-                ?>
-                <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="fa fa-lg fa-vcard-o"></i><span class="hide-menu">CRM</span></a>
-                    <ul aria-expanded="false" class="collapse">
-                        <li><a href="<?=$GLOBALS['g_appRoot']?>/CRM/Clientes">Clientes</a></li>
+                        <?php
+                            //FeatureID = 7 - CRM - Clientes
+                            if($v_apiData->checkFeaturePermission(7)){
+                        ?>
+                            <li><a href="<?=$GLOBALS['g_appRoot']?>/CRM/Clientes">Clientes</a></li>
+                        <?php
+                            }
+                        ?>
                     </ul>
                 </li>
                 <?php
                 }
-
+                //FeatureID = 2 — Configurações
                 if($v_apiData->checkFeaturePermission(2)){
                         ?>
                         <li><a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
                                         class="fa fa-lg fa-sliders"></i><span
                                         class="hide-menu">Configurações</span></a>
                             <ul aria-expanded="false" class="collapse">
+                                <?php
+                                    //FeatureID = 8 — Configurações — Usuários
+                                    if($v_apiData->checkFeaturePermission(8)){
+                                ?>
                                 <li><a href="<?=$GLOBALS['g_appRoot']?>/System/Users">Usuários</a></li>
+                                <?php
+                                    }
+
+                                    //FeatureID = 9 — Configurações — Instalação Obcon
+                                    if($v_apiData->checkFeaturePermission(9)){
+                                ?>
                                 <li><a href="<?=$GLOBALS['g_appRoot']?>/System/Instalacao">Instalações Obcon</a></li>
+                                <?php
+                                    }
+
+                                    //FeatureID = 10 — Configurações — Câmera Obcon
+                                    if($v_apiData->checkFeaturePermission(10)){
+                                ?>
                                 <li><a href="<?=$GLOBALS['g_appRoot']?>/System/Camera">Câmera Obcon</a></li>
+                                <?php
+                                    }
+                                ?>
                             </ul>
                         </li>
                          <?php
                     }
-
+                //FeatureID = 3 — Relatórios
                 if($v_apiData->checkFeaturePermission(3)){
                     ?>
                     <li><a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
                                     class="fa fa-lg fa-list"></i><span
                                     class="hide-menu">Relatórios</span></a>
                         <ul aria-expanded="false" class="collapse">
+                            <?php
+                                //FeatureID = 11 — Relatórios — Viper
+                                if($v_apiData->checkFeaturePermission(11)){
+                            ?>
                             <li><a href="<?=$GLOBALS['g_appRoot']?>/Relatorio/Viper">Viper</a></li>
+                            <?php
+                                }
+
+                            //FeatureID = 12 —  Relatórios — Obcon
+                            if($v_apiData->checkFeaturePermission(12)){
+                            ?>
                             <li><a href="<?=$GLOBALS['g_appRoot']?>/Relatorio/Obcon">Obcon</a></li>
+                            <?php
+                                }
+                            ?>
                         </ul>
                     </li>
                     <?php
                 }
-
+                //FeatureID = 4 — Obcon
                 if($v_apiData->checkFeaturePermission(4)){
                 ?>
+
                 <li><a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
                                 class="fa fa-lg fa-calculator"></i><span
                                 class="hide-menu">Obcon</span></a>
                     <ul aria-expanded="false" class="collapse">
+                        <?php
+                        //FeatureID = 13 — Obcon Dashboard
+                        if($v_apiData->checkFeaturePermission(13)){
+                        ?>
                         <li><a href="<?=$GLOBALS['g_appRoot']?>/Obcon/Dashboard">Dashboard</a></li>
+                        <?php
+                        }
+                        ?>
                     </ul>
                 </li>
                 <?php
-                }
+                    }
                 ?>
             </ul>
         </nav>

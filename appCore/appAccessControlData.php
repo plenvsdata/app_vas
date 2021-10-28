@@ -123,6 +123,7 @@ elseif ($v_dataSec == "loginCheck") {
             //$_SESSION['instanceFirstAccess'] = $v_userData['instance_first_access'];
             $_SESSION['accessProfileID'] = $v_userData['access_profile_id'];
             $_SESSION['accessProfileDesc'] = $v_userData['access_profile_desc'];
+            $_SESSION['accessFeaturesArray'] = explode(',',$v_userData['access_features_array']);
             $_SESSION['accessProfileDataUserOnly'] = $v_userData['access_profile_data_user_only'];
             //$_SESSION['accessFeatureArray'] = explode(',',$v_userData['access_feature_array']);
             //ToDo: userProfileData - Ajustes

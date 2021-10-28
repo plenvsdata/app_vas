@@ -23,7 +23,7 @@ class appUserControl
 
     public function userLoginCheck($userLgn,$userPwd)
     {
-        $query = "SELECT user_id,user_name,user_nickname,user_phone,user_login,user_pwd,temp_pwd,user_sess_id,user_status,status_desc,status_class,owner,access_profile_id,access_profile_desc,user_avatar,access_profile_data_user_only,access_profile_homepage,access_profile_status,first_access,welcome_screen,transaction_id,billing_status,created_by,created_at,ok  FROM %appDBprefix%_view_user WHERE user_login='" . addslashes($userLgn) . "' AND user_pwd='" . hash('sha256', addslashes($userPwd) ). "' AND user_status = 1 AND ok=1";
+        $query = "SELECT user_id,user_name,user_nickname,user_phone,user_login,user_pwd,temp_pwd,user_sess_id,user_status,status_desc,status_class,owner,access_profile_id,access_profile_desc,access_features_array,user_avatar,access_profile_data_user_only,access_profile_homepage,access_profile_status,first_access,welcome_screen,transaction_id,billing_status,created_by,created_at,ok  FROM %appDBprefix%_view_user WHERE user_login='" . addslashes($userLgn) . "' AND user_pwd='" . hash('sha256', addslashes($userPwd) ). "' AND user_status = 1 AND ok=1";
         return $this->dbCon->dbSelect($query);
     }
 
@@ -266,18 +266,13 @@ class appUserControl
         }
     }
 
-    public function checkFeaturePermission($featureID = 0)
+    public function checkFeaturePermission($featureID = 0): bool
     {
-        //TODO Implement
-        return true;
-        /*
-        if(in_array($featureID,$_SESSION['accessFeatureArray']))
+        if(in_array($featureID,$_SESSION['accessFeaturesArray']))
         {
             return true;
         }else{
             return false;
         }
-        */
-
     }
 }
