@@ -642,7 +642,7 @@ $v_chart2DateStart = date('Y-m-d',$v_timestamp2);
             width: "90%",
             chartArea: {  width: "90%", height: "70%" },
             legend: {
-                position: 'top'
+                position: 'none'
             },
             hAxis: {
                 format: 'H:mm',
