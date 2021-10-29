@@ -39,17 +39,25 @@ class appDataList
 
     public function appInstallationList()
     {
-        $query = "SELECT installation_id,installation_desc,customer_id,customer_nome_fantasia,ninst,created_at,ok FROM %appDBprefix%_view_installation  ";
+        $query = "SELECT installation_id,installation_desc,customer_id,customer_nome_fantasia,ninst,created_at,ok FROM %appDBprefix%_view_installation WHERE 1 = 1  ";
+
+        if($_SESSION['checkCustomerID'] == true){
+            $query .= " AND customer_id = '".$_SESSION['customerID']."'";
+        }
+
         return $this->dbCon->dbSelect($query);
     }
 
     public function appCameraList($data = NULL)
     {
         $v_installationID = !empty($data['installationID']) ? $data['installationID'] : NULL;
-        $query  = "SELECT obcon_camera_id,installation_id,installation_desc,customer_id,customer_nome_fantasia,cam,cam_desc,ninst,created_at,ok FROM %appDBprefix%_view_obcon_camera  ";
+        $query  = "SELECT obcon_camera_id,installation_id,installation_desc,customer_id,customer_nome_fantasia,cam,cam_desc,ninst,created_at,ok FROM %appDBprefix%_view_obcon_camera WHERE 1=1 ";
         if(!is_null($v_installationID))
         {
-            $query .= " WHERE installation_id = $v_installationID";
+            $query .= " AND installation_id = '".$v_installationID."' ";
+        }
+        if($_SESSION['checkCustomerID'] == true){
+            $query .= " AND customer_id = '".$_SESSION['customerID']."'";
         }
         return $this->dbCon->dbSelect($query);
     }
@@ -58,10 +66,13 @@ class appDataList
     {
         $v_installationID = !empty($data['installationID']) ? $data['installationID'] : NULL;
         $v_dashboardID = !empty($data['dashboardID']) ? $data['dashboardID'] : NULL;
-        $query  = "SELECT dashboard_id,obcon_camera_id,installation_id,installation_desc,customer_id,customer_nome_fantasia,cam,cam_desc,ninst,created_at,ok FROM %appDBprefix%_view_dashboard_camera  ";
+        $query  = "SELECT dashboard_id,obcon_camera_id,installation_id,installation_desc,customer_id,customer_nome_fantasia,cam,cam_desc,ninst,created_at,ok FROM %appDBprefix%_view_dashboard_camera WHERE 1=1 ";
         if(!is_null($v_installationID))
         {
-            $query .= " WHERE installation_id = '".$v_installationID."' AND ( dashboard_id = '".$v_dashboardID."' OR ISNULL( dashboard_id ))";
+            $query .= " AND installation_id = '".$v_installationID."' AND ( dashboard_id = '".$v_dashboardID."' OR ISNULL( dashboard_id )) ";
+        }
+        if($_SESSION['checkCustomerID'] == true){
+            $query .= " AND customer_id = '".$_SESSION['customerID']."'";
         }
         return $this->dbCon->dbSelect($query);
     }
@@ -69,8 +80,8 @@ class appDataList
     public function appDashboardLastEventList($data = NULL)
     {
         $v_dashboardID = !empty($data['dashboardID']) ? $data['dashboardID'] : NULL;
-        $query  = "SELECT alarme_obcon_id,data,data_br,hora,cam,cam_desc,sent_desc FROM %appDBprefix%_view_report_obcon_data  ";
-        $query .= " WHERE dashboard_id = '".$v_dashboardID."' AND data = '".date('Y-m-d')."' ORDER BY data DESC,hora DESC LIMIT 10";
+        $query  = "SELECT alarme_obcon_id,data,data_br,hora,cam,cam_desc,sent_desc FROM %appDBprefix%_view_report_obcon_data WHERE 1=1  ";
+        $query .= " AND dashboard_id = '".$v_dashboardID."' AND data = '".date('Y-m-d')."' ORDER BY data DESC,hora DESC LIMIT 10";
         return $this->dbCon->dbSelect($query);
     }
     public function appDashboardLastDaysList($data = NULL)
@@ -84,10 +95,13 @@ class appDataList
     public function appDashboardList($data = NULL)
     {
         $v_dashboardID = !empty($data['dashboardID']) ? $data['dashboardID'] : NULL;
-        $query = "SELECT dashboard_id,dashboard_desc,customer_id,customer_nome_fantasia,installation_id,installation_desc,ninst,created_at,ok FROM %appDBprefix%_view_obcon_dashboard ";
+        $query = "SELECT dashboard_id,dashboard_desc,customer_id,customer_nome_fantasia,installation_id,installation_desc,ninst,created_at,ok FROM %appDBprefix%_view_obcon_dashboard WHERE 1=1 ";
         if(!is_null($v_dashboardID))
         {
-            $query .= " WHERE dashboard_id = $v_dashboardID";
+            $query .= " AND dashboard_id = $v_dashboardID";
+        }
+        if($_SESSION['checkCustomerID'] == true){
+            $query .= " AND customer_id = '".$_SESSION['customerID']."'";
         }
         return $this->dbCon->dbSelect($query);
     }
@@ -102,10 +116,13 @@ class appDataList
     {
         $v_dataStart = !empty($data['dataStart']) ? $data['dataStart'] : NULL;
         $v_dataEnd = !empty($data['dataEnd']) ? $data['dataEnd'] : NULL;
-        $query = "SELECT alarme_viper_id,customer_id,customer_nome_fantasia,ori,idr,nor,cod,dat,data_br,nuc,apl,ins,origem_id,origem_desc,subtipo_id,subtipo_desc,nsb,sbn,cor,ips,pos,alarme_viper_completo,created_at,ok FROM %appDBprefix%_view_alarme_viper_data  ";
+        $query = "SELECT alarme_viper_id,customer_id,customer_nome_fantasia,ori,idr,nor,cod,dat,data_br,nuc,apl,ins,origem_id,origem_desc,subtipo_id,subtipo_desc,nsb,sbn,cor,ips,pos,alarme_viper_completo,created_at,ok FROM %appDBprefix%_view_alarme_viper_data WHERE 1=1 ";
         if(!is_null($v_dataStart) && !is_null($v_dataEnd))
         {
-            $query .= " WHERE dat BETWEEN '".$v_dataStart." 00:00:00' AND '".$v_dataEnd." 23:59:59' ";
+            $query .= " AND (dat BETWEEN '".$v_dataStart." 00:00:00' AND '".$v_dataEnd." 23:59:59') ";
+        }
+        if($_SESSION['checkCustomerID'] == true){
+            $query .= " AND customer_id = '".$_SESSION['customerID']."'";
         }
         return $this->dbCon->dbSelect($query);
     }
@@ -114,10 +131,13 @@ class appDataList
     {
         $v_dataStart = !empty($data['dataStart']) ? $data['dataStart'] : NULL;
         $v_dataEnd = !empty($data['dataEnd']) ? $data['dataEnd'] : NULL;
-        $query = "SELECT alarme_obcon_id,customer_id,customer_nome_fantasia,clid,ninst,data,data_br,hora,cam,tw,sent,numo,tama,alarme_obcon_completo,created_at,ok FROM %appDBprefix%_view_alarme_obcon_data  ";
+        $query = "SELECT alarme_obcon_id,customer_id,customer_nome_fantasia,clid,ninst,data,data_br,hora,cam,tw,sent,numo,tama,alarme_obcon_completo,created_at,ok FROM %appDBprefix%_view_alarme_obcon_data WHERE 1=1 ";
         if(!is_null($v_dataStart) && !is_null($v_dataEnd))
         {
-            $query .= " WHERE data BETWEEN '".$v_dataStart."' AND '".$v_dataEnd."' ";
+            $query .= " AND (data BETWEEN '".$v_dataStart."' AND '".$v_dataEnd."') ";
+        }
+        if($_SESSION['checkCustomerID'] == true){
+            $query .= " AND customer_id = '".$_SESSION['customerID']."'";
         }
         return $this->dbCon->dbSelect($query);
     }
