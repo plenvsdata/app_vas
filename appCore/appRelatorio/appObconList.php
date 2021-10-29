@@ -109,6 +109,16 @@ $v_dateStart = date('Y-m-d',$v_timestamp2);
          box-sizing: border-box;
          font-size: small;
      }
+    #excelBtnDiv {
+        margin-left: 250px!important;
+    }
+    #reportrange {
+        position: absolute!important;
+        height: 28px!important;
+        padding-bottom: 2px!important;
+        padding-top: 2px!important;
+        margin-top: 10px!important;
+    }
 </style>
 <div class="row page-titles basicContent">
     <div class="col-md-5 align-self-center">
@@ -221,27 +231,13 @@ $v_dateStart = date('Y-m-d',$v_timestamp2);
                 "buttons":
                     [
                         {"text":'Filtros',"className": 'btn btn-sm dt-btn-width btn-info dtFloatSpaceLeft filterPage'},
-                        <?php
-                        if(in_array($_SESSION['accessProfileID'],$GLOBALS['g_allowExport'])){
-                        ?>
                         {"extend": 'excelHtml5', "text": 'Excel', "className": 'btn btn-sm dt-btn-width btn-success buttons-html5 hidden', "attr": { id: 'exportExcel' }},
-                        <?php
-                        }
-                        ?>
                         {"extend": 'colvis', "text": 'Colunas', "className": 'btn btn-sm dt-btn-width btn-info dtFloatSpaceLeft' }
                     ],
                 "initComplete": function () {
-                    <?php
-                    if(in_array($_SESSION['accessProfileID'],$GLOBALS['g_allowExport'])){
-                    ?>
+                    $(".dt-buttons").removeClass("btn-group");
                     $('#exportExcel').removeClass('hidden');
                     $('#excelBtnDiv').removeClass('hidden');
-
-                    <?php
-                    }
-                    ?>
-
-                    $(".dt-buttons").removeClass("btn-group");
                     let r = $('#appDatatable tfoot tr');
                     r.find('th').each(function(){
                         $(this).css('padding', 8);

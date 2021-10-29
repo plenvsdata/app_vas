@@ -133,10 +133,10 @@ $v_chart2DateStart = date('Y-m-d',$v_timestamp2);
                 <div class="card-header">
                     <ul class="nav nav-tabs card-header-tabs" id="dashboardTabList" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link dashboardNavPanel active" id="obconReport-tab" data-toggle="tab" href="#obconReport" role="tab" aria-controls="obconReport" aria-selected="true">Consolidação</a>
+                            <a class="nav-link dashboardNavPanel" id="obconReport-tab" data-toggle="tab" href="#obconReport" role="tab" aria-controls="obconReport" aria-selected="true">Consolidação</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link dashboardNavPanel" id="obconChart-tab" data-toggle="tab" href="#obconChart" role="tab" aria-controls="obconChart" aria-selected="true">Gráficos</a>
+                            <a class="nav-link dashboardNavPanel active" id="obconChart-tab" data-toggle="tab" href="#obconChart" role="tab" aria-controls="obconChart" aria-selected="true">Gráficos</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link dashboardNavPanel" id="dashboardInformation-tab" data-toggle="tab" href="#dashboardInfo" role="tab" aria-controls="dashboardInfo" aria-selected="true">Informações</a>
@@ -148,7 +148,7 @@ $v_chart2DateStart = date('Y-m-d',$v_timestamp2);
                 </div>
                 <div class="card-body">
                     <div class="tab-content" id="dashboardContent">
-                        <div class="tab-pane fade show active" id="obconReport" role="tabpanel" aria-labelledby="obcon-tab">
+                        <div class="tab-pane fade" id="obconReport" role="tabpanel" aria-labelledby="obcon-tab">
                             <div class="row pt-0">
                                 <div class="col-12 p-4">
                                     <h6 class="text-left">Últimos Dias</h6>
@@ -166,18 +166,30 @@ $v_chart2DateStart = date('Y-m-d',$v_timestamp2);
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="obconChart" role="tabpanel" aria-labelledby="chart-tab">
+                        <div class="tab-pane fade show active" id="obconChart" role="tabpanel" aria-labelledby="chart-tab">
 
-                            <div style="" id="chart_hoje"></div>
+                            <div class="row pb-4">
+                                <div class="col-12">
+                                    <div style="width: 100%!important;" id="chart_hoje"></div>
+                                </div>
+                                <div class="col-12" style="font-size: 12px!important;">
+                                    <i class="fa fa-square" style="color:#3666CC" aria-hidden="true"></i> Entradas&nbsp;&nbsp;&nbsp;
+                                    <i class="fa fa-square" style="color:#DC3913" aria-hidden="true"></i> Saídas
+                                </div>
+                            </div>
 
-                            <div id="chart2Range" style="background: #fff; cursor: pointer; padding: 5px 10px; width: 250px; border: 1px solid #ccc;white-space: nowrap!important;">
+                            <hr>
+                            <div class="row pt-4">
+                                <div class="col-12">
+                                    <div id="chart2Range" style="background: #fff; cursor: pointer; padding: 5px 10px; width: 250px; border: 1px solid #ccc;white-space: nowrap!important;">
                                 <input type="hidden" name="chart2DateStart" id="chart2DateStart" value="<?=$v_chart2DateStart?>">
                                 <input type="hidden" name="chart2DateEnd" id="chart2DateEnd" value="<?=$v_chart2DateEnd?>">
                                 <i class="fa fa-calendar"></i>&nbsp;
                                 <span></span> <i class="fa fa-caret-down"></i>
                             </div>
-
-                            <div style="" id="chart_dia"></div>
+                                    <div style="" id="chart_dia"></div>
+                                </div>
+                            </div>
                         </div>
                         <div class="tab-pane fade" id="dashboardInfo" role="tabpanel" aria-labelledby="chart-tab">
                             <div class="row">
@@ -553,20 +565,12 @@ $v_chart2DateStart = date('Y-m-d',$v_timestamp2);
         // Load the Visualization API and the corechart package.
        // google.charts.load('current', {'packages':['corechart','bar']});
 
-        google.charts.load('current', {
-            callback: function () {
-                console.log('charts ok');
-                getChart2Data();
-                //$(window).resize(drawChart);
-            },
-            packages:['corechart','bar']
-        });
+        google.charts.load('current', {'packages':['corechart','bar']});
 
-
-        getChart1Data();
-        //getChart2Data();
-
-
+        setTimeout(function(){
+            getChart1Data();
+            getChart2Data();
+        },100);
 
         setControleData();
 
@@ -635,8 +639,11 @@ $v_chart2DateStart = date('Y-m-d',$v_timestamp2);
 
         let options = {
             title: 'Evolução Entrada e Saída Hoje',
-            width: 500,
-            chartArea: {  width: "70%", height: "70%" },
+            width: "90%",
+            chartArea: {  width: "90%", height: "70%" },
+            legend: {
+                position: 'top'
+            },
             hAxis: {
                 format: 'H:mm',
                 viewWindow: {
@@ -684,7 +691,7 @@ $v_chart2DateStart = date('Y-m-d',$v_timestamp2);
             title: 'Entradas por Data',
             chartArea: {  width: "94%", height: "70%" },
             legend: {
-                position: 'top'
+                position: 'none'
             },
             width: '100%'
         };
