@@ -22,6 +22,10 @@ $v_listDashboard = new appDataList();
 $v_dashboardList = $v_listDashboard->appDashboardList($v_data);
 $v_dashboardData = $v_dashboardList['rsData'][0];
 
+if(is_null($v_dashboardData)){
+    header('location:../Dashboard');
+}
+
 $v_sectionIDCheck = true;
 $_dataSectionCheck = 'true';
 if(isset($_SESSION['sectionIDCheck'])){
