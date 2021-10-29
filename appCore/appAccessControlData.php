@@ -120,9 +120,12 @@ elseif ($v_dataSec == "loginCheck") {
             $_SESSION['userAvatar'] = $v_userData['user_avatar'];
             $_SESSION['firstAccess'] = $v_userData['first_access'];
             $_SESSION['userWelcomeScreen'] = $v_userData['welcome_screen'];
-            //$_SESSION['instanceFirstAccess'] = $v_userData['instance_first_access'];
             $_SESSION['accessProfileID'] = $v_userData['access_profile_id'];
             $_SESSION['accessProfileDesc'] = $v_userData['access_profile_desc'];
+            $_SESSION['accessFeaturesArray'] = explode(',',$v_userData['access_features_array']);
+            $_SESSION['customerID'] = $v_userData['customer_id'];
+            $_SESSION['checkCustomerID'] = ($v_userData['check_customer_id'] = 1) ? true : false;
+
             $_SESSION['accessProfileDataUserOnly'] = $v_userData['access_profile_data_user_only'];
             //$_SESSION['accessFeatureArray'] = explode(',',$v_userData['access_feature_array']);
             //ToDo: userProfileData - Ajustes
