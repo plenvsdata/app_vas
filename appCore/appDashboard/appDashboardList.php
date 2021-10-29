@@ -102,7 +102,7 @@ if(isset($_SESSION['sectionIDCheck'])){
 <!-- ============================================================== -->
 <!-- Start Modal Dashboard  -->
 <!-- ============================================================== -->
-<div class="modal fade" id="dashboardModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel">
+<div class="modal fade" id="dashboardModal" tabindex="-1" role="dialog" aria-labelledby="dashboardModal">
     <div class="modal-dialog modal-dialog-centered modal-dialog-centered-90" >
         <div class="modal-content">
             <div class="modal-header">

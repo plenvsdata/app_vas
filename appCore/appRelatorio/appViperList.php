@@ -384,7 +384,7 @@ $v_dateStart = date('Y-m-d',$v_timestamp2);
                 'Últimos 7 Dias': [moment().subtract(6, 'days'), moment()],
                 'Últimos 30 Dias': [moment().subtract(29, 'days'), moment()],
                 'Este Mês': [moment().startOf('month'), moment().endOf('month')],
-                'Último Mês': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                'Mês Passado': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
             }
         }, cb);
         cb(start, end);

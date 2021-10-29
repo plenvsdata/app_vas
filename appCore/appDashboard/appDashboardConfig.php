@@ -31,8 +31,10 @@ if(isset($_SESSION['sectionIDCheck'])){
         $_SESSION['sectionIDCheck'] = true;
     }
 }
-$v_today = date("Y-m-d");
-
+$v_chart2DateEnd = date('Y-m-d');
+$v_timestamp1 = strtotime($v_chart2DateEnd);
+$v_timestamp2 = strtotime('-30 day', $v_timestamp1);
+$v_chart2DateStart = date('Y-m-d',$v_timestamp2);
 ?>
 <style>
     .flex-item
@@ -161,7 +163,17 @@ $v_today = date("Y-m-d");
                             </div>
                         </div>
                         <div class="tab-pane fade" id="obconChart" role="tabpanel" aria-labelledby="chart-tab">
-                            <div style="" id="chart_div"></div>
+
+                            <div style="" id="chart_hoje"></div>
+
+                            <div id="chart2Range" style="background: #fff; cursor: pointer; padding: 5px 10px; width: 250px; border: 1px solid #ccc;white-space: nowrap!important;">
+                                <input type="hidden" name="chart2DateStart" id="chart2DateStart" value="<?=$v_chart2DateStart?>">
+                                <input type="hidden" name="chart2DateEnd" id="chart2DateEnd" value="<?=$v_chart2DateEnd?>">
+                                <i class="fa fa-calendar"></i>&nbsp;
+                                <span></span> <i class="fa fa-caret-down"></i>
+                            </div>
+
+                            <div style="" id="chart_dia"></div>
                         </div>
                         <div class="tab-pane fade" id="dashboardInfo" role="tabpanel" aria-labelledby="chart-tab">
                             <div class="row">
@@ -224,9 +236,6 @@ $v_today = date("Y-m-d");
 <script src="../../assets/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
-
-
-
     $(document).ready(function() {
 
         $.docData = {
@@ -236,7 +245,9 @@ $v_today = date("Y-m-d");
             installationID :  '<?=$v_dashboardData['installation_id']?>',
             dashboardID: '<?=$v_dashboardID?>',
             chart1Data: null,
-            dateChart1: '<?=$v_today?>'
+            chart2Data: null,
+            chart2DateStart: '<?=$v_chart2DateStart?>',
+            chart2DateEnd: '<?=$v_chart2DateEnd?>'
         };
 
         $.docData.dtTableCamera = $('.appDatatableCamera').DataTable({
@@ -475,13 +486,90 @@ $v_today = date("Y-m-d");
             }
         });
 
+        $('#chart2Range').on('apply.daterangepicker', function(ev, picker) {
+            $('#chart2DateStart').val(picker.startDate.format('YYYY-MM-DD'));
+            $('#chart2DateEnd').val(picker.endDate.format('YYYY-MM-DD'));
+            $.docData.chart2DateStart = $('#chart2DateStart').val();
+            $.docData.chart2DateEnd = $('#chart2DateEnd').val();
+            getChart2Data();
+        });
+        let start = moment('<?=$v_chart2DateStart?>');
+        let end = moment();
+
+        $('#chart2Range').daterangepicker({
+            "locale": {
+                "format": "DD/MM/YYYY",
+                "separator": " - ",
+                "applyLabel": "Aplicar",
+                "cancelLabel": "Cancelar",
+                "customRangeLabel": "Período",
+                "daysOfWeek": [
+                    "D",
+                    "S",
+                    "T",
+                    "Q",
+                    "Q",
+                    "S",
+                    "S"
+                ],
+                "monthNames": [
+                    "Janeiro",
+                    "Fevereiro",
+                    "Março",
+                    "Abril",
+                    "Maio",
+                    "Junho",
+                    "Julho",
+                    "Agosto",
+                    "Setembro",
+                    "Outubro",
+                    "Novembro",
+                    "Dezembro"
+                ],
+                "firstDay": 1
+            },
+            cancelClass: "btn-danger",
+            startDate: start,
+            endDate: end,
+            minDate:"01-09-2021",
+            maxDate: moment(),
+            maxSpan:{"days": 30},
+            ranges: {
+                'Hoje': [moment(), moment()],
+                'Ontem': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Últimos 7 Dias': [moment().subtract(6, 'days'), moment()],
+                'Últimos 30 Dias': [moment().subtract(29, 'days'), moment()],
+                'Este Mês': [moment().startOf('month'), moment().endOf('month')],
+                'Mês Passado': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            }
+        }, cb);
+        cb(start, end);
+
+
+        // Load the Visualization API and the corechart package.
+       // google.charts.load('current', {'packages':['corechart','bar']});
+
+        google.charts.load('current', {
+            callback: function () {
+                console.log('charts ok');
+                getChart2Data();
+                //$(window).resize(drawChart);
+            },
+            packages:['corechart','bar']
+        });
+
+
         getChart1Data();
+        //getChart2Data();
+
+
 
         setControleData();
 
         setInterval(function(){
             setControleData();
             getChart1Data();
+            getChart2Data();
             $.docData.dtTableLastEvent.ajax.reload(v_setTooltip);
             $.docData.dtTableLastDays.ajax.reload(v_setTooltip);
         }, 30000);
@@ -520,22 +608,11 @@ $v_today = date("Y-m-d");
             type: "POST",
             dataType: "json",
             data: {
-                dashboardID: $.docData.dashboardID,
-                date: $.docData.dateChart1
+                dashboardID: $.docData.dashboardID
             },
             success: function (d) {
                 $.docData.chart1Data = d;
-                // Load the Visualization API and the corechart package.
-                google.charts.load('current', {'packages':['corechart','bar']});
-
-                // Set a callback to run when the Google Visualization API is loaded.
-                console.log('setOnLoadCallback');
                 google.charts.setOnLoadCallback(drawChart);
-                console.log('entrou');
-                // Callback that creates and populates a data table,
-                // instantiates the pie chart, passes in the data and
-                // draws it.
-
             },
             error: function () {
                 //toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
@@ -550,8 +627,6 @@ $v_today = date("Y-m-d");
         data.addColumn('timeofday', 'Time of Day');
         data.addColumn('number', 'Entradas');
         data.addColumn('number', 'Saídas');
-        console.log('drawChart');
-        console.log($.docData.chart1Data);
         data.addRows($.docData.chart1Data);
 
         let options = {
@@ -568,10 +643,55 @@ $v_today = date("Y-m-d");
         };
 
         // Instantiate and draw our chart, passing in some options.
-        let chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        let chart = new google.visualization.ColumnChart(document.getElementById('chart_hoje'));
         chart.draw(data, options);
     }
 
+    function getChart2Data(){
+        $.ajax({
+            url: "<?=$GLOBALS['g_appRoot']?>/appBIDataAPI/appChartObconDashboardDia",
+            type: "POST",
+            dataType: "json",
+            data: {
+                dashboardID: $.docData.dashboardID,
+                dateStart: $.docData.chart2DateStart,
+                dateEnd: $.docData.chart2DateEnd,
+            },
+            success: function (d) {
+                $.docData.chart2Data = d;
+                google.charts.setOnLoadCallback(drawChart2);
+            },
+            error: function () {
+                //toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
+                console.log('Ocorreu algum erro.');
+            }
+        });
+    }
 
+    function drawChart2() {
+        // Create the data table.
+        let data = new google.visualization.DataTable();
+        data.addColumn('string', 'Dia');
+        data.addColumn('number', 'Entradas');
+        data.addRows($.docData.chart2Data);
+        console.log($.docData.chart2Data);
 
+        let options = {
+            title: 'Entradas por Data',
+            chartArea: {  width: "94%", height: "70%" },
+            legend: {
+                position: 'top'
+            },
+            width: '100%'
+        };
+
+        // Instantiate and draw our chart, passing in some options.
+        let chart = new google.visualization.ColumnChart(document.getElementById('chart_dia'));
+        chart.draw(data, options);
+    }
+
+    function cb(start, end) {
+        $('#chart2Range span').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
+        console.log(start.format('DD/MM/YYYY')+' - '+end.format('DD/MM/YYYY'));
+    }
 </script>
