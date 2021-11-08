@@ -250,7 +250,7 @@ class appDataAPI
         return $v_return;
     }
 
-    private function falseCurrentObconCounter($dashboardID){
+    public function falseCurrentObconCounter($dashboardID){
         $query = "UPDATE %appDBprefix%_dashboard_obcon_count SET current = 0 WHERE dashboard_id = '".$dashboardID."' ";
         $this->dbCon->dbUpdate($query);
     }

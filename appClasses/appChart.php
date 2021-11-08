@@ -58,8 +58,9 @@ SELECT
 ";
 
         $v_rs = $this->dbCon->dbSelect($query);
+        $v_data = array();
         if($v_rs['rsStatus']){
-            $v_data = array();
+
             foreach($v_rs['rsData'] as $value)
             {
                 $v_data[] = array(
@@ -67,7 +68,8 @@ SELECT
                 );
             }
         }else{
-            $v_data = false;
+            $v_data[] = array(['v'=>[12,0,0], 'f'=>'12:00'], 0, 0);
+
         }
 
         return $v_data;
@@ -86,14 +88,15 @@ SELECT
 ";
 
         $v_rs = $this->dbCon->dbSelect($query);
+        $v_data = array();
         if($v_rs['rsStatus']){
-            $v_data = array();
+
             foreach($v_rs['rsData'] as $value)
             {
                 $v_data[] = array($value['data_chart'],intval($value['entrada']));
             }
         }else{
-            $v_data = false;
+            $v_data[] = array(date('d/m'),0);
         }
 
         return $v_data;

@@ -8,6 +8,7 @@
 
 namespace app\System\Installation;
 use app\dbClass\appDBClass;
+use app\System\API\appDataAPI;
 
 class appInstallation
 {
@@ -542,6 +543,19 @@ class appInstallation
 
     }
 
-
-
+    public function appObconZeroCounter($data = NULL){
+        $v_dashboardID = $data['dashboardID'];
+        $v_obconCounter = new appDataAPI();
+        $v_count = $v_obconCounter->getCurrentObconCounter($v_dashboardID);
+        if($v_count){
+            $v_obconCounter->falseCurrentObconCounter($v_dashboardID);
+            // cria o novo contador com data de hoje zerado
+            $querySetCount = "INSERT INTO %appDBprefix%_dashboard_obcon_count (dashboard_id,count_data,count_hora,entrada,saida,total_atual,current,camera_enable_array,created_by) VALUES ";
+            $querySetCount .= "('" .$v_dashboardID. "','" . date("Y-m-d") . "','".date("H:i:s")."',0,0,0,1,'".$v_count['camera_enable_array']."','".$_SESSION['userID']."') ";
+            $this->dbCon->dbInsert($querySetCount);
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

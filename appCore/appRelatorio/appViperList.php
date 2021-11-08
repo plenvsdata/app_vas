@@ -37,68 +37,6 @@ $v_dateStart = date('Y-m-d',$v_timestamp2);
     {
         display: none!important;
     }
-    .btn-organizer
-    {
-        border: 1px solid #D9D9D9!important;
-        height: 38px!important;
-        background-color: #ffffff;
-    }
-    .btn-organizer-error
-    {
-        border: 1px solid #ef5350!important;
-        height: 38px!important;
-        background-color: #ffffff;
-    }
-    .btn-left-radius
-    {
-        border-radius: 4px 0 0 4px!important;
-    }
-    .btn-right-radius
-    {
-        border-radius: 0 4px 4px 0!important;
-    }
-    .cardPosition {
-        position: relative!important;
-    }
-    .customersMaps {
-        height: 550px!important;
-        border-radius: 5px!important;
-        top:0;
-        bottom:0;
-        width:100%!important;
-        position: relative;
-        z-index: 29;
-    }
-    .mapDivLoaderBackdrop {
-        border-radius: 5px!important;
-        position: absolute;
-        background-color: #FFFFFF;
-        z-index: 30;
-        top: 0!important;
-        bottom: 0!important;
-        width: 100%!important;
-    }
-    .mapDivLoader {
-        position: absolute;
-        width: 100%!important;
-        bottom: 0!important;
-        top: 0!important;
-        background-color: #67757c;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: 150px;
-        opacity: 1;
-        overflow: hidden;
-        -webkit-mask-image: url("../../appImages/svgLoaders/rings.svg");
-        -webkit-mask-position: center!important;
-        -webkit-mask-repeat: no-repeat!important;
-        -webkit-mask-size: 150px!important;
-        mask-image: url("../../appImages/svgLoaders/rings.svg");
-        mask-position: center;
-        mask-repeat: no-repeat;
-        mask-size: 150px!important;
-        z-index: 31;
-    }
     .container-fluid{
         padding: 0 10px 0 10px!important;
     }
@@ -118,6 +56,32 @@ $v_dateStart = date('Y-m-d',$v_timestamp2);
          padding-top: 2px!important;
          margin-top: 10px!important;
      }
+     .gallery{
+         cursor: pointer;
+     }
+    .img-size{
+        height: 450px;
+        width: 700px;
+        background-size: cover;
+        overflow: hidden;
+    }
+    .modal-content {
+        width: 700px!important;
+        border:none;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .carousel-control-prev-icon {
+        //background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23009be1' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E");
+        width: 30px;
+        height: 48px;
+    }
+    .carousel-control-next-icon {
+        //background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23009be1' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E");
+        width: 30px;
+        height: 48px;
+    }
+
 </style>
 <div class="row page-titles basicContent">
     <div class="col-md-5 align-self-center">
@@ -150,6 +114,7 @@ $v_dateStart = date('Y-m-d',$v_timestamp2);
                         <table id="appDatatable" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                             <thead>
                             <tr>
+                                <th>IMG</th>
                                 <th class="text-center" style="width: 220px!important;">Cliente</th>
                                 <th>ORI</th>
                                 <th>IDR</th>
@@ -171,6 +136,7 @@ $v_dateStart = date('Y-m-d',$v_timestamp2);
                             <tbody class="text-center"></tbody>
                             <tfoot id="appDatatableFoot" class="collapse">
                             <tr id="trFilters" class="collapse">
+                                <th>IMG</th>
                                 <th>Cliente</th>
                                 <th>ORI</th>
                                 <th>IDR</th>
@@ -201,7 +167,56 @@ $v_dateStart = date('Y-m-d',$v_timestamp2);
 <!-- ============================================================== -->
 
 <div id="popoverData" style="display: none"></div>
-
+    <!-- Modal Carousel-->
+    <div class="modal fade center" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <!-- carousel -->
+                    <div id='carouselExampleIndicators' class='carousel slide carousel-fade' data-ride='carousel'>
+                        <ol class='carousel-indicators'>
+                            <li data-target='#carouselExampleIndicators' data-slide-to='0' class='active'></li>
+                            <li data-target='#carouselExampleIndicators' data-slide-to='1'></li>
+                            <li data-target='#carouselExampleIndicators' data-slide-to='2'></li>
+                            <li data-target='#carouselExampleIndicators' data-slide-to='3'></li>
+                            <li data-target='#carouselExampleIndicators' data-slide-to='4'></li>
+                        </ol>
+                        <div class='carousel-inner'>
+                            <!--
+                            <div class='carousel-item active'>
+                                <img class='img-size' src="../../__appFiles/teste/01102021_093912_01_00.JPG" alt='Foto 1' />
+                            </div>
+                            <div class='carousel-item'>
+                                <img class='img-size' src="../../__appFiles/teste/01102021_093912_01_01.JPG" alt='Foto 2' />
+                            </div>
+                            <div class='carousel-item'>
+                                <img class='img-size' src="../../__appFiles/teste/01102021_093912_01_02.JPG" alt='Foto 3' />
+                            </div>
+                            <div class='carousel-item'>
+                                <img class='img-size' src="../../__appFiles/teste/01102021_093912_01_03.JPG" alt='Foto 4' />
+                            </div>
+                            <div class='carousel-item'>
+                                <img class='img-size' src="../../__appFiles/teste/01102021_093912_01_04.JPG" alt='Foto 5' />
+                            </div>
+                            -->
+                        </div>
+                        <a class='carousel-control-prev' href='#carouselExampleIndicators' role='button' data-slide='prev'>
+                        <span class='carousel-control-prev-icon' aria-hidden='true'></span>
+                            <span class='sr-only'>Previous</span>
+                        </a>
+                        <a class='carousel-control-next' href='#carouselExampleIndicators' role='button' data-slide='next'>
+                            <span class='carousel-control-next-icon' aria-hidden='true'></span>
+                            <span class='sr-only'>Next</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END Modal Carousel-->
 <script type="text/javascript">
 
     $.docData = {
@@ -275,6 +290,16 @@ $v_dateStart = date('Y-m-d',$v_timestamp2);
                 },
                 "columns":
                     [
+                        { data:
+                                {
+                                    _: function (data)
+                                    {
+
+                                        return '<i class="ti-gallery gallery"></i>';
+                                    }
+                                },
+                            "className":"text-center"
+                        },
                         { data: "customer_nome_fantasia", "className":"text-left text-monospace reportCustomerCol" },
                         { data: "ori", "className":"text-center text-monospace" },
                         { data: "idr", "className":"text-right text-monospace" },
@@ -385,6 +410,27 @@ $v_dateStart = date('Y-m-d',$v_timestamp2);
             }
         }, cb);
         cb(start, end);
+
+        $(document).on('click','.gallery',function (){
+
+            console.log('ajax');
+            let html = "";
+            html+="<div class='carousel-item active '><img class='img-size' src='../../__appFiles/teste/01102021_093912_01_00.JPG' alt='Foto 1' /></div>";
+            html+="<div class='carousel-item '><img class='img-size' src='../../__appFiles/teste/01102021_093912_01_01.JPG' alt='Foto 2' /></div>";
+            html+="<div class='carousel-item '><img class='img-size' src='../../__appFiles/teste/01102021_093912_01_02.JPG' alt='Foto 3' /></div>";
+            html+="<div class='carousel-item '><img class='img-size' src='../../__appFiles/teste/01102021_093912_01_03.JPG' alt='Foto 4' /></div>";
+            html+="<div class='carousel-item '><img class='img-size' src='../../__appFiles/teste/01102021_093912_01_04.JPG' alt='Foto 5' /></div>";
+
+            $(".carousel-inner").html(html);
+            $("#largeModal").modal();
+            console.log('modal open');
+        });
+
+        $('.carousel').carousel({
+            interval: 100,
+            pause:false,
+            wrap:true
+        })
     });
 </script>
 

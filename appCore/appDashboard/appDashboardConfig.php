@@ -82,7 +82,7 @@ $v_chart2DateStart = date('Y-m-d',$v_timestamp2);
                 <div class="card-body p-1">
                     <div class="row m-1">
                         <div class="col-md-12 mb-2">
-                            <div class="position-absolute w-100 hide" style="right: 0px!important;"><i class="fa fa-refresh pull-right r-5" aria-hidden="true" style="cursor: pointer!important;"></i></div>
+                            <div class="position-absolute w-100" style="right: 0px!important;"><i id="zeraContador" class="fa fa-refresh pull-right r-5 hide" aria-hidden="true" style="cursor: pointer!important;"></i></div>
                             <h4><?=$v_dashboardData['dashboard_desc']?></h4>
                             <h6>Data do Controle: <span id="controleData"></span> - Horário de Início: <span id="controleHora"></span></h6>
                         </div>
@@ -502,6 +502,61 @@ $v_chart2DateStart = date('Y-m-d',$v_timestamp2);
             }
         });
 
+        $(document).on('click','#obconChart-tab',function (){
+            setTimeout(function(){
+                redrawChart();
+            }, 500);
+
+        });
+
+        $(document).on('click','#zeraContador',function (){
+
+            bootbox.confirm({
+                message: "Tem certeza que deseja zerar o contador?",
+                buttons: {
+                    confirm: {
+                        label: 'Sim',
+                        className: 'btn btn-success btn-sm'
+                    },
+                    cancel: {
+                        label: 'Não',
+                        className: 'btn btn-danger btn-sm'
+                    }
+                },
+                callback: function (result) {
+                    if(result===true)
+                    {
+                        $.ajax({
+                            url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appObconZeroCounter",
+                            type: "POST",
+                            dataType: "json",
+                            data:
+                                {
+                                    dashboardID: $.docData.dashboardID
+                                },
+                            success: function(d)
+                            {
+                                if(d === true)
+                                {
+                                    setControleData();
+                                    toastr["success"]("Contagem reiniciada.", "Success");
+                                }
+                                else
+                                {
+                                    toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
+                                }
+                            },
+                            error:function ()
+                            {
+                                toastr["error"]("Something went wrong. Please, try again.", "Ooops!");
+                            }
+                        });
+
+                    }
+                }
+            });
+        });
+
         $('#chart2Range').on('apply.daterangepicker', function(ev, picker) {
             $('#chart2DateStart').val(picker.startDate.format('YYYY-MM-DD'));
             $('#chart2DateEnd').val(picker.endDate.format('YYYY-MM-DD'));
@@ -561,16 +616,12 @@ $v_chart2DateStart = date('Y-m-d',$v_timestamp2);
         }, cb);
         cb(start, end);
 
-
         // Load the Visualization API and the corechart package.
        // google.charts.load('current', {'packages':['corechart','bar']});
-
         google.charts.load('current', {'packages':['corechart','bar']});
 
-        setTimeout(function(){
-            getChart1Data();
-            getChart2Data();
-        },100);
+        getChart1Data();
+        getChart2Data();
 
         setControleData();
 
@@ -601,6 +652,7 @@ $v_chart2DateStart = date('Y-m-d',$v_timestamp2);
                     $("#countEntrada").html(d.entrada);
                     $("#countSaida").html(d.saida);
                     $("#countTotal").html(d.total_atual);
+                    $("#zeraContador").show();
                 }
             },
             error: function () {
@@ -639,7 +691,7 @@ $v_chart2DateStart = date('Y-m-d',$v_timestamp2);
 
         let options = {
             title: 'Evolução Entrada e Saída Hoje',
-            width: "90%",
+            width: "100%",
             chartArea: {  width: "90%", height: "70%" },
             legend: {
                 position: 'none'
@@ -685,15 +737,18 @@ $v_chart2DateStart = date('Y-m-d',$v_timestamp2);
         data.addColumn('string', 'Dia');
         data.addColumn('number', 'Entradas');
         data.addRows($.docData.chart2Data);
-        console.log($.docData.chart2Data);
 
         let options = {
             title: 'Entradas por Data',
-            chartArea: {  width: "94%", height: "70%" },
+            chartArea: {  width: "90%", height: "70%" },
             legend: {
                 position: 'none'
             },
-            width: '100%'
+            width: '100%',
+            hAxis: {
+                fontSize: 9
+            }
+
         };
 
         // Instantiate and draw our chart, passing in some options.
@@ -701,8 +756,12 @@ $v_chart2DateStart = date('Y-m-d',$v_timestamp2);
         chart.draw(data, options);
     }
 
+    function redrawChart(){
+        drawChart();
+        drawChart2();
+    }
+
     function cb(start, end) {
         $('#chart2Range span').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
-        console.log(start.format('DD/MM/YYYY')+' - '+end.format('DD/MM/YYYY'));
     }
 </script>

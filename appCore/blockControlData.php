@@ -317,9 +317,15 @@ elseif ($v_dataSec == "appUserPhoto")
 elseif ($v_dataSec == "appObconCounter")
 {
     $v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;
-
     $v_obcon =  new appInstallation();
     $v_obconData = $v_obcon->appObconCounter($v_appData);
+    echo json_encode($v_obconData);
+}
+elseif ($v_dataSec == "appObconZeroCounter")
+{
+    $v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;
+    $v_obcon =  new appInstallation();
+    $v_obconData = $v_obcon->appObconZeroCounter($v_appData);
     echo json_encode($v_obconData);
 }
 elseif ($v_dataSec == "appCustomer")
