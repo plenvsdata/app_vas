@@ -35,7 +35,11 @@ class appCombo
 
     public function comboCustomer($type=NULL)
     {
-        $query = "SELECT customer_id,customer_nome_fantasia,customer_razao_social FROM %appDBprefix%_customer_data WHERE 1=1 ORDER BY customer_nome_fantasia ASC";
+        $query = "SELECT customer_id,customer_nome_fantasia,customer_razao_social FROM %appDBprefix%_customer_data WHERE 1=1 ";
+        if($_SESSION['checkCustomerID'] == true){
+            $query .= " AND customer_id = '".$_SESSION['customerID']."'";
+        }
+        $query.= " ORDER BY customer_nome_fantasia ASC";
         $v_return = $this->dbCon->dbSelect($query);
 
         if(is_null($type))
