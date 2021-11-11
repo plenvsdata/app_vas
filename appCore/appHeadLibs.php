@@ -9,10 +9,9 @@
 <!-- ============================================================== -->
 <!-- All Jquery -->
 <!-- ============================================================== -->
-<script src="<?=$GLOBALS['g_appRoot']?>/js/jQuery/jquery.min.js"></script>
+<script src="<?=$GLOBALS['g_appRoot']?>/js/jQuery/3.6.0/jquery-3.6.0.min.js"></script>
 <!-- Bootstrap tether Core JavaScript -->
-<script src="<?=$GLOBALS['g_appRoot']?>/js/bootstrap/4.3.1/js/popper.min.js"></script>
-<script src="<?=$GLOBALS['g_appRoot']?>/js/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="<?=$GLOBALS['g_appRoot']?>/js/bootstrap/4.6.1/js/bootstrap.bundle.min.js"></script>
 <!--Wave Effects -->
 <script src="<?=$GLOBALS['g_appRoot']?>/js/waves.js"></script>
 <!--stickey kit -->

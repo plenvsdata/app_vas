@@ -7,8 +7,11 @@
  */
 ?>
 <!-- Bootstrap Core CSS -->
-<link href="<?=$GLOBALS['g_appRoot']?>/js/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+<link href="<?=$GLOBALS['g_appRoot']?>/js/bootstrap/4.6.1/css/bootstrap.min.css" rel="stylesheet">
+<!--
 <link href="<?=$GLOBALS['g_appRoot']?>/js/bootstrap/4.3.1/css/bootstrap-grid.min.css" rel="stylesheet">
+-->
 <link rel="stylesheet" type="text/css" href="<?=$GLOBALS['g_appRoot']?>/css/bootstrap-tour.min.css">
 <!-- morris CSS -->
 <link href="<?=$GLOBALS['g_appRoot']?>/assets/plugins/morrisjs/morris.css" rel="stylesheet">
