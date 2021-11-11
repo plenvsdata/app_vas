@@ -114,7 +114,8 @@ $v_dateStart = date('Y-m-d',$v_timestamp2);
                         <table id="appDatatable" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                             <thead>
                             <tr>
-                                <th>IMG</th>
+                                <th><li class="fa fa-circle" style="color: #0E7AC4" aria-hidden="true"></li></th>
+                                <th><i class="fa fa-video-camera"></i></th>
                                 <th class="text-center" style="width: 220px!important;">Cliente</th>
                                 <th>ORI</th>
                                 <th>IDR</th>
@@ -136,7 +137,8 @@ $v_dateStart = date('Y-m-d',$v_timestamp2);
                             <tbody class="text-center"></tbody>
                             <tfoot id="appDatatableFoot" class="collapse">
                             <tr id="trFilters" class="collapse">
-                                <th>IMG</th>
+                                <th><li class="fa fa-circle" style="color: #0E7AC4" aria-hidden="true"></li></th>
+                                <th><i class="fa fa-video-camera"></i></th>
                                 <th>Cliente</th>
                                 <th>ORI</th>
                                 <th>IDR</th>
@@ -168,12 +170,12 @@ $v_dateStart = date('Y-m-d',$v_timestamp2);
 
 <div id="popoverData" style="display: none"></div>
     <!-- Modal Carousel-->
-    <div class="modal fade center" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal fade center" id="carouselModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-body">
                     <!-- carousel -->
-                    <div id='carouselExampleIndicators' class='carousel slide carousel-fade' data-ride='carousel'>
+                    <div id='carouselExampleIndicators' class='carousel slide carousel-fade'>
                         <ol class='carousel-indicators'>
                             <li data-target='#carouselExampleIndicators' data-slide-to='0' class='active'></li>
                             <li data-target='#carouselExampleIndicators' data-slide-to='1'></li>
@@ -182,23 +184,6 @@ $v_dateStart = date('Y-m-d',$v_timestamp2);
                             <li data-target='#carouselExampleIndicators' data-slide-to='4'></li>
                         </ol>
                         <div class='carousel-inner'>
-                            <!--
-                            <div class='carousel-item active'>
-                                <img class='img-size' src="../../__appFiles/teste/01102021_093912_01_00.JPG" alt='Foto 1' />
-                            </div>
-                            <div class='carousel-item'>
-                                <img class='img-size' src="../../__appFiles/teste/01102021_093912_01_01.JPG" alt='Foto 2' />
-                            </div>
-                            <div class='carousel-item'>
-                                <img class='img-size' src="../../__appFiles/teste/01102021_093912_01_02.JPG" alt='Foto 3' />
-                            </div>
-                            <div class='carousel-item'>
-                                <img class='img-size' src="../../__appFiles/teste/01102021_093912_01_03.JPG" alt='Foto 4' />
-                            </div>
-                            <div class='carousel-item'>
-                                <img class='img-size' src="../../__appFiles/teste/01102021_093912_01_04.JPG" alt='Foto 5' />
-                            </div>
-                            -->
                         </div>
                         <a class='carousel-control-prev' href='#carouselExampleIndicators' role='button' data-slide='prev'>
                         <span class='carousel-control-prev-icon' aria-hidden='true'></span>
@@ -210,13 +195,37 @@ $v_dateStart = date('Y-m-d',$v_timestamp2);
                         </a>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                <div class="modal-footer" style="display: block">
+                    <div class="float-left">
+                        <input type="hidden" id="validaAlarmeID">
+                        <button data-alarme_status="1" type="button" class="btn btn-sm btn-success validaAlarme">Alarme Válido</button>
+                        <button data-alarme_status="0" type="button" class="btn btn-sm btn-danger validaAlarme">Alarme Falso</button>
+                    </div>
+                    <div class="float-right">
+                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Fechar</button>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
     <!-- END Modal Carousel-->
+<!-- Modal No image-->
+<div class="modal fade center" id="noImageModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+               <div>Nenhuma imagem disponível</div>
+            </div>
+            <div class="modal-footer" style="display: block">
+                <div class="float-right">
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END No image-->
 <script type="text/javascript">
 
     $.docData = {
@@ -292,10 +301,28 @@ $v_dateStart = date('Y-m-d',$v_timestamp2);
                     [
                         { data:
                                 {
+                                    display: function (data)
+                                    {
+                                        let v_return='';
+                                        if(data.alarme_status === '1'){
+                                            v_return =  '<li class="fa fa-circle " style="color: #28a745" aria-hidden="true"></li>';
+                                        }else if(data.alarme_status === '0'){
+                                            v_return =  '<li class="fa fa-circle text-danger" aria-hidden="true"></li>';
+                                        }
+                                        else{
+                                            v_return =  '<li class="fa fa-circle text-warning" aria-hidden="true"></li>';
+                                        }
+                                        return v_return;
+                                    },
+                                    sort: function(data){ return data.alarme_status; }
+                                },
+                            "className":"text-center"
+                        },
+                        { data:
+                                {
                                     _: function (data)
                                     {
-
-                                        return '<i class="ti-gallery gallery"></i>';
+                                        return '<i class="fa fa-video-camera gallery"></i>';
                                     }
                                 },
                             "className":"text-center"
@@ -319,12 +346,17 @@ $v_dateStart = date('Y-m-d',$v_timestamp2);
                     ],
                 "createdRow": function( row, data, dataIndex )
                 {
+                    $(row).attr("data-alarme_viper_id",data.alarme_viper_id);
                 },
                 "columnDefs":
                     [
                         {
+                            "targets": [1],
+                            "orderable": false,
+                            "searchable": false
                         }
-                    ]
+                    ],
+                "order":[[7,'asc']]
             }
         );
 
@@ -413,24 +445,87 @@ $v_dateStart = date('Y-m-d',$v_timestamp2);
 
         $(document).on('click','.gallery',function (){
 
-            console.log('ajax');
-            let html = "";
-            html+="<div class='carousel-item active '><img class='img-size' src='../../__appFiles/teste/01102021_093912_01_00.JPG' alt='Foto 1' /></div>";
-            html+="<div class='carousel-item '><img class='img-size' src='../../__appFiles/teste/01102021_093912_01_01.JPG' alt='Foto 2' /></div>";
-            html+="<div class='carousel-item '><img class='img-size' src='../../__appFiles/teste/01102021_093912_01_02.JPG' alt='Foto 3' /></div>";
-            html+="<div class='carousel-item '><img class='img-size' src='../../__appFiles/teste/01102021_093912_01_03.JPG' alt='Foto 4' /></div>";
-            html+="<div class='carousel-item '><img class='img-size' src='../../__appFiles/teste/01102021_093912_01_04.JPG' alt='Foto 5' /></div>";
+            let v_alarmeID = $(this).closest("tr").attr("data-alarme_viper_id");
+            $('.carousel').carousel('dispose');
+            $.ajax({
+                url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appGetViperPhoto",
+                type: "POST",
+                dataType: "json",
+                data:
+                    {
+                        alarmeID: v_alarmeID
+                    },
+                success: function(d)
+                {
+                    if(d)
+                    {
+                        //594 COD
+                        let v_html = "";
+                        let v_active = "";
+                        $.each(d, function(i, val) {
+                            if(i===0){
+                                v_active = "active";
+                            }else{
+                                v_active = "";
+                            }
+                            v_html+="<div class='carousel-item "+v_active+"'><img class='img-size' src='../../__appFiles/"+val.customer_token+"/CAM"+val.nuc+"/"+val.photo_original_name+"' alt='Foto "+(i+1)+"' /></div>";
+                        });
 
-            $(".carousel-inner").html(html);
-            $("#largeModal").modal();
-            console.log('modal open');
+                        $(".carousel-inner").html(v_html);
+                        if(v_html==""){
+                            $("#noImageModal").modal();
+                        }else{
+                            $("#validaAlarmeID").val(v_alarmeID);
+                            $('.carousel').carousel({
+                                interval: 100
+                            });
+                            $("#carouselModal").modal();
+                        }
+                    }
+                    else
+                    {
+                        $("#noImageModal").modal();
+                    }
+                }
+            });
         });
 
-        $('.carousel').carousel({
-            interval: 100,
-            pause:false,
-            wrap:true
-        })
+        $(document).on('click','.validaAlarme',function (){
+            let v_alarmeID = $("#validaAlarmeID").val();
+            let v_alarmeStatus = $(this).data('alarme_status');
+
+            $.ajax({
+                url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appValidaAlarmeViper",
+                type: "POST",
+                dataType: "json",
+                data:
+                    {
+                        alarmeID: v_alarmeID,
+                        alarmeStatus: v_alarmeStatus
+                    },
+                success: function(d)
+                {
+                    if(d.status === true)
+                    {
+                        if(v_alarmeStatus == '1'){
+                            toastr["success"]("Status: Alarme Válido alterado", "Success");
+                        }else{
+                            toastr["success"]("Status: Alarme falso alterado", "Success");
+                        }
+                        $.docData.dtTable.ajax.reload();
+                    }
+                    else
+                    {
+                        toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
+                    }
+                },
+                error:function (d)
+                {
+                    toastr["error"]("Ocorreu algum erro. Tente novamente", "Erro!");
+                }
+            });
+        });
+
     });
 </script>
 

@@ -102,9 +102,8 @@ class appPhoto
         }
     }
 
-    public function  appUserPhotoData($data = NULL,$file = NULL)
+    public function appUserPhotoData($data = NULL,$file = NULL)
     {
-
         $v_reqMethod = $data['method'];
         $v_serverRoot = $_SERVER['DOCUMENT_ROOT']."/__appFiles/".$data['userID']."/_userAvatar/";
         $v_dirCheck = (!file_exists($v_serverRoot)) ? (mkdir($v_serverRoot, 0777, true)) : true;
@@ -145,6 +144,12 @@ class appPhoto
         }
     }
 
+    public function appGetViperPhoto($data = NULL){
 
+        $v_alarmeID = !empty($data['alarmeID']) ? $data['alarmeID'] : NULL;
+        $query = "SELECT photo_original_name,customer_token,nuc FROM %appDBprefix%_view_photo_alarme_viper WHERE alarme_id = $v_alarmeID ";
+        $v_return = $this->dbCon->dbSelect($query);
+        return $v_return['rsData'];
+    }
 
 }

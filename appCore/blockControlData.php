@@ -93,6 +93,13 @@ elseif ($v_dataSec == "appCamera")
     $v_data =  new appInstallation();
     $v_appReturn = $v_data->appCameraData($v_appData);
 }
+elseif ($v_dataSec == "appGetViperPhoto")
+{
+    $v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;
+    $v_data =  new appPhoto();
+    $v_appReturn = $v_data->appGetViperPhoto($v_appData);
+    echo json_encode($v_appReturn);
+}
 elseif ($v_dataSec == "appUserAccess")
 {
     $v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;
@@ -139,8 +146,6 @@ elseif($v_dataSec == "appListDashboardLastDays")
     $v_returnData["appDashboardLastDaysList"] = $v_appList["rsData"];
     echo json_encode($v_returnData);
 }
-
-
 elseif($v_dataSec == "appListDashboard")
 {
     $v_appData = new appDataList();
@@ -178,7 +183,28 @@ elseif ($v_dataSec == "appListCustomer")
     $v_returnData["appCustomerList"] = $v_appCustomerList["rsData"];
     echo json_encode($v_returnData);
 }
-/*VAS*/
+elseif ($v_dataSec == "appObconCounter")
+{
+    $v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;
+    $v_obcon =  new appInstallation();
+    $v_obconData = $v_obcon->appObconCounter($v_appData);
+    echo json_encode($v_obconData);
+}
+elseif ($v_dataSec == "appObconZeroCounter")
+{
+    $v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;
+    $v_obcon =  new appInstallation();
+    $v_obconData = $v_obcon->appObconZeroCounter($v_appData);
+    echo json_encode($v_obconData);
+}
+elseif ($v_dataSec == "appValidaAlarmeViper")
+{
+$v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;
+$v_viper =  new appInstallation();
+$v_viperData = $v_viper->appValidaAlarmeViper($v_appData);
+echo json_encode($v_viperData);
+}
+/*FIM VAS*/
 
 
 
@@ -312,21 +338,6 @@ elseif ($v_dataSec == "appUserPhoto")
         echo json_encode($v_photoData);
     }
 
-}
-
-elseif ($v_dataSec == "appObconCounter")
-{
-    $v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;
-    $v_obcon =  new appInstallation();
-    $v_obconData = $v_obcon->appObconCounter($v_appData);
-    echo json_encode($v_obconData);
-}
-elseif ($v_dataSec == "appObconZeroCounter")
-{
-    $v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;
-    $v_obcon =  new appInstallation();
-    $v_obconData = $v_obcon->appObconZeroCounter($v_appData);
-    echo json_encode($v_obconData);
 }
 elseif ($v_dataSec == "appCustomer")
 {

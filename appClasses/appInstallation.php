@@ -558,4 +558,19 @@ class appInstallation
             return false;
         }
     }
+
+    public function appValidaAlarmeViper($data = NULL){
+        //var_dump($data);
+        $v_alarmeID = !empty($data['alarmeID']) ? $data['alarmeID'] : NULL;
+        $v_alarmeStatus = !empty($data['alarmeStatus']) ? strval($data['alarmeStatus']) : '0';
+        if(is_null($v_alarmeID))
+        {
+            $v_return['status'] = false;
+        }else{
+            $query = "UPDATE %appDBprefix%_alarme_viper_data SET alarme_status = '".$v_alarmeStatus."',updated_by = '".$_SESSION['userID']."'  WHERE  alarme_viper_id = '".$v_alarmeID."' ";
+            $v_return = $this->dbCon->dbUpdate($query);
+            $v_return['status'] = true;
+        }
+        return $v_return;
+    }
 }
