@@ -1,0 +1,46 @@
+<body style="padding: 0!important;margin: 0!important;font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;">
+    <div style="padding: 6px!important;">
+        <table style="font-family: 'Segoe UI Semilight', 'Open Sans', Verdana, Arial, Helvetica, sans-serif!important;padding: 0!important; margin: auto!important; width: 100%!important; max-width: 600px!important; border-collapse: collapse; border: 1px solid #D8D8D8; vertical-align: top!important;-webkit-box-shadow: 10px 10px 38px 1px rgba(0,0,0,0.18);-moz-box-shadow: 10px 10px 38px 1px rgba(0,0,0,0.18);box-shadow: 10px 10px 38px 1px rgba(0,0,0,0.18);">
+            <tr>
+                <td style="width: 600px!important; background-color: white; border-collapse: collapse; padding: 0!important;">
+                    <div>
+                            <img src="{{vaSystemsDomain}}/appImages/sysImages/va_system_logo.svg" alt="VA Systems" style="font-size: 18px;line-height:20px;background-color:white;color:#004961; line-height: 50px!important; text-align: center;"></div>
+                    <div style="width: 100%!important;height: 1px!important;background-color:#004961!important;"></div>
+                    <div style="padding: 20px!important;">
+                        <h4>Atenção cliente {{customerName}},</h4>
+                        <span>Acabamos de detectar um alerta, segue os dados:</span>
+
+                        <div ><img src="https://www.showmetech.com.br/wp-content/uploads//2015/09/happy-minion-gif.gif" style="display: block; margin: 20px auto 20px auto;"></div>
+                        <!--
+                        <div><img src="06112021_030327_20_00.JPG" style="display: block; margin: 20px auto 20px auto;"></div>
+                        -->
+                        <table class="table table-bordered">
+                            <tbody>
+                            <tr>
+                                <td>Data:</td>
+                                <td>{{alertData}}</td>
+                            </tr>
+                            <tr>
+                                <td>Hora:</td>
+                                <td>{{alertHora}}</td>
+                            </tr>
+                            <tr>
+                                <td>Camera:</td>
+                                <td>{{alertCamera}}</td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                        <span style="display: block;width: 100%!important;text-align: center!important;padding: 5px!important;">
+                            <a href="{{vaSystemsDomain}}" style="margin: auto!important;">Clique aqui</a> para logar.
+                        </span>
+                    </div>
+                    <div style="width: 100%!important;height: 1px!important;background-color:#004961!important;"></div>
+                    <div style="font-size: small; color: #96b8c5;padding: 20px!important; background-color:#1f7d86; text-align: center;">
+                        &copy; {{currentYear}} VA Systems
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>

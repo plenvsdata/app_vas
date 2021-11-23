@@ -162,8 +162,8 @@ class appUserControl
                     );
                 }
 
-                $v_sendInvitation->setFrom('plenvs@goabh.com', 'Plenvs Data System');
-                $v_sendInvitation->addReplyTo('plenvs@goabh.com', 'Plenvs Data System');
+                $v_sendInvitation->setFrom('plenvs@goabh.com', 'VA Systems');
+                $v_sendInvitation->addReplyTo('plenvs@goabh.com', 'VA Systems');
                 $v_sendInvitation->addAddress($data['userLogin'], $data['userName']);
                 $v_sendInvitation->Subject = 'Reset Password.';
                 $v_sendInvitation->msgHTML($v_htmlMsg);

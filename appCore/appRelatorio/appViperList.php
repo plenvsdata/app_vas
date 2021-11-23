@@ -114,47 +114,55 @@ $v_dateStart = date('Y-m-d',$v_timestamp2);
                         <table id="appDatatable" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                             <thead>
                             <tr>
-                                <th><li class="fa fa-circle" style="color: #0E7AC4" aria-hidden="true"></li></th>
-                                <th><i class="fa fa-video-camera"></i></th>
                                 <th class="text-center" style="width: 220px!important;">Cliente</th>
+                                <!--
                                 <th>ORI</th>
                                 <th>IDR</th>
                                 <th>NOR</th>
+                                -->
                                 <th class="text-center" style="width: 60px!important;">COD</th>
                                 <th>Data</th>
-                                <th>NUC</th>
+                                <th>Câmera</th>
                                 <th class="text-center" style="width: 80px!important;">APL</th>
                                 <th>INS</th>
                                 <th>Origem</th>
+                                <th>Status</th>
+                                <th><i class="fa fa-video-camera"></i></th>
+                                <!--
                                 <th>Subtipo</th>
                                 <th>NSB</th>
                                 <th>SBN</th>
                                 <th>COR</th>
                                 <th>IPS</th>
                                 <th>POS</th>
+                                -->
                             </tr>
                             </thead>
                             <tbody class="text-center"></tbody>
                             <tfoot id="appDatatableFoot" class="collapse">
                             <tr id="trFilters" class="collapse">
-                                <th><li class="fa fa-circle" style="color: #0E7AC4" aria-hidden="true"></li></th>
-                                <th><i class="fa fa-video-camera"></i></th>
                                 <th>Cliente</th>
+                                <!--
                                 <th>ORI</th>
                                 <th>IDR</th>
                                 <th>NOR</th>
+                                -->
                                 <th>COD</th>
                                 <th>Data</th>
-                                <th>NUC</th>
+                                <th>Câmera</th>
                                 <th>APL</th>
                                 <th>INS</th>
                                 <th>Origem</th>
+                                <th>Status</th>
+                                <th><i class="fa fa-video-camera"></i></th>
+                                <!--
                                 <th>Subtipo</th>
                                 <th>NSB</th>
                                 <th>SBN</th>
                                 <th>COR</th>
                                 <th>IPS</th>
                                 <th>POS</th>
+                                -->
                             </tr>
                             </tfoot>
                         </table>
@@ -299,25 +307,19 @@ $v_dateStart = date('Y-m-d',$v_timestamp2);
                 },
                 "columns":
                     [
-                        { data:
-                                {
-                                    display: function (data)
-                                    {
-                                        let v_return='';
-                                        if(data.alarme_status === '1'){
-                                            v_return =  '<li class="fa fa-circle " style="color: #28a745" aria-hidden="true"></li>';
-                                        }else if(data.alarme_status === '0'){
-                                            v_return =  '<li class="fa fa-circle text-danger" aria-hidden="true"></li>';
-                                        }
-                                        else{
-                                            v_return =  '<li class="fa fa-circle text-warning" aria-hidden="true"></li>';
-                                        }
-                                        return v_return;
-                                    },
-                                    sort: function(data){ return data.alarme_status; }
-                                },
-                            "className":"text-center"
-                        },
+                        { data: "customer_nome_fantasia", "className":"text-left text-monospace reportCustomerCol" },
+                        /*
+                        { data: "ori", "className":"text-center text-monospace" },
+                        { data: "idr", "className":"text-right text-monospace" },
+                        { data: "nor", "className":"text-left text-monospace" },
+                         */
+                        { data: "cod", "className":"text-right text-monospace" },
+                        { data: "data_br", "className":"text-right text-monospace" },
+                        { data: "nuc", "className":"text-right text-monospace" },
+                        { data: "apl", "className":"text-left text-monospace reportCustomer80px" },
+                        { data: "ins", "className":"text-right text-monospace" },
+                        { data: "origem_desc", "className":"text-left text-monospace" },
+                        { data: "alarme_status_desc", "className":"text-left text-monospace" },
                         { data:
                                 {
                                     _: function (data)
@@ -327,22 +329,14 @@ $v_dateStart = date('Y-m-d',$v_timestamp2);
                                 },
                             "className":"text-center"
                         },
-                        { data: "customer_nome_fantasia", "className":"text-left text-monospace reportCustomerCol" },
-                        { data: "ori", "className":"text-center text-monospace" },
-                        { data: "idr", "className":"text-right text-monospace" },
-                        { data: "nor", "className":"text-left text-monospace" },
-                        { data: "cod", "className":"text-right text-monospace" },
-                        { data: "data_br", "className":"text-right text-monospace" },
-                        { data: "nuc", "className":"text-right text-monospace" },
-                        { data: "apl", "className":"text-left text-monospace reportCustomer80px" },
-                        { data: "ins", "className":"text-right text-monospace" },
-                        { data: "origem_desc", "className":"text-left text-monospace" },
+                        /*
                         { data: "subtipo_desc", "className":"text-left text-monospace" },
                         { data: "nsb", "className":"text-right text-monospace" },
                         { data: "sbn", "className":"text-right text-monospace" },
                         { data: "cor", "className":"text-left text-monospace" },
                         { data: "ips", "className":"text-left text-monospace" },
                         { data: "pos", "className":"text-left text-monospace" }
+                         */
                     ],
                 "createdRow": function( row, data, dataIndex )
                 {
