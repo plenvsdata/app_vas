@@ -29,7 +29,7 @@ class appDataList
         $query = "SELECT customer_id,customer_cnpj,customer_razao_social,customer_nome_fantasia,customer_token_in,customer_token_out,customer_phone,customer_email,allow_delete,customer_status,ok FROM %appDBprefix%_view_customer_list WHERE 1=1 ";
         $query.=" ORDER BY customer_nome_fantasia";
 
-/*
+
         //INICIO EMAIL AO RECEBER ALERTA VIPER
             //gerar Gif
             require_once __DIR__ . '/../appClasses/autoloader.php';
@@ -54,10 +54,12 @@ class appDataList
                 'alertData' => '12/11/2021',
                 'alertHora' => '12:40:00',
                 'alertCamera' => '25',
-                'gifAlerta' => $builder->output('gifAlert.gif'),
+                'alertVideo' => $GLOBALS['g_appRoot'].'/vasCloudVideo/Player/nonono.gif',
                 'currentYear' => date('Y'),
                 'vaSystemsDomain' => $GLOBALS['g_appRoot']
             );
+
+            //$builder->output('gifAlert.gif')
 
             $v_htmlBody = new appSystemTools();
             $v_htmlBody->contentParse(file_get_contents('../appSystemTemplate/appMailSendAlertViperTemplate.html'),$v_dataParse);
@@ -101,7 +103,7 @@ class appDataList
                 echo 'A mensagem não pode ser enviada. Mailer Error: ', $v_sendInvitation->ErrorInfo;
             }
         //FIM EMAIL AO RECEBER ALERTA VIPER
-*/
+
         return $this->dbCon->dbSelect($query);
 
     }
