@@ -69,11 +69,11 @@ $g_appTemplatePath = $GLOBALS['g_appRoot'].'/appSystemTemplate/';
 
 // PHPMailer Data Default
 $g_phpMailerDebug = 0;
-$g_useSMTP = true; //true: real email; false: Use MailHog http://plenvs.test:8025/
+$g_useSMTP = false; //true: real email; false: Use MailHog http://plenvs.test:8025/
 $g_emailHostSettings = array('host' => 'mail.goabh.com', 'username' => 'plenvs@goabh.com', 'password' => 'E4f4n_k6','secure' => 'TLS', 'smtpAuth' => true, 'port' => 587);
-$g_emailFrom = array('address' => 'plenvs@goabh.com', 'name' => 'Plenvs Data System');
-$g_emailReplyTo = array('address' => 'plenvs@goabh.com', 'name' => 'Plenvs Data System');
-$g_emailSubject = 'Bem vindo ao V A Systems!';
+$g_emailFrom = array('address' => 'plenvs@goabh.com', 'name' => 'VA Systems');
+$g_emailReplyTo = array('address' => 'plenvs@goabh.com', 'name' => 'VA Systems');
+$g_emailSubject = 'Bem vindo ao VA Systems!';
 $g_alternateTextBody = '';
 $g_allowExport = [1,2];//permitir export
 // IPStack
