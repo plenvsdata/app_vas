@@ -75,7 +75,20 @@ elseif ($v_dataSec == "apiTeste") {
     //echo json_encode($v_origem);
     echo json_encode($v_apiData);
 }
+elseif ($v_dataSec = "Player") {
+    $v_dataRequest = !empty($_REQUEST) ? $_REQUEST : NULL;
+    $v_videoData = $v_appRequest['videoData'] ?? NULL;
+    $v_videoData = explode('.',$v_videoData);
 
+    $v_gifData = $v_videoData[0];
+
+
+
+    //Roda Classe de geração de GIF
+
+
+
+}
 
 
 else
