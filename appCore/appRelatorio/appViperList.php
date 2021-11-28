@@ -462,7 +462,7 @@ $v_dateStart = date('Y-m-d',$v_timestamp2);
                             }else{
                                 v_active = "";
                             }
-                            v_html+="<div class='carousel-item "+v_active+"'><img class='img-size' src='../../__appFiles/"+val.customer_token+"/CAM"+val.nuc+"/"+val.photo_original_name+"' alt='Foto "+(i+1)+"' /></div>";
+                            v_html+="<div class='carousel-item "+v_active+"'><img class='img-size' src='../../__appCloud/"+val.customer_token+"/CAM"+val.nuc+"/"+val.photo_original_name+"' alt='Foto "+(i+1)+"' /></div>";
                         });
 
                         $(".carousel-inner").html(v_html);
