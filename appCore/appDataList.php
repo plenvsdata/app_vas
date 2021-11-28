@@ -12,8 +12,6 @@ use app\dbClass\appDBClass;
 //class for emails
 use app\System\Tools\appSystemTools;
 use PHPMailer\PHPMailer\PHPMailer;
-use movemegif\domain\FileImageCanvas;
-use movemegif\GifBuilder;
 
 class appDataList
 {
@@ -29,22 +27,8 @@ class appDataList
         $query = "SELECT customer_id,customer_cnpj,customer_razao_social,customer_nome_fantasia,customer_token_in,customer_token_out,customer_phone,customer_email,allow_delete,customer_status,ok FROM %appDBprefix%_view_customer_list WHERE 1=1 ";
         $query.=" ORDER BY customer_nome_fantasia";
 
-
-        //INICIO EMAIL AO RECEBER ALERTA VIPER
-            //gerar Gif
-            require_once __DIR__ . '/../appClasses/autoloader.php';
-            // no width and height specified: they will be taken from the first frame
-        $builder = new GifBuilder();
-        $builder->setRepeat();
-
-        for ($i = 0; $i <= 4; $i++) {
-            $builder->addFrame()
-                ->setCanvas(new FileImageCanvas(__DIR__ . '/../__appFiles/4E74390CFBF0DFDD015BC04E2A630932FDB8B1E2A13192ECAB1BCD08E644CEBA/CAM20/06112021_030327_20_0' . $i . '.jpg'))
-                ->setDuration(15);
-        }
-
-        $builder->output('gifAlert.gif');
-        //print $builder;die();
+//Todo Enviar Email -Mudar para classe real
+/*
 
             $data['customerEmail'] = 'teste@cdn.com';//pegar dados do BD
             $data['customerName'] = 'CDN';//pegar dados do BD
@@ -54,17 +38,14 @@ class appDataList
                 'alertData' => '12/11/2021',
                 'alertHora' => '12:40:00',
                 'alertCamera' => '25',
-                'alertVideo' => $GLOBALS['g_appRoot'].'/vasCloudVideo/Player/nonono.gif',
+                'alertVideo' => $GLOBALS['g_appRoot'].'/vasCloudVideo/Player/video_code.gif',//hash 256
                 'currentYear' => date('Y'),
                 'vaSystemsDomain' => $GLOBALS['g_appRoot']
             );
 
-            //$builder->output('gifAlert.gif')
-
             $v_htmlBody = new appSystemTools();
             $v_htmlBody->contentParse(file_get_contents('../appSystemTemplate/appMailSendAlertViperTemplate.html'),$v_dataParse);
             $v_htmlMsg = $v_htmlBody->returnContent;
-            //echo $v_htmlMsg;die();
             $v_sendInvitation = new PHPMailer(true);
             $v_sendInvitation->SMTPDebug = $GLOBALS['g_phpMailerDebug'];
 
@@ -102,8 +83,8 @@ class appDataList
             catch (Exception $e) {
                 echo 'A mensagem não pode ser enviada. Mailer Error: ', $v_sendInvitation->ErrorInfo;
             }
-        //FIM EMAIL AO RECEBER ALERTA VIPER
-
+        //Todo FIM EMAIL AO RECEBER ALERTA VIPER
+*/
         return $this->dbCon->dbSelect($query);
 
     }
