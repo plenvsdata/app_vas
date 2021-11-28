@@ -9,6 +9,7 @@
 namespace app\System\Photo;
 
 use app\dbClass\appDBClass;
+use app\System\Lov\appGetValue;
 
 class appPhoto
 {
@@ -100,6 +101,67 @@ class appPhoto
             }
             return $v_return;
         }
+    }
+
+    public function appAlarmCloud($data = NULL,$fileData = NULL)
+    {
+        //print_r($data);
+        //print_r($fileData);
+
+        $v_reqMethod = $data['method'];
+        $v_customerID = $data['customerID'];
+        $v_cloudPath = $data['cloudPath'];
+        $v_tokenData = $data['tokenData'];
+        $v_fileNameHash = $data['fileName'].$data['fileNumber'].'.'.$data['fileExt'];
+        $v_alarmID = $data['alarmID'];
+        $v_dateTime = $data['dateTime'];
+        $v_fileNumber = $data['fileNumber'];
+
+        $v_getValueData = new appGetValue();
+
+        $v_data['table'] = 'lov_system_alarme_type';
+        $v_data['field'] = 'alarme_type_id';
+        $v_data['fieldName'] = 'alarme_desc';
+        $v_data['fieldID'] = $data['alarmType'];
+
+        $v_getValueReturn = $v_getValueData->appGetValueData($v_data);
+        $v_alarmeTypeID = $v_getValueReturn['alarme_type_id'];
+        $v_fileName = $fileData['name'][$v_fileNumber];
+        $v_fileTarget = $v_cloudPath.$fileData['name'][$data['fileNumber']];
+        $v_cloudDirCheck = !(!file_exists($v_cloudPath)) || mkdir($v_cloudPath, 0777, true);
+
+        if(!$v_cloudDirCheck)
+        {
+            return false;
+        }
+
+        if ($v_reqMethod === "POST")
+        {
+            if(move_uploaded_file($fileData['tmp_name'][$data['fileNumber']], $v_fileTarget))
+            {
+                $query  = "INSERT INTO %appDBprefix%_photo_data (customer_id,alarme_type_id,alarme_id,photo,photo_original_name,alarme_datetime) ";
+                $query .= "VALUES ('".$v_customerID."',".$v_alarmeTypeID.",".$v_alarmID.",'".$v_fileNameHash."','".$v_fileName."','".$v_dateTime."')";
+                $v_insertData = $this->dbCon->dbInsert($query);
+                $v_return['status'] = true;
+                $v_return['photoID'] = $v_insertData['rsInsertID'];
+            }
+            else
+            {
+                $v_return['status'] = false;
+            }
+            return $v_return;
+        }
+        elseif ($v_reqMethod === "PUT")
+        {
+            //ToDo: Implementar o PUT/EDIT
+
+        }
+        elseif ($v_reqMethod === "GET")
+        {
+        }
+        elseif ($v_reqMethod === "DELETE")
+        {
+         }
     }
 
     public function appUserPhotoData($data = NULL,$file = NULL)
