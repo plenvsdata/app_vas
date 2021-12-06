@@ -21,11 +21,12 @@ require_once "appDataAPI.php";
 require_once "appGetValue.php";
 require_once "appPhoto.php";
 require_once "appCombo.php";
-require_once "appDataList.php";
+//require_once "appDataList.php";
 require_once "appCustomer.php";
 require_once "appInstallation.php";
 require_once "appReport.php";
 require_once "appChart.php";
+require_once "appErrorLog.php";
 /*
 require_once "appDBErrorCodes.php";
 

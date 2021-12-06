@@ -8,6 +8,7 @@ use app\System\API\appDataAPI;
 use movemegif\domain\FileImageCanvas;
 use movemegif\GifBuilder;
 use app\System\Photo\appPhoto;
+use app\System\ErrorLog\ErrorLog;
 
 $v_dataSec = !empty($_REQUEST['dataSec']) ? $_REQUEST['dataSec'] : NULL;
 
@@ -43,6 +44,10 @@ elseif ($v_dataSec == "checkAppConnection") {
 }
 elseif ($v_dataSec == "i3pDataReceiver") {
     $v_appRequest = !empty($_REQUEST) ? $_REQUEST : NULL;
+
+    $v_errorLog = new ErrorLog();
+    $v_errorInsert = $v_errorLog->appInsertFullData($v_appRequest);
+
     $v_customerID = $v_appRequest['customerID'] ?? NULL;
 
     if($v_customerID == NULL){
@@ -93,7 +98,6 @@ elseif ($v_dataSec == "i3pPhotoReceiver") {
     $v_data['alarmID'] = $v_appRequest['alarmID'];
     $v_data['alarmType'] = $v_appRequest['alarmType'];
     $v_data['dateTime'] = $v_date[2].'-'.$v_date[1].'-'.$v_date[0].' '.$v_appRequest['alarmTime'];
-    $v_file = $_FILES['image'];
     $v_fileCount = count($v_file);
 
     $v_photoData = new appPhoto();
@@ -122,6 +126,10 @@ elseif ($v_dataSec == "apiTeste") {
 }
 elseif ($v_dataSec = "Player") {
     $v_dataRequest = !empty($_REQUEST) ? $_REQUEST : NULL;
+
+    //print_r($v_dataRequest);
+    die();
+
     $v_videoCode = $v_appRequest['video_code'] ?? NULL;//video_code.gif
     //$v_videoData = explode('.',$v_videoData);
 
