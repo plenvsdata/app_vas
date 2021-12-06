@@ -314,7 +314,12 @@ $v_dateStart = date('Y-m-d',$v_timestamp2);
                         { data: "nor", "className":"text-left text-monospace" },
                          */
                         { data: "cod", "className":"text-right text-monospace" },
-                        { data: "data_br", "className":"text-right text-monospace" },
+                        { data:
+                                {
+                                    _: "data_br",
+                                    sort: "data_order"
+                                }, "className":"text-right text-monospace"
+                        },
                         { data: "nuc", "className":"text-right text-monospace" },
                         { data: "apl", "className":"text-left text-monospace reportCustomer80px" },
                         { data: "ins", "className":"text-right text-monospace" },
@@ -324,7 +329,16 @@ $v_dateStart = date('Y-m-d',$v_timestamp2);
                                 {
                                     _: function (data)
                                     {
-                                        return '<i class="fa fa-video-camera gallery"></i>';
+                                        let v_icon
+                                        if(parseInt(data.origem_id) === 3) {
+                                            v_icon = '<span class="fa-stack">'+
+                                                     '<i class="fa fa-video-camera fa-stack"></i>'+
+                                                     '<i class="fa fa-ban fa-stack-2x text-danger"></i>'+
+                                                     '</span>';
+                                        } else {
+                                            v_icon = '<i class="fa fa-video-camera gallery"></i>';
+                                        }
+                                        return v_icon;
                                     }
                                 },
                             "className":"text-center"
@@ -350,7 +364,7 @@ $v_dateStart = date('Y-m-d',$v_timestamp2);
                             "searchable": false
                         }
                     ],
-                "order":[[7,'asc']]
+                "order":[[2,'desc'],[7,'asc']]
             }
         );
 

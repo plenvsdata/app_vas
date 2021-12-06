@@ -207,7 +207,7 @@ if(isset($_SESSION['sectionIDCheck'])){
                                 {
                                     return "<a href='DashboardConfig/"+data.dashboard_id+"'>"+data.dashboard_desc+"</a>";
                                 },
-                                _sort: "dashboard_desc"
+                                sort: "dashboard_desc"
                             }, "className":"text-left"
                         },
                         {

@@ -181,7 +181,7 @@ class appDataList
     {
         $v_dataStart = !empty($data['dataStart']) ? $data['dataStart'] : NULL;
         $v_dataEnd = !empty($data['dataEnd']) ? $data['dataEnd'] : NULL;
-        $query = "SELECT alarme_viper_id,customer_id,customer_nome_fantasia,ori,idr,nor,cod,dat,data_br,nuc,apl,ins,origem_id,origem_desc,subtipo_id,subtipo_desc,nsb,sbn,cor,ips,pos,alarme_viper_completo,alarme_status,alarme_status_desc,created_at,updated_at,updated_by,ok FROM %appDBprefix%_view_alarme_viper_data WHERE 1=1 ";
+        $query = "SELECT alarme_viper_id,customer_id,customer_nome_fantasia,ori,idr,nor,cod,dat,data_br,data_order,nuc,apl,ins,origem_id,origem_desc,subtipo_id,subtipo_desc,nsb,sbn,cor,ips,pos,alarme_viper_completo,alarme_status,alarme_status_desc,created_at,updated_at,updated_by,ok FROM %appDBprefix%_view_alarme_viper_data WHERE 1=1 ";
         if(!is_null($v_dataStart) && !is_null($v_dataEnd))
         {
             $query .= " AND (dat BETWEEN '".$v_dataStart." 00:00:00' AND '".$v_dataEnd." 23:59:59') ";

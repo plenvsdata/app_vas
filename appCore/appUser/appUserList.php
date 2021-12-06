@@ -286,7 +286,7 @@ if(isset($_SESSION['sectionIDCheck'])){
                                         }
 
                                     },
-                                    _sort: "user_name"
+                                    sort: "user_name"
                                 }, "className":"text-left"
                         },
                         { data: "user_login", "className":"text-left" },
@@ -304,7 +304,7 @@ if(isset($_SESSION['sectionIDCheck'])){
                                         }
 
                                     },
-                                    _sort: "customer_nome_fantasia"
+                                    sort: "customer_nome_fantasia"
                                 }
                         },
                         { data:

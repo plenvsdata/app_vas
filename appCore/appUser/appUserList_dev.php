@@ -512,7 +512,7 @@ $v_localeJS = str_replace('_','-',$_SESSION['userLocale']);
                                         }
 
                                     },
-                                    _sort: "user_name"
+                                    sort: "user_name"
                                 }, "className":"text-left"
                         },
                         { data: "user_login", "className":"text-left" },
