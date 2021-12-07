@@ -229,9 +229,17 @@ class appPhoto
         $v_return['camPath'] = $v_dbReturn['rsData'][0]['cam_folder'];
 
         foreach ($v_dbReturn['rsData'] as $k => $v) {
-            $v_return['photoArray'][] = $v['photo_original_name'];
+            $v_return['photoArray'][] = $_SERVER['DOCUMENT_ROOT']."/__appCloud/".$v_return['customerToken']."/".$v_return['camPath']."/".$v['photo_original_name'];
+            $v_return['photoDuration'][] = 40;
         }
+        $v_return['status'] = true;
+        return $v_return;
+    }
 
+    public function appEmailUpdateRead($data):array
+    {
+        $query = "UPDATE %appDBprefix%_alarme_email_data SET read_count = read_count+1 WHERE video_code = '".$data."'";
+        $v_return = $this->dbCon->dbUpdate($query);
         $v_return['status'] = true;
         return $v_return;
     }

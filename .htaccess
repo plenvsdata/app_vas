@@ -72,7 +72,7 @@ RewriteRule    ^appBIDataAPI/([A-Za-z0-9-]+)/?$    appCore/blockBIData.php?dataS
 RewriteRule    ^appBIDataAPI/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/?$    appCore/blockBIData.php?method=$1&dataSec=$2  [NC,L]    # Handle requests for "appBIDataAPI"
 
 RewriteRule    ^vasCloudVideo/Player/([A-Za-z0-9-]+).gif/?$    appCore/appVasDataAPI.php?dataSec=Player&videoData=$1   [NC,L]    # Gera gif animado
-RewriteRule    ^vasCloudVideo/Validation/True/([A-Za-z0-9-]+)/?$    appCore/appVasDataAPI.php?dataSec=$1&VideoValidation=$2&videoData=$3   [NC,L]    # Confirma Vídeo Positivo
-RewriteRule    ^vasCloudVideo/Validation/False/([A-Za-z0-9-]+)/?$    appCore/appVasDataAPI.php?dataSec=$1&VideoValidation=$2&videoData=$3   [NC,L]    # Confirma Vídeo Falso Positivo
+RewriteRule    ^vasCloudValidation/True/([A-Za-z0-9-]+)/?$    appCore/appVasDataAPI.php?dataSec=eventValidation&alarmeStatus=1&videoData=$1   [NC,L]    # Confirma Vídeo Positivo
+RewriteRule    ^vasCloudValidation/False/([A-Za-z0-9-]+)/?$    appCore/appVasDataAPI.php?dataSec=eventValidation&alarmeStatus=0&videoData=$1   [NC,L]    # Confirma Vídeo Falso Positivo
 
 RewriteRule    ^404/?$    appSystemPages/appSystemError404.php [NC,L]    # Handle requests for "System Tools"

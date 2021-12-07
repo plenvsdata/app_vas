@@ -5,10 +5,8 @@ include ("../appGlobals/appGlobalSettings.php");
 require ("../appClasses/appGlobal.php");
 require_once __DIR__ . '/../appClasses/autoloader.php';
 
-
 use app\System\API\appDataAPI;
-use movemegif\domain\FileImageCanvas;
-use movemegif\GifBuilder;
+use gifCreator\GifCreator;
 use app\System\Photo\appPhoto;
 use app\System\ErrorLog\ErrorLog;
 
@@ -140,20 +138,25 @@ elseif ($v_dataSec = "Player") {
     $v_alarmeDesc = $v_gifData['alarmeDesc'];
     $v_camPath = $v_gifData['camPath'];
     $v_photoArray = $v_gifData['photoArray'];
+    $v_photoDurationArray = $v_gifData['photoDuration'];
     $v_status = $v_gifData['status'];
 
     $v_cloudPath = $_SERVER['DOCUMENT_ROOT']."/__appCloud/".$v_customerToken."/".$v_camPath."/";
-    $v_gifBuilder = new GifBuilder();
-    $v_gifBuilder->setRepeat();
-
-    for ($i = 0; $i < count($v_photoArray); $i++) {
-        $v_frame = $v_cloudPath.$v_photoArray[$i];
-        $v_frameData = new FileImageCanvas($v_frame);
-
-        $v_gifBuilder->addFrame()->setCanvas($v_frameData)->setDuration(15);
-    }
+    $v_gifCreator = new GifCreator();
+    $v_gifCreator->create($v_photoArray,$v_photoDurationArray,0);
+    $gifBinary = $v_gifCreator->getGif();
     $v_gifName = $v_videoCode.'.gif';
-    $v_gifBuilder->output($v_gifName);
+    $v_videoData->appEmailUpdateRead($v_videoCode);
+    header('Content-type: image/gif');
+    header('Content-Disposition: filename="'.$v_gifName.'"');
+    echo $gifBinary;
+    exit;
+}
+elseif ($v_dataSec = "eventValidation") {
+    $v_dataRequest = !empty($_REQUEST) ? $_REQUEST : NULL;
+
+    var_dump($v_dataRequest);
+
 
 }
 
