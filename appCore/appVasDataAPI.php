@@ -3,6 +3,8 @@ session_start();
 
 include ("../appGlobals/appGlobalSettings.php");
 require ("../appClasses/appGlobal.php");
+require_once __DIR__ . '/../appClasses/autoloader.php';
+
 
 use app\System\API\appDataAPI;
 use movemegif\domain\FileImageCanvas;
@@ -92,7 +94,7 @@ elseif ($v_dataSec == "i3pPhotoReceiver") {
     }
 
     $v_date = explode('/',$v_appRequest['alarmDate']);
-    $v_data['cloudPath'] = $_SERVER['DOCUMENT_ROOT']."/__appCloud/".$v_appRequest['customerToken']."/".$v_appRequest['camPath']."/";;
+    $v_data['cloudPath'] = $_SERVER['DOCUMENT_ROOT']."/__appCloud/".$v_appRequest['customerToken']."/".$v_appRequest['camPath']."/";
     $v_data['tokenData'] = $v_appRequest['customerToken'];
     $v_data['fileName'] = $v_fileName;
     $v_data['alarmID'] = $v_appRequest['alarmID'];
@@ -126,42 +128,32 @@ elseif ($v_dataSec == "apiTeste") {
 }
 elseif ($v_dataSec = "Player") {
     $v_dataRequest = !empty($_REQUEST) ? $_REQUEST : NULL;
+    $v_videoCode = $v_dataRequest['videoData'] ?? NULL;//video_code.gif
+    $v_videoData = new appPhoto();
+    $v_gifData = $v_videoData->appEmailPhotoData($v_videoCode);
 
-    //print_r($v_dataRequest);
-    die();
+    $v_customerID = $v_gifData['customerID'];
+    $v_customerToken = $v_gifData['customerToken'];
+    $v_emailID = $v_gifData['emailID'];
+    $v_userID = $v_gifData['userID'];
+    $v_alarmeTypeID = $v_gifData['alarmeTypeID'];
+    $v_alarmeDesc = $v_gifData['alarmeDesc'];
+    $v_camPath = $v_gifData['camPath'];
+    $v_photoArray = $v_gifData['photoArray'];
+    $v_status = $v_gifData['status'];
 
-    $v_videoCode = $v_appRequest['video_code'] ?? NULL;//video_code.gif
-    //$v_videoData = explode('.',$v_videoData);
+    $v_cloudPath = $_SERVER['DOCUMENT_ROOT']."/__appCloud/".$v_customerToken."/".$v_camPath."/";
+    $v_gifBuilder = new GifBuilder();
+    $v_gifBuilder->setRepeat();
 
-   // $v_videoCode = $v_videoData[0];//video_code
+    for ($i = 0; $i < count($v_photoArray); $i++) {
+        $v_frame = $v_cloudPath.$v_photoArray[$i];
+        $v_frameData = new FileImageCanvas($v_frame);
 
-
-    //INICIO EMAIL AO RECEBER ALERTA VIPER
-    //gerar Gif
-    require_once __DIR__ . '/../appClasses/autoloader.php';
-    // no width and height specified: they will be taken from the first frame
-    $builder = new GifBuilder();
-    $builder->setRepeat();
-
-    for ($i = 0; $i <= 4; $i++) {
-        $builder->addFrame()
-            ->setCanvas(new FileImageCanvas(__DIR__ . '/../__appFiles/4E74390CFBF0DFDD015BC04E2A630932FDB8B1E2A13192ECAB1BCD08E644CEBA/CAM20/06112021_030327_20_0' . $i . '.jpg'))
-            ->setDuration(15);
+        $v_gifBuilder->addFrame()->setCanvas($v_frameData)->setDuration(15);
     }
-
-    return $builder->output($v_videoCode);
-
-
-
-    //atualizar read_at     vas_alarme_email_data
-
-
-
-
-
-    //Roda Classe de geração de GIF
-
-
+    $v_gifName = $v_videoCode.'.gif';
+    $v_gifBuilder->output($v_gifName);
 
 }
 

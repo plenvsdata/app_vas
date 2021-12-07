@@ -16,25 +16,29 @@ class FileImageCanvas extends GdCanvas
     /** @noinspection PhpMissingParentConstructorInspection */
     public function __construct($filePath)
     {
-        if (preg_match('#\.(gif|png|jpg|jpeg)$#', $filePath, $matches)) {
+        if (preg_match('#\.(gif|GIF|png|PNG|jpg|JPG|jpeg|JPEG)$#', $filePath, $matches)) {
 
             $ext = $matches[1];
 
             switch ($ext) {
 
                 case 'gif':
+                case 'GIF':
                     $this->resource = imagecreatefromgif($filePath);
                     $this->transparencyColor = $this->locateTransparentColor($this->resource);
                     break;
 
                 case 'png':
+                case 'PNG':
                     $this->resource = imagecreatefrompng($filePath);
                     imagetruecolortopalette($this->resource, true, 256);
                     $this->transparencyColor = $this->locateTransparentColor($this->resource);
                     break;
 
                 case 'jpg':
+                case 'JPG':
                 case 'jpeg':
+                case 'JPEG':
                     $this->resource = imagecreatefromjpeg($filePath);
                     imagetruecolortopalette($this->resource, true, 256);
                     break;

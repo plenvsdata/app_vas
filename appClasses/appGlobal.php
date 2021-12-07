@@ -27,6 +27,8 @@ require_once "appInstallation.php";
 require_once "appReport.php";
 require_once "appChart.php";
 require_once "appErrorLog.php";
+//require_once "movemegif/domain/FileImageCanvas.php";
+//require_once "movemegif/GifBuilder.php";
 /*
 require_once "appDBErrorCodes.php";
 

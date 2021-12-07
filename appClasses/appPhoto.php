@@ -62,8 +62,8 @@ class appPhoto
         }
         elseif ($v_reqMethod === "GET")
         {
-            $v_photoID = !empty($data['photoID']) ? $data['photoID'] : NULL;
-            $query = "SELECT clnt,photo_id,photo_type_id,photo_type_desc,photo,photo_original_name,photo_crc,photo_extension,photo_mime,photo_notes,photo_size,product_id,product_desc,product_type_id,product_type_desc,manufacturer_id,manufacturer_desc,product_category_id,product_category_desc,base_price,created_at,created_by,user_name,photo_status FROM %appDBprefix%_view_product_photo_list  WHERE photo_id = $v_photoID AND clnt = '".$_SESSION['userClnt']."'";
+            $v_videoCode = !empty($data['videoCode']) ?? NULL;
+            $query = "SELECT customer_token,user_id,alarme_type_id,alarme_desc,video_code,photo,photo_original_name,cam_folder,alarme_datetime,read_at,read_count,validated_at,created_at FROM %appDBprefix%_view_email_photo_data WHERE video_code = '".$v_videoCode."'";
             $v_return['apiData'] = $this->dbCon->dbSelect($query);
             $v_return['apiData']['status'] = true;
             return $v_return;
@@ -212,6 +212,28 @@ class appPhoto
         $query = "SELECT photo_original_name,customer_token,nuc FROM %appDBprefix%_view_photo_alarme_viper WHERE alarme_id = $v_alarmeID ";
         $v_return = $this->dbCon->dbSelect($query);
         return $v_return['rsData'];
+    }
+
+    public function appEmailPhotoData($data):array
+    {
+        $query = "SELECT email_id,customer_id,customer_token,user_id,alarme_type_id,alarme_desc,video_code,photo,photo_original_name,cam_folder,alarme_datetime,read_at,read_count,validated_at,created_at FROM %appDBprefix%_view_email_photo_data WHERE video_code = '".$data."' ORDER BY photo_original_name ASC";
+        $v_dbReturn = $this->dbCon->dbSelect($query);
+
+        $v_return['photoTotal'] = $v_dbReturn['rsTotal'];
+        $v_return['emailID'] = $v_dbReturn['rsData'][0]['email_id'];
+        $v_return['customerID'] = $v_dbReturn['rsData'][0]['customer_id'];
+        $v_return['customerToken'] = $v_dbReturn['rsData'][0]['customer_token'];
+        $v_return['userID'] = $v_dbReturn['rsData'][0]['user_id'];
+        $v_return['alarmeTypeID'] = $v_dbReturn['rsData'][0]['alarme_type_id'];
+        $v_return['alarmeDesc'] = $v_dbReturn['rsData'][0]['alarme_desc'];
+        $v_return['camPath'] = $v_dbReturn['rsData'][0]['cam_folder'];
+
+        foreach ($v_dbReturn['rsData'] as $k => $v) {
+            $v_return['photoArray'][] = $v['photo_original_name'];
+        }
+
+        $v_return['status'] = true;
+        return $v_return;
     }
 
 }
