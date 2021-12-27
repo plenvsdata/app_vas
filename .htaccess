@@ -71,7 +71,7 @@ RewriteRule    ^vasGetDataAPI/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/([
 RewriteRule    ^appBIDataAPI/([A-Za-z0-9-]+)/?$    appCore/blockBIData.php?dataSec=$1   [NC,L]    # Handle requests for "appBIDataAPI"
 RewriteRule    ^appBIDataAPI/([A-Za-z0-9-]+)/([A-Za-z0-9-]+)/?$    appCore/blockBIData.php?method=$1&dataSec=$2  [NC,L]    # Handle requests for "appBIDataAPI"
 
-RewriteRule    ^vasCloudVideo/Player/([A-Za-z0-9-]+).gif/?$    appCore/appVasDataAPI.php?dataSec=Player&videoData=$1   [NC,L]    # Gera gif animado
+RewriteRule    ^vasCloudVideo/Player/([A-Za-z0-9-]+).gif/?$    appCore/appVasDataAPI.php?dataSec=player&videoData=$1   [NC,L]    # Gera gif animado
 RewriteRule    ^vasCloudValidation/True/([A-Za-z0-9-]+)/?$    appCore/appVasDataAPI.php?dataSec=eventValidation&alarmeStatus=1&videoData=$1   [NC,L]    # Confirma Vídeo Positivo
 RewriteRule    ^vasCloudValidation/False/([A-Za-z0-9-]+)/?$    appCore/appVasDataAPI.php?dataSec=eventValidation&alarmeStatus=0&videoData=$1   [NC,L]    # Confirma Vídeo Falso Positivo
 

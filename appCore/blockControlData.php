@@ -178,8 +178,9 @@ elseif($v_dataSec == "appListAlarmeObcon")
 }
 elseif ($v_dataSec == "appListCustomer")
 {
+    $v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;
     $v_appCustomerData = new appDataList();
-    $v_appCustomerList = $v_appCustomerData->appCustomerList();
+    $v_appCustomerList = $v_appCustomerData->appCustomerList($v_appData);
     $v_returnData["appCustomerList"] = $v_appCustomerList["rsData"];
     echo json_encode($v_returnData);
 }

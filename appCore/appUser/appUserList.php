@@ -99,7 +99,8 @@ if(isset($_SESSION['sectionIDCheck'])){
                 <h4 class="modal-title">Adicionar Usuário</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
-            <div class="modal-body">
+            <form>
+                <div class="modal-body">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group has-feedback divUserName">
@@ -120,21 +121,21 @@ if(isset($_SESSION['sectionIDCheck'])){
                     <div class="col-md-6">
                         <div class="form-group has-feedback divUserEmail">
                             <label for="userEmail" class="control-label">Email:</label>
-                            <input type="text" class="form-control userEmail" required id="userEmail" name="userEmail" aria-describedby="userEmailHelp">
+                            <input type="text" class="form-control userEmail" required id="userEmail" name="userEmail" aria-describedby="userEmailHelp" autocomplete="username">
                             <span id="userEmailHelp" class="help-block text-danger">Min 3 caracteres</span>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group has-feedback divNewPwd">
                             <label for="newPwd" class="control-label">Senha:</label>
-                            <input type="password" class="form-control newPwd" id="newPwd" name="newPwd" aria-describedby="newPwdHelp">
+                            <input type="password" class="form-control newPwd" id="newPwd" name="newPwd" aria-describedby="newPwdHelp" autocomplete="password">
                             <span id="newPwdHelp" class="help-block text-danger">Min 3 characters</span>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group has-feedback divRePwd">
                             <label for="rePwd" class="control-label">Confirme a Senha:</label>
-                            <input type="password" class="form-control rePwd" id="rePwd" name="rePwd" aria-describedby="rePwdHelp">
+                            <input type="password" class="form-control rePwd" id="rePwd" name="rePwd" aria-describedby="rePwdHelp" autocomplete="new-password">
                             <span id="rePwdHelp" class="help-block text-danger">Min 3 characters</span>
                         </div>
                     </div>
@@ -174,6 +175,7 @@ if(isset($_SESSION['sectionIDCheck'])){
                     <button type="button" class="btn btn-sm btn-success waves-effect waves-light" id="btnSave">Salvar</button>
                 </div>
             </div>
+            </form>
         </div>
     </div>
 </div>
@@ -592,14 +594,14 @@ if(isset($_SESSION['sectionIDCheck'])){
 
         });
 
-
-        $('.profileID').on('changed.bs.select', function (e, clickedIndex, newValue, oldValue) {
+        $('select.profileID').on('changed.bs.select', function (e, clickedIndex, newValue, oldValue) {
             let v_profileID = $(e.currentTarget).val();
             if(v_profileID == 3){
                 $('#divCustomer').show();
             }else{
                 $('#divCustomer').hide();
             }
+            console.log('Trocou para '+v_profileID);
         });
 
         $(document).on('keypress',"#newPwd",function(e)

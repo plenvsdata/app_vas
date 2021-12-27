@@ -10,6 +10,9 @@ namespace app\System\Photo;
 
 use app\dbClass\appDBClass;
 use app\System\Lov\appGetValue;
+use app\System\Tools\appSystemTools;
+use PHPMailer\PHPMailer\PHPMailer;
+use app\System\Lists\appDataList;
 
 class appPhoto
 {
@@ -144,6 +147,8 @@ class appPhoto
                 $v_insertData = $this->dbCon->dbInsert($query);
                 $v_return['status'] = true;
                 $v_return['photoID'] = $v_insertData['rsInsertID'];
+                $v_return['fileName'] = $v_fileName;
+                $v_return['alarmeTypeID'] = $v_alarmeTypeID;
             }
             else
             {
@@ -242,6 +247,117 @@ class appPhoto
         $v_return = $this->dbCon->dbUpdate($query);
         $v_return['status'] = true;
         return $v_return;
+    }
+
+    public function appAlarmeEmailData($data = NULL)
+    {
+        $v_reqMethod = $data['method'];
+        if ($v_reqMethod === "PUT")
+        {
+            $query = "UPDATE %appDBprefix%_alarme_email_data SET read_count = read_count+1 WHERE video_code = '".$data['videoCode']."'";
+            $v_return = $this->dbCon->dbInsert($query);
+            $v_return['status'] = true;
+            return $v_return;
+
+        }elseif($v_reqMethod === "POST"){
+            $v_customerID = $data['customerID'] ?? NULL;
+            $v_userID = $data['userID'] ?? '';
+            $v_alarmeTypeID = $data['alarmeTypeID'] ?? NULL;
+            $v_alarmeID = $data['alarmeID'] ?? NULL;
+            $v_videoCode = $data['videoCode'] ?? NULL;
+
+            $query  = "INSERT INTO %appDBprefix%_alarme_email_data (customer_id, user_id, alarme_type_id, alarme_id, video_code) ";
+            $query .= "VALUES ('".$v_customerID."','".$v_userID."',".$v_alarmeTypeID.",".$v_alarmeID.",'".$v_videoCode."')";
+           // trigger_error ( "Query: $query", E_USER_ERROR );
+            $v_insertData = $this->dbCon->dbInsert($query);
+            $v_return['status'] = true;
+            $v_return['emailID'] = $v_insertData['rsInsertID'];
+            return $v_return;
+        }
+    }
+
+    public function appSendEmailViper($data = NULL){
+
+        /*  pegar dados do customer (customerName, customerEmail,) OK
+         *
+         *  pegar dados do alerta (data,hora,camera) - OK
+         *
+         *  pegar dados AlarmeEmailData (alarmeID, videoCode)
+         *
+         * */
+
+        //get customer data (customerName, customerEmail)
+
+        $v_customerData = new appDataList();
+        $v_customerList = $v_customerData->appCustomerList($data);
+        $v_customer = $v_customerList['rsData'][0];
+       // print "customer_nome_fantasia = ".$v_customer['customer_nome_fantasia']. " customer_email = ".$v_customer['customer_email'];
+
+
+        $v_fileName = $data['fileName'] ?? NULL;//ex. AL_VIPE_000007_26112021_073000_06_00.JPG
+        if($v_fileName){
+            $v_dateTime = substr($v_fileName,15,15);
+            $v_dateTimeObj = date_create_from_format('dmY_His',$v_dateTime);
+            $v_alertData = (string) date_format($v_dateTimeObj,'d/m/Y');
+            $v_alertHora = (string) date_format($v_dateTimeObj,'H:i:s');
+            $v_alertCamera = substr($v_fileName,31,2)	;
+            $data['customerEmail'] = $v_customer['customer_email'];
+            $data['customerName'] = $v_customer['customer_nome_fantasia'];
+            //teste Email
+            $v_dataParse = array(
+                'customerName' => $v_customer['customer_nome_fantasia'],
+                'alertData' => $v_alertData,
+                'alertHora' => $v_alertHora,
+                'alertCamera' => $v_alertCamera,
+                'alertVideo' => ''.$GLOBALS['g_appRoot'].'/vasCloudVideo/Player/'.$data['videoCode'].'.gif',//hash 256
+                'currentYear' => date('Y'),
+                'vaSystemsDomain' => $GLOBALS['g_appRoot'],
+                'videoCode' => $data['videoCode']
+            );
+            //var_dump($v_dataParse);die();
+            $v_htmlBody = new appSystemTools();
+            $v_htmlBody->contentParse(file_get_contents('../appSystemTemplate/appMailSendAlertViperTemplate.html'),$v_dataParse);
+            $v_htmlMsg = $v_htmlBody->returnContent;
+            $v_sendInvitation = new PHPMailer(true);
+            $v_sendInvitation->SMTPDebug = $GLOBALS['g_phpMailerDebug'];
+
+            try {
+                if ($GLOBALS['g_useSMTP'] === true) {
+
+                    $v_sendInvitation->isSMTP();
+                    $v_sendInvitation->Host = gethostbyname($GLOBALS['g_emailHostSettings']['host']);
+                    $v_sendInvitation->SMTPAuth = $GLOBALS['g_emailHostSettings']['smtpAuth'];
+                    $v_sendInvitation->Username = $GLOBALS['g_emailHostSettings']['username'];
+                    $v_sendInvitation->Password = $GLOBALS['g_emailHostSettings']['password'];
+                    $v_sendInvitation->SMTPSecure = $GLOBALS['g_emailHostSettings']['secure'];
+                    $v_sendInvitation->Port = $GLOBALS['g_emailHostSettings']['port'];
+                    $v_sendInvitation->SMTPOptions = array(
+                        'ssl' => array(
+                            'verify_peer' => false,
+                            'verify_peer_name' => false,
+                            'allow_self_signed' => true
+                        )
+                    );
+                }
+
+                $v_sendInvitation->setFrom('suporte@vasystem.com.br', 'VA Systems');
+                $v_sendInvitation->addReplyTo('suporte@vasystem.com.br', 'VA Systems');
+                $v_sendInvitation->addAddress($v_customer['customer_email'], $v_customer['customer_nome_fantasia']);
+                $v_sendInvitation->Subject = 'Alerta detectado.';
+                $v_sendInvitation->msgHTML($v_htmlMsg);
+                $v_sendInvitation->AltBody = 'Acabamos de detectar um alerta, seguem os dados: Data '.$v_dataParse['alertData'].' às '.$v_dataParse['alertHora'].' na câmera '.$v_dataParse['alertCamera'];
+                if ($v_sendInvitation->send()) {
+                    $v_return['sendEmail'] = true;
+                } else {
+                    $v_return['sendEmail'] = false;
+                }
+            }
+            catch (Exception $e) {
+                echo 'A mensagem não pode ser enviada. Mailer Error: ', $v_sendInvitation->ErrorInfo;
+            }
+        }
+
+
     }
 
 }
