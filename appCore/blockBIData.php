@@ -18,19 +18,19 @@ $v_dataSec = !empty($_REQUEST['dataSec']) ? $_REQUEST['dataSec'] : NULL;
 /* API Features */
 //Charts
 
-if($v_dataSec == "appChartObconEntradaSaida")
+if($v_dataSec == "appChartInOutEntradaSaida")
 {
 $v_appRequest = !empty($_REQUEST) ? $_REQUEST : NULL;
 $v_appData = new appChart();
-$v_appChart = $v_appData->chartObconEntradaSaida($v_appRequest);
+$v_appChart = $v_appData->chartInOutEntradaSaida($v_appRequest);
 
 echo json_encode($v_appChart);
 }
-elseif($v_dataSec == "appChartObconDashboardDia")
+elseif($v_dataSec == "appChartInOutDashboardDia")
 {
     $v_appRequest = !empty($_REQUEST) ? $_REQUEST : NULL;
     $v_appData = new appChart();
-    $v_appChart = $v_appData->chartObconDashboardDia($v_appRequest);
+    $v_appChart = $v_appData->chartInOutDashboardDia($v_appRequest);
     echo json_encode($v_appChart);
 }
 /* API Not Found */

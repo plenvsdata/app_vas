@@ -99,8 +99,7 @@ if(isset($_SESSION['sectionIDCheck'])){
                 <h4 class="modal-title">Adicionar Usuário</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
-            <form>
-                <div class="modal-body">
+            <div class="modal-body">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group has-feedback divUserName">
@@ -121,21 +120,21 @@ if(isset($_SESSION['sectionIDCheck'])){
                     <div class="col-md-6">
                         <div class="form-group has-feedback divUserEmail">
                             <label for="userEmail" class="control-label">Email:</label>
-                            <input type="text" class="form-control userEmail" required id="userEmail" name="userEmail" aria-describedby="userEmailHelp" autocomplete="username">
+                            <input type="text" class="form-control userEmail" required id="userEmail" name="userEmail" aria-describedby="userEmailHelp">
                             <span id="userEmailHelp" class="help-block text-danger">Min 3 caracteres</span>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group has-feedback divNewPwd">
                             <label for="newPwd" class="control-label">Senha:</label>
-                            <input type="password" class="form-control newPwd" id="newPwd" name="newPwd" aria-describedby="newPwdHelp" autocomplete="password">
+                            <input type="password" class="form-control newPwd" id="newPwd" name="newPwd" aria-describedby="newPwdHelp">
                             <span id="newPwdHelp" class="help-block text-danger">Min 3 characters</span>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group has-feedback divRePwd">
                             <label for="rePwd" class="control-label">Confirme a Senha:</label>
-                            <input type="password" class="form-control rePwd" id="rePwd" name="rePwd" aria-describedby="rePwdHelp" autocomplete="new-password">
+                            <input type="password" class="form-control rePwd" id="rePwd" name="rePwd" aria-describedby="rePwdHelp">
                             <span id="rePwdHelp" class="help-block text-danger">Min 3 characters</span>
                         </div>
                     </div>
@@ -175,7 +174,6 @@ if(isset($_SESSION['sectionIDCheck'])){
                     <button type="button" class="btn btn-sm btn-success waves-effect waves-light" id="btnSave">Salvar</button>
                 </div>
             </div>
-            </form>
         </div>
     </div>
 </div>
@@ -268,7 +266,8 @@ if(isset($_SESSION['sectionIDCheck'])){
                     },
                 "buttons":
                     [
-                        {"extend": 'excelHtml5', "text": 'Excel', "className": 'btn btn-sm dt-btn-width btn-success buttons-html5'}
+                        {"extend": 'excelHtml5', "text": 'Excel', "className": 'btn btn-sm dt-btn-width btn-success buttons-html5'},
+                        {"extend": 'pdfHtml5', "text": 'PDF', "className": 'btn btn-sm dt-btn-width btn-danger buttons-html5', "attr": { id: 'exportPDF' }},
                     ],
                 "initComplete": function () {
                     $(".dt-buttons").removeClass("btn-group");
@@ -594,14 +593,14 @@ if(isset($_SESSION['sectionIDCheck'])){
 
         });
 
-        $('select.profileID').on('changed.bs.select', function (e, clickedIndex, newValue, oldValue) {
+
+        $('.profileID').on('changed.bs.select', function (e, clickedIndex, newValue, oldValue) {
             let v_profileID = $(e.currentTarget).val();
             if(v_profileID == 3){
                 $('#divCustomer').show();
             }else{
                 $('#divCustomer').hide();
             }
-            console.log('Trocou para '+v_profileID);
         });
 
         $(document).on('keypress',"#newPwd",function(e)

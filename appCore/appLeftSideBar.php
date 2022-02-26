@@ -53,17 +53,17 @@ $v_apiData = new appUserControl();
                                 <?php
                                     }
 
-                                    //FeatureID = 9 — Configurações — Instalação Obcon
+                                    //FeatureID = 9 — Configurações — Instalação InOut
                                     if($v_apiData->checkFeaturePermission(9)){
                                 ?>
-                                <li><a href="<?=$GLOBALS['g_appRoot']?>/System/Instalacao">Instalações Obcon</a></li>
+                                <li><a href="<?=$GLOBALS['g_appRoot']?>/System/Instalacao">Instalações InOut</a></li>
                                 <?php
                                     }
 
-                                    //FeatureID = 10 — Configurações — Câmera Obcon
+                                    //FeatureID = 10 — Configurações — Câmera InOut
                                     if($v_apiData->checkFeaturePermission(10)){
                                 ?>
-                                <li><a href="<?=$GLOBALS['g_appRoot']?>/System/Camera">Câmera Obcon</a></li>
+                                <li><a href="<?=$GLOBALS['g_appRoot']?>/System/Camera">Câmera InOut</a></li>
                                 <?php
                                     }
                                 ?>
@@ -82,14 +82,14 @@ $v_apiData = new appUserControl();
                                 //FeatureID = 11 — Relatórios — Viper
                                 if($v_apiData->checkFeaturePermission(11)){
                             ?>
-                            <li><a href="<?=$GLOBALS['g_appRoot']?>/Relatorio/Viper">Viper</a></li>
+                            <li><a href="<?=$GLOBALS['g_appRoot']?>/Relatorio/Analiticos">Analíticos</a></li>
                             <?php
                                 }
 
-                            //FeatureID = 12 —  Relatórios — Obcon
+                            //FeatureID = 12 —  Relatórios — InOut
                             if($v_apiData->checkFeaturePermission(12)){
                             ?>
-                            <li><a href="<?=$GLOBALS['g_appRoot']?>/Relatorio/Obcon">Obcon</a></li>
+                            <li><a href="<?=$GLOBALS['g_appRoot']?>/Relatorio/InOut">InOut</a></li>
                             <?php
                                 }
                             ?>
@@ -97,19 +97,19 @@ $v_apiData = new appUserControl();
                     </li>
                     <?php
                 }
-                //FeatureID = 4 — Obcon
+                //FeatureID = 4 — InOut
                 if($v_apiData->checkFeaturePermission(4)){
                 ?>
 
                 <li><a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
                                 class="fa fa-lg fa-calculator"></i><span
-                                class="hide-menu">Obcon</span></a>
+                                class="hide-menu">InOut</span></a>
                     <ul aria-expanded="false" class="collapse">
                         <?php
-                        //FeatureID = 13 — Obcon Dashboard
+                        //FeatureID = 13 — InOut Dashboard
                         if($v_apiData->checkFeaturePermission(13)){
                         ?>
-                        <li><a href="<?=$GLOBALS['g_appRoot']?>/Obcon/Dashboard">Dashboard</a></li>
+                        <li><a href="<?=$GLOBALS['g_appRoot']?>/InOut/Dashboard">Dashboard</a></li>
                         <?php
                         }
                         ?>

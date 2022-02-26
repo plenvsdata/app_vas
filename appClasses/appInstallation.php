@@ -516,7 +516,7 @@ class appInstallation
         }
     }
 
-    public function appObconCounter($data = NULL){
+    public function appInOutCounter($data = NULL){
         $v_reqMethod = $data['method'];
         if ($v_reqMethod == "GET"){
             $v_dashboardID = !empty($data['dashboardID']) ? $data['dashboardID'] : NULL;
@@ -543,12 +543,12 @@ class appInstallation
 
     }
 
-    public function appObconZeroCounter($data = NULL){
+    public function appInOutZeroCounter($data = NULL){
         $v_dashboardID = $data['dashboardID'];
-        $v_obconCounter = new appDataAPI();
-        $v_count = $v_obconCounter->getCurrentObconCounter($v_dashboardID);
+        $v_inOutCounter = new appDataAPI();
+        $v_count = $v_inOutCounter->getCurrentInOutCounter($v_dashboardID);
         if($v_count){
-            $v_obconCounter->falseCurrentObconCounter($v_dashboardID);
+            $v_inOutCounter->falseCurrentInOutCounter($v_dashboardID);
             // cria o novo contador com data de hoje zerado
             $querySetCount = "INSERT INTO %appDBprefix%_dashboard_obcon_count (dashboard_id,count_data,count_hora,entrada,saida,total_atual,current,camera_enable_array,created_by) VALUES ";
             $querySetCount .= "('" .$v_dashboardID. "','" . date("Y-m-d") . "','".date("H:i:s")."',0,0,0,1,'".$v_count['camera_enable_array']."','".$_SESSION['userID']."') ";

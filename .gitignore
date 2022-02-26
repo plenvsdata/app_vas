@@ -1,5 +1,6 @@
 .idea
 .DS_Store
-__/appFiles/*
 *.bak
 *.orig
+/__appCloud/
+/__appFiles/

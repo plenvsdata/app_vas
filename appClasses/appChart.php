@@ -18,7 +18,7 @@ class appChart
         $this->dbCon = new appDBClass();
     }
 
-    public function chartObconEntradaSaida($data = NULL){
+    public function chartInOutEntradaSaida($data = NULL){
         $v_dashboardID = !empty($data['dashboardID']) ? $data['dashboardID'] : NULL;
         $v_date = date("Y-m-d");
 $query = "
@@ -76,7 +76,7 @@ SELECT
 
     }
 
-    public function chartObconDashboardDia($data = NULL){
+    public function chartInOutDashboardDia($data = NULL){
         $v_dashboardID = !empty($data['dashboardID']) ? $data['dashboardID'] : NULL;
         $v_dateStart = !empty($data['dateStart']) ? $data['dateStart'] : NULL;
         $v_dateEnd = !empty($data['dateEnd']) ? $data['dateEnd'] : NULL;

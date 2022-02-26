@@ -16,7 +16,7 @@ $v_comboCustomer = $v_comboData->comboCustomer('array');
 $v_data['dashboardID'] = $v_dashboardID;
 
 $v_checkCounterData = new appDataAPI();
-$v_checkCounter = $v_checkCounterData->appObconCounter($v_data,false,true);
+$v_checkCounter = $v_checkCounterData->appInOutCounter($v_data,false,true);
 
 $v_listDashboard = new appDataList();
 $v_dashboardList = $v_listDashboard->appDashboardList($v_data);
@@ -67,7 +67,7 @@ $v_chart2DateStart = date('Y-m-d',$v_timestamp2);
     <div class="col-md-7 align-self-center">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/MeuPerfil">Home</a></li>
-            <li class="breadcrumb-item">Obcon</li>
+            <li class="breadcrumb-item">InOut</li>
             <li class="breadcrumb-item active">Dashboard</li>
         </ol>
     </div>
@@ -133,10 +133,10 @@ $v_chart2DateStart = date('Y-m-d',$v_timestamp2);
                 <div class="card-header">
                     <ul class="nav nav-tabs card-header-tabs" id="dashboardTabList" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link dashboardNavPanel" id="obconReport-tab" data-toggle="tab" href="#obconReport" role="tab" aria-controls="obconReport" aria-selected="true">Consolidação</a>
+                            <a class="nav-link dashboardNavPanel" id="InOutReport-tab" data-toggle="tab" href="#InOutReport" role="tab" aria-controls="obconReport" aria-selected="true">Consolidação</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link dashboardNavPanel active" id="obconChart-tab" data-toggle="tab" href="#obconChart" role="tab" aria-controls="obconChart" aria-selected="true">Gráficos</a>
+                            <a class="nav-link dashboardNavPanel active" id="InOutChart-tab" data-toggle="tab" href="#InOutChart" role="tab" aria-controls="InOutChart" aria-selected="true">Gráficos</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link dashboardNavPanel" id="dashboardInformation-tab" data-toggle="tab" href="#dashboardInfo" role="tab" aria-controls="dashboardInfo" aria-selected="true">Informações</a>
@@ -148,7 +148,7 @@ $v_chart2DateStart = date('Y-m-d',$v_timestamp2);
                 </div>
                 <div class="card-body">
                     <div class="tab-content" id="dashboardContent">
-                        <div class="tab-pane fade" id="obconReport" role="tabpanel" aria-labelledby="obcon-tab">
+                        <div class="tab-pane fade" id="InOutReport" role="tabpanel" aria-labelledby="InOut-tab">
                             <div class="row pt-0">
                                 <div class="col-12 p-4">
                                     <h6 class="text-left">Últimos Dias</h6>
@@ -166,7 +166,7 @@ $v_chart2DateStart = date('Y-m-d',$v_timestamp2);
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade show active" id="obconChart" role="tabpanel" aria-labelledby="chart-tab">
+                        <div class="tab-pane fade show active" id="InOutChart" role="tabpanel" aria-labelledby="chart-tab">
 
                             <div class="row pb-4">
                                 <div class="col-12">
@@ -527,7 +527,7 @@ $v_chart2DateStart = date('Y-m-d',$v_timestamp2);
                     if(result===true)
                     {
                         $.ajax({
-                            url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appObconZeroCounter",
+                            url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appInOutZeroCounter",
                             type: "POST",
                             dataType: "json",
                             data:
@@ -637,7 +637,7 @@ $v_chart2DateStart = date('Y-m-d',$v_timestamp2);
 
     function setControleData(){
         $.ajax({
-            url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appObconCounter",
+            url: "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appInOutCounter",
             type: "POST",
             dataType: "json",
             data: {
@@ -664,7 +664,7 @@ $v_chart2DateStart = date('Y-m-d',$v_timestamp2);
 
     function getChart1Data(){
         $.ajax({
-            url: "<?=$GLOBALS['g_appRoot']?>/appBIDataAPI/appChartObconEntradaSaida",
+            url: "<?=$GLOBALS['g_appRoot']?>/appBIDataAPI/appChartInOutEntradaSaida",
             type: "POST",
             dataType: "json",
             data: {
@@ -712,7 +712,7 @@ $v_chart2DateStart = date('Y-m-d',$v_timestamp2);
 
     function getChart2Data(){
         $.ajax({
-            url: "<?=$GLOBALS['g_appRoot']?>/appBIDataAPI/appChartObconDashboardDia",
+            url: "<?=$GLOBALS['g_appRoot']?>/appBIDataAPI/appChartInOutDashboardDia",
             type: "POST",
             dataType: "json",
             data: {

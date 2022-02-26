@@ -9,6 +9,10 @@
 namespace app\System\Lists;
 use app\dbClass\appDBClass;
 
+//class for emails
+use app\System\Tools\appSystemTools;
+use PHPMailer\PHPMailer\PHPMailer;
+
 class appDataList
 {
     private appDBClass $dbCon;
@@ -18,16 +22,71 @@ class appDataList
         $this->dbCon = new appDBClass();
     }
 
-    public function appCustomerList($data = NULL)
+    public function appCustomerList()
     {
-        $v_customerID = !empty($data['customerID']) ? $data['customerID'] : NULL;
         $query = "SELECT customer_id,customer_cnpj,customer_razao_social,customer_nome_fantasia,customer_token_in,customer_token_out,customer_phone,customer_email,allow_delete,customer_status,ok FROM %appDBprefix%_view_customer_list WHERE 1=1 ";
-        if($v_customerID){
-            $query.= " AND customer_id = '".$v_customerID."' ";
-        }
         $query.=" ORDER BY customer_nome_fantasia";
 
+//Todo Enviar Email -Mudar para classe real
+/*
+
+            $data['customerEmail'] = 'teste@cdn.com';//pegar dados do BD
+            $data['customerName'] = 'CDN';//pegar dados do BD
+            //teste Email
+            $v_dataParse = array(
+                'customerName' => 'CND',
+                'alertData' => '12/11/2021',
+                'alertHora' => '12:40:00',
+                'alertCamera' => '25',
+                'alertVideo' => $GLOBALS['g_appRoot'].'/vasCloudVideo/Player/video_code.gif',//hash 256
+                'currentYear' => date('Y'),
+                'vaSystemsDomain' => $GLOBALS['g_appRoot']
+            );
+
+            $v_htmlBody = new appSystemTools();
+            $v_htmlBody->contentParse(file_get_contents('../appSystemTemplate/appMailSendAlertViperTemplate.html'),$v_dataParse);
+            $v_htmlMsg = $v_htmlBody->returnContent;
+            $v_sendInvitation = new PHPMailer(true);
+            $v_sendInvitation->SMTPDebug = $GLOBALS['g_phpMailerDebug'];
+
+            try {
+                if ($GLOBALS['g_useSMTP'] === true) {
+
+                    $v_sendInvitation->isSMTP();
+                    $v_sendInvitation->Host = gethostbyname($GLOBALS['g_emailHostSettings']['host']);
+                    $v_sendInvitation->SMTPAuth = $GLOBALS['g_emailHostSettings']['smtpAuth'];
+                    $v_sendInvitation->Username = $GLOBALS['g_emailHostSettings']['username'];
+                    $v_sendInvitation->Password = $GLOBALS['g_emailHostSettings']['password'];
+                    $v_sendInvitation->SMTPSecure = $GLOBALS['g_emailHostSettings']['secure'];
+                    $v_sendInvitation->Port = $GLOBALS['g_emailHostSettings']['port'];
+                    $v_sendInvitation->SMTPOptions = array(
+                        'ssl' => array(
+                            'verify_peer' => false,
+                            'verify_peer_name' => false,
+                            'allow_self_signed' => true
+                        )
+                    );
+                }
+
+                $v_sendInvitation->setFrom('plenvs@goabh.com', 'VA Systems');
+                $v_sendInvitation->addReplyTo('plenvs@goabh.com', 'VA Systems');
+                $v_sendInvitation->addAddress($data['customerEmail'], $data['customerName']);
+                $v_sendInvitation->Subject = 'Alerta detectado.';
+                $v_sendInvitation->msgHTML($v_htmlMsg);
+                $v_sendInvitation->AltBody = 'Acabamos de detectar um alerta, segue os dados: Data '.$v_dataParse['alertData'].' às '.$v_dataParse['alertHora'].' na câmera '.$v_dataParse['alertCamera'];
+                if ($v_sendInvitation->send()) {
+                    $v_return['sendEmail'] = true;
+                } else {
+                    $v_return['sendEmail'] = false;
+                }
+            }
+            catch (Exception $e) {
+                echo 'A mensagem não pode ser enviada. Mailer Error: ', $v_sendInvitation->ErrorInfo;
+            }
+        //Todo FIM EMAIL AO RECEBER ALERTA VIPER
+*/
         return $this->dbCon->dbSelect($query);
+
     }
 
     public function appUserList()
@@ -118,7 +177,7 @@ class appDataList
         return $this->dbCon->dbSelect($query);
     }
 
-    public function appAlarmeViperList($data = NULL)
+    public function appAlarmeAnaliticoList($data = NULL)
     {
         $v_dataStart = !empty($data['dataStart']) ? $data['dataStart'] : NULL;
         $v_dataEnd = !empty($data['dataEnd']) ? $data['dataEnd'] : NULL;
@@ -133,7 +192,7 @@ class appDataList
         return $this->dbCon->dbSelect($query);
     }
 
-    public function appAlarmeObconList($data = NULL)
+    public function appAlarmeInOutList($data = NULL)
     {
         $v_dataStart = !empty($data['dataStart']) ? $data['dataStart'] : NULL;
         $v_dataEnd = !empty($data['dataEnd']) ? $data['dataEnd'] : NULL;

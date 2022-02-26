@@ -53,7 +53,7 @@ if(isset($_SESSION['sectionIDCheck'])){
     <div class="col-md-7 align-self-center">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/MeuPerfil">Home</a></li>
-            <li class="breadcrumb-item">Obcon</li>
+            <li class="breadcrumb-item">InOut</li>
             <li class="breadcrumb-item active">Dashboard</li>
         </ol>
     </div>
@@ -189,7 +189,8 @@ if(isset($_SESSION['sectionIDCheck'])){
                     },
                 "buttons":
                     [
-                        {"extend": 'excelHtml5', "text": 'Excel', "className": 'btn btn-sm dt-btn-width btn-success buttons-html5'}
+                        {"extend": 'excelHtml5', "text": 'Excel', "className": 'btn btn-sm dt-btn-width btn-success buttons-html5'},
+                        {"extend": 'pdfHtml5', "text": 'PDF', "className": 'btn btn-sm dt-btn-width btn-danger buttons-html5'}
                     ],
                 "initComplete": function () {
                     $(".dt-buttons").removeClass("btn-group");

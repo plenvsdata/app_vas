@@ -214,9 +214,9 @@ $v_dateStart = date('Y-m-d',$v_timestamp2);
                 "dom": '<"dtFloatRight"f><"#excelBtnDiv.dtFloatLeft hidden"B><"dtInfoBeta">rt<"dtCenter"i<"dtFloatLeft"><"dtFloatRight"p>>',
                 "ajax":
                     {
-                        "url": "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appListAlarmeObcon",
+                        "url": "<?=$GLOBALS['g_appRoot']?>/appDataAPI/appListAlarmeInOut",
                         "xhrFields": { withCredentials: true },
-                        "dataSrc": "appObconList",
+                        "dataSrc": "appInOutList",
                         "dataType": "json",
                         "type": "POST",
                         "headers":
@@ -232,11 +232,13 @@ $v_dateStart = date('Y-m-d',$v_timestamp2);
                     [
                         {"text":'Filtros',"className": 'btn btn-sm dt-btn-width btn-info dtFloatSpaceLeft filterPage'},
                         {"extend": 'excelHtml5', "text": 'Excel', "className": 'btn btn-sm dt-btn-width btn-success buttons-html5 hidden', "attr": { id: 'exportExcel' }},
+                        {"extend": 'pdfHtml5', "text": 'PDF', "className": 'btn btn-sm dt-btn-width btn-danger buttons-html5', "attr": { id: 'exportPDF' }},
                         {"extend": 'colvis', "text": 'Colunas', "className": 'btn btn-sm dt-btn-width btn-info dtFloatSpaceLeft' }
                     ],
                 "initComplete": function () {
                     $(".dt-buttons").removeClass("btn-group");
                     $('#exportExcel').removeClass('hidden');
+                    $('#exportPDF').removeClass('hidden');
                     $('#excelBtnDiv').removeClass('hidden');
                     let r = $('#appDatatable tfoot tr');
                     r.find('th').each(function(){

@@ -48,13 +48,13 @@ if(isset($_SESSION['sectionIDCheck'])){
 </style>
 <div class="row page-titles basicContent">
     <div class="col-md-5 align-self-center">
-        <h3 class="text-themecolor">Instalações Obcon</h3>
+        <h3 class="text-themecolor">Instalações InOut</h3>
     </div>
     <div class="col-md-7 align-self-center">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/MeuPerfil">Home</a></li>
             <li class="breadcrumb-item">Configurações</li>
-            <li class="breadcrumb-item active">Instalações Obcon</li>
+            <li class="breadcrumb-item active">Instalações InOut</li>
         </ol>
     </div>
 </div>
@@ -169,6 +169,7 @@ if(isset($_SESSION['sectionIDCheck'])){
                         if(in_array($_SESSION['accessProfileID'],$GLOBALS['g_allowExport'])){
                         ?>
                         {"extend": 'excelHtml5', "text": 'Excel', "className": 'btn btn-sm dt-btn-width btn-success buttons-html5 hidden', "attr": { id: 'exportExcel' }},
+                        {"extend": 'pdfHtml5', "text": 'Excel', "className": 'btn btn-sm dt-btn-width btn-danger buttons-html5 hidden', "attr": { id: 'exportPDF' }},
                         <?php
                         }
                         ?>

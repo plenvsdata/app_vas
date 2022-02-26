@@ -47,6 +47,7 @@ elseif ($v_dataSec == "i3pDataReceiver") {
 
     $v_errorLog = new ErrorLog();
     $v_errorInsert = $v_errorLog->appInsertFullData($v_appRequest);
+
     $v_customerID = $v_appRequest['customerID'] ?? NULL;
 
     if($v_customerID == NULL){
@@ -100,9 +101,7 @@ elseif ($v_dataSec == "i3pPhotoReceiver") {
     $v_fileCount = count($v_file);
 
     $v_photoData = new appPhoto();
-    $v_emailData['fileName'] = '' ;//ex. AL_VIPE_000007_26112021_073000_06_00.JPG
-    $v_emailData['alarmeTypeID'] = '';
-    //send photo to folder and register vas_photo_data
+
     for ($i = 0; $i < $v_fileCount; $i++) {
         $v_data['file'] = $v_file;
         $v_data['fileExt'] = 'JPG';
@@ -112,26 +111,7 @@ elseif ($v_dataSec == "i3pPhotoReceiver") {
         if(!$v_photoDataReturn['status']){
             $v_return['uploadStatus'] = false;
             break;
-        }else{
-            if($i < 1){
-                $v_emailData['fileName'] = $v_photoDataReturn['fileName'];
-                $v_emailData['alarmeTypeID'] = $v_photoDataReturn['alarmeTypeID'];
-            }
         }
-
-    }
-    //envia email
-    if($v_return['uploadStatus'] === true ){
-        $v_userID = $v_data['userID'] ?? NULL;
-        $v_videoCode = (hash('sha256',$v_appRequest['customerToken'].$v_data['alarmID'].time()));
-        $v_emailData['method'] = 'POST';
-        $v_emailData['videoCode'] = $v_videoCode;
-        $v_emailData['alarmeID'] = $v_data['alarmID'];
-        $v_emailData['customerID'] = $v_data['customerID'];
-        //$v_emailData['userID'] = $v_userID;
-        $v_videoData = new appPhoto();
-        $v_videoData->appAlarmeEmailData($v_emailData);
-        $v_videoData->appSendEmailViper($v_emailData);//send email
     }
 
     header('Content-Type: application/json; charset=utf-8');
@@ -144,16 +124,12 @@ elseif ($v_dataSec == "apiTeste") {
     //echo json_encode($v_origem);
     echo json_encode($v_apiData);
 }
-elseif ($v_dataSec == "eventValidation") {
-    $v_dataRequest = !empty($_REQUEST) ? $_REQUEST : NULL;
-    var_dump($v_dataRequest);
-}
-elseif ($v_dataSec == "player") {
+elseif ($v_dataSec = "Player") {
     $v_dataRequest = !empty($_REQUEST) ? $_REQUEST : NULL;
     $v_videoCode = $v_dataRequest['videoData'] ?? NULL;//video_code.gif
     $v_videoData = new appPhoto();
     $v_gifData = $v_videoData->appEmailPhotoData($v_videoCode);
-//var_dump($v_gifData);die();
+
     $v_customerID = $v_gifData['customerID'];
     $v_customerToken = $v_gifData['customerToken'];
     $v_emailID = $v_gifData['emailID'];
@@ -170,14 +146,21 @@ elseif ($v_dataSec == "player") {
     $v_gifCreator->create($v_photoArray,$v_photoDurationArray,0);
     $gifBinary = $v_gifCreator->getGif();
     $v_gifName = $v_videoCode.'.gif';
-    $v_emailData['method'] = 'PUT';
-    $v_emailData['videoCode'] = $v_videoCode;
-    $v_videoData->appAlarmeEmailData($v_emailData);
+    $v_videoData->appEmailUpdateRead($v_videoCode);
     header('Content-type: image/gif');
     header('Content-Disposition: filename="'.$v_gifName.'"');
     echo $gifBinary;
     exit;
 }
+elseif ($v_dataSec = "eventValidation") {
+    $v_dataRequest = !empty($_REQUEST) ? $_REQUEST : NULL;
+
+    var_dump($v_dataRequest);
+
+
+}
+
+
 else
 {
     header("HTTP/1.0 404 Not Found");

@@ -492,7 +492,8 @@ $v_localeJS = str_replace('_','-',$_SESSION['userLocale']);
                     },
                 "buttons":
                     [
-                        {"extend": 'excelHtml5', "text": 'Excel', "className": 'btn btn-sm dt-btn-width btn-success buttons-html5'}
+                        {"extend": 'excelHtml5', "text": 'Excel', "className": 'btn btn-sm dt-btn-width btn-success buttons-html5'},
+                        {"extend": 'pdfHtml5', "text": 'PDF', "className": 'btn btn-sm dt-btn-width btn-danger buttons-html5', "attr": { id: 'exportPDF' }},
                     ],
                 "initComplete": function () {
                     $(".dt-buttons").removeClass("btn-group");

@@ -160,43 +160,42 @@ elseif($v_dataSec == "appDashboardConfig")
     $v_returnData["appDashboardConfig"] = $v_appDashboardConfig["rsData"];
     echo json_encode($v_returnData);
 }
-elseif($v_dataSec == "appListAlarmeViper")
+elseif($v_dataSec == "appListAlarmeAnalitico")
 {
     $v_appRequest = !empty($_REQUEST) ? $_REQUEST : NULL;
     $v_appData = new appDataList();
-    $v_appViperList = $v_appData->appAlarmeViperList($v_appRequest);
-    $v_returnData["appViperList"] = $v_appViperList["rsData"];
+    $v_appAnaliticoList = $v_appData->appAlarmeAnaliticoList($v_appRequest);
+    $v_returnData["appAnaliticoList"] = $v_appAnaliticoList["rsData"];
     echo json_encode($v_returnData);
 }
-elseif($v_dataSec == "appListAlarmeObcon")
+elseif($v_dataSec == "appListAlarmeInOut")
 {
     $v_appRequest = !empty($_REQUEST) ? $_REQUEST : NULL;
     $v_appData = new appDataList();
-    $v_appObconList = $v_appData->appAlarmeObconList($v_appRequest);
-    $v_returnData["appObconList"] = $v_appObconList["rsData"];
+    $v_appInOutList = $v_appData->appAlarmeInOutList($v_appRequest);
+    $v_returnData["appInOutList"] = $v_appInOutList["rsData"];
     echo json_encode($v_returnData);
 }
 elseif ($v_dataSec == "appListCustomer")
 {
-    $v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;
     $v_appCustomerData = new appDataList();
-    $v_appCustomerList = $v_appCustomerData->appCustomerList($v_appData);
+    $v_appCustomerList = $v_appCustomerData->appCustomerList();
     $v_returnData["appCustomerList"] = $v_appCustomerList["rsData"];
     echo json_encode($v_returnData);
 }
-elseif ($v_dataSec == "appObconCounter")
+elseif ($v_dataSec == "appInOutCounter")
 {
     $v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;
-    $v_obcon =  new appInstallation();
-    $v_obconData = $v_obcon->appObconCounter($v_appData);
-    echo json_encode($v_obconData);
+    $v_inOut =  new appInstallation();
+    $v_inOutData = $v_inOut->appInOutCounter($v_appData);
+    echo json_encode($v_inOutData);
 }
-elseif ($v_dataSec == "appObconZeroCounter")
+elseif ($v_dataSec == "appInOutZeroCounter")
 {
     $v_appData = !empty($_REQUEST) ? $_REQUEST : NULL;
-    $v_obcon =  new appInstallation();
-    $v_obconData = $v_obcon->appObconZeroCounter($v_appData);
-    echo json_encode($v_obconData);
+    $v_inOut =  new appInstallation();
+    $v_inOutData = $v_inOut->appInOutZeroCounter($v_appData);
+    echo json_encode($v_inOutData);
 }
 elseif ($v_dataSec == "appValidaAlarmeViper")
 {

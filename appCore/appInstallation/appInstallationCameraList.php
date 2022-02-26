@@ -48,13 +48,13 @@ if(isset($_SESSION['sectionIDCheck'])){
 </style>
 <div class="row page-titles basicContent">
     <div class="col-md-5 align-self-center">
-        <h3 class="text-themecolor">Câmera Obcon</h3>
+        <h3 class="text-themecolor">Câmera InOut</h3>
     </div>
     <div class="col-md-7 align-self-center">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="<?=$GLOBALS['g_appRoot']?>/MeuPerfil">Home</a></li>
             <li class="breadcrumb-item">Configurações</li>
-            <li class="breadcrumb-item active">Câmera Obcon</li>
+            <li class="breadcrumb-item active">Câmera InOut</li>
         </ol>
     </div>
 </div>
@@ -107,7 +107,7 @@ if(isset($_SESSION['sectionIDCheck'])){
     <div class="modal-dialog modal-dialog-centered modal-dialog-centered-90" >
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Editar Câmera Obcon</h4>
+                <h4 class="modal-title">Editar Câmera InOut</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <input type="hidden" id="obconCameraID">
             </div>
@@ -173,6 +173,7 @@ if(isset($_SESSION['sectionIDCheck'])){
                         if(in_array($_SESSION['accessProfileID'],$GLOBALS['g_allowExport'])){
                         ?>
                         {"extend": 'excelHtml5', "text": 'Excel', "className": 'btn btn-sm dt-btn-width btn-success buttons-html5 hidden', "attr": { id: 'exportExcel' }},
+                        {"extend": 'pdfHtml5', "text": 'PDF', "className": 'btn btn-sm dt-btn-width btn-danger buttons-html5', "attr": { id: 'exportPDF' }},
                         <?php
                         }
                         ?>
@@ -183,6 +184,7 @@ if(isset($_SESSION['sectionIDCheck'])){
                     if(in_array($_SESSION['accessProfileID'],$GLOBALS['g_allowExport'])){
                     ?>
                     $('#exportExcel').removeClass('hidden');
+                    $('#exportPDF').removeClass('hidden');
                     $('#excelBtnDiv').removeClass('hidden');
 
                     <?php

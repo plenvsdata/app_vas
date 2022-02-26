@@ -355,7 +355,8 @@ if(isset($_SESSION['sectionIDCheck'])){
                 ?>
                 "buttons":
                     [
-                        {"extend": 'excelHtml5', "text": 'Excel', "className": 'btn btn-sm dt-btn-width btn-success buttons-html5 hidden', "attr": { id: 'exportExcel' }}
+                        {"extend": 'excelHtml5', "text": 'Excel', "className": 'btn btn-sm dt-btn-width btn-success buttons-html5 hidden', "attr": { id: 'exportExcel' }},
+                        {"extend": 'pdfHtml5', "text": 'Excel', "className": 'btn btn-sm dt-btn-width btn-danger buttons-html5 hidden', "attr": { id: 'exportPDF' }}
                     ],
                 <?php
                 }
@@ -365,6 +366,7 @@ if(isset($_SESSION['sectionIDCheck'])){
                     if(in_array($_SESSION['accessProfileID'],$GLOBALS['g_allowExport'])){
                     ?>
                     $('#exportExcel').removeClass('hidden');
+                    $('#exportPDF').removeClass('hidden');
                     $('#excelBtnDiv').removeClass('hidden');
 
                     <?php
